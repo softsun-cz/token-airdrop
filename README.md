@@ -5,3 +5,11 @@
 3. Edit .apikey_* files and add your api keys on the first line of each file
 4. > yarn install
 5. > ./deploy_[NETWORK_NAME]_[NETWORK].sh
+
+# Used dependencies
+
+Truffle v5.4.26 (core: 5.4.26)
+Solidity - ^0.8.11 (solc-js)
+Node v16.13.1
+NPM 8.3.0
+Web3.js v1.5.3
