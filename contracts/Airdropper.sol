@@ -1,7 +1,9 @@
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.11;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/utils/SafeMath.sol';
+import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 contract Airdropper is Ownable {
@@ -13,9 +15,9 @@ contract Airdropper is Ownable {
     mapping (address => bool) public airdropAgent;
     ERC20 public token;
 
-    function Airdropper(uint256 _amount) public {
+    function Airdropper(uint256 _amount, uint8 _decimals) public {
         totalClaimed = 0;
-        amountOfTokens = _amount;
+        amountOfTokens = _amount**_decimals;
     }
 
     // Send a static number of tokens to each user in an array (e.g. each user receives 100 tokens)
