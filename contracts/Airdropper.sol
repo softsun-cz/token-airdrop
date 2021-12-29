@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.11;
+pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/utils/math/SafeMath.sol';
@@ -15,13 +15,13 @@ contract Airdropper is Ownable {
     mapping (address => bool) public airdropAgent;
     ERC20 public token;
 
-    function Airdropper(uint256 _amount, uint8 _decimals) public {
+    constructor() {
         totalClaimed = 0;
-        amountOfTokens = _amount**_decimals;
+        amountOfTokens = 1000 * 10**18;
     }
 
     // Send a static number of tokens to each user in an array (e.g. each user receives 100 tokens)
-    function airdrop(address[] _recipients) public onlyAirdropAgent {        
+    function airdrop(address[] memory _recipients) public onlyAirdropAgent {        
         for (uint256 i = 0; i < _recipients.length; i++) {
             require(!tokensReceived[_recipients[i]]); // Probably a race condition between two transactions. Bail to avoid double allocations and to save the gas.
             require(token.transfer(_recipients[i], amountOfTokens));
@@ -31,7 +31,7 @@ contract Airdropper is Ownable {
     }
 
     // Send a dynamic number of tokens to each user in an array (e.g. each user receives 10% of their original contribution) 
-    function airdropDynamic(address[] _recipients, uint256[] _amount) public onlyAirdropAgent {
+    function airdropDynamic(address[] memory _recipients, uint256[] memory _amount) public onlyAirdropAgent {
         for (uint256 i = 0; i < _recipients.length; i++) {
                 require(!tokensReceived[_recipients[i]]); // Probably a race condition between two transactions. Bail to avoid double allocations and to save the gas.
                 require(token.transfer(_recipients[i], _amount[i]));
@@ -47,7 +47,7 @@ contract Airdropper is Ownable {
     
     // Return any unused tokens back to the contract owner
     function reset() public onlyOwner {
-        require(token.transfer(owner, remainingTokens()));
+        require(token.transfer(owner(), remainingTokens()));
     }
 
     // Specify the ERC20 token address
@@ -62,7 +62,7 @@ contract Airdropper is Ownable {
 
     // Return the amount of tokens that the contract currently holds
     function remainingTokens() public view returns (uint256) {
-        return token.balanceOf(this);
+        return token.balanceOf(address(this));
     }
 
     modifier onlyAirdropAgent() {
