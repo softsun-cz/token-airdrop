@@ -47,7 +47,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: "^0.8.0", // A version or constraint - Ex. "^0.5.0"
+      version: "^0.8.11", // A version or constraint - Ex. "^0.5.0"
     }
   },
   plugins: [
