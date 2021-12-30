@@ -10,7 +10,8 @@ contract TokenTax is ERC20 {
     using SafeMath for uint256;
     uint BURN_FEE = 1;
     uint OWNER_FEE = 2;
-    uint LIQUIDITY_FEE = 2;
+    uint LIQUIDITY_FEE = 3;
+    uint REDISTRIBUTION_FEE = 4;
     // address public router = "0x10ED43C718714eb63d5aA57B78B54704E256024E"; // pancakeswap.finance (BSC Mainnet)
     address public router = "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3"; // pancake.kiemtienonline360.com (BSC Testnet)
     // address public router = "0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff"; // quickswap.exchange (Polygon Mainnet)
@@ -32,6 +33,7 @@ contract TokenTax is ERC20 {
             uint burnAmount = amount.mul(BURN_FEE) / 100;
             uint ownerAmount = amount.mul(OWNER_FEE) / 100;
             uint liquidityAmount = amount.mul(LIQUIDITY_FEE) / 100;
+            //TODO: REDISTRIBUTION FEE
             _burn(_msgSender(), burnAmount);
             _transfer(_msgSender(), owner, ownerAmount);
             _transfer(_msgSender(), router, liquidityAmount);
