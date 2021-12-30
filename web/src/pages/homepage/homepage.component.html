@@ -1,0 +1,31 @@
+<table>
+    <tr>
+        <th>
+            Amount Of Tokens: 
+        </th><td>
+            <span *ngIf="amountOfTokens == -1">Loading....</span>
+            <span *ngIf="amountOfTokens != -1">{{amountOfTokens}}</span>
+        </td>
+    </tr><tr>
+        <th>
+            Remaining Tokens: 
+        </th><td>
+            <span *ngIf="remainingTokens == -1">Loading....</span>
+            <span *ngIf="remainingTokens != -1">{{remainingTokens}}</span>
+        </td> 
+    </tr><tr>
+        <th>
+            Token address: 
+        </th><td>
+            <span *ngIf="tokenAddress == null">Loading....</span>
+            <span *ngIf="tokenAddress != null">{{tokenAddress}}</span>
+        </td> 
+    </tr><tr>
+        <th>
+            Total Claimed: 
+        </th><td>
+            <span *ngIf="totalClaimed == -1">Loading....</span>
+            <span *ngIf="totalClaimed != -1">{{totalClaimed}}</span>
+        </td> 
+    </tr> 
+</table>

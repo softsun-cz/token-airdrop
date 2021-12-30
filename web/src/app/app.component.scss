@@ -1,0 +1,28 @@
+:host{
+    margin: 20px auto;
+    width: 1250px;
+    max-width: calc(100% - 40px);
+    background-color: #fff;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #ccc;
+    header{
+        border-radius: 10px 10px 0 0;
+    }
+    footer{
+        border-radius: 0 0 10px 10px;
+    }
+    footer, header{
+        background-color: #1095C1;
+        color: #fff;
+        min-height: 52px;
+        padding: 10px;
+        a{
+            color: #fff;
+        }
+    }
+    main{
+        padding: 20px;
+        min-height: calc(100vh - 144px);
+    }
+}
