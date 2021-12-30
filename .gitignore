@@ -1,0 +1,14 @@
+/node_modules/
+/.idea/
+/secrets.json
+/scripts/
+/build/
+/test/
+/bin/*
+/accounts.json
+log_*.txt
+*.log
+.secret
+.apikey_bscscan
+yarn.lock
+package-lock.json
