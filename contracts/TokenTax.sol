@@ -20,7 +20,7 @@ contract TokenTax is ERC20 {
     }
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {
-        if (excludedFromTax[msg.sender]) {
+        if (excludedFromTax[msg.sender] == true) {
             _transfer(_msgSender(), recipient, amount);
         } else {
             uint burnAmount = amount.mul(BURN_FEE) / 100;

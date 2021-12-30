@@ -1,0 +1,10 @@
+- Otestovat Airdropper
+- Najit QuickSwap pro Polygon Testnet (nebo BSC Testnet)
+- U TokenTax pridat vyjimku, ze na msg.sender (penezenka 0xF3...BF20) se nevztahuje dan (uz to tam je, ale podminka neprosla, takze tam chybi asi == true
+- U TokenTax pridat vyjimku, ze na BURN adresu se nevztahuje dan
+- U TokenTax pridat vyjimku, ze na Airdrop adresu se nevztahuje dan
+- U TokenTax pridat router adresu smenarny (quickswap testnet)
+- U TokenTax pridat liquidity tax (presune se do likvidity routeru)
+- U TokenTax pridat redistribution tax (presune se vsem drzitelum)
+- Napsat Presale contract - 90% pujde do likvidity a 10% do msg.sender (nase penezenka)
+- Airdrop Telegram bot (mozna)
