@@ -2,7 +2,10 @@
 - Otestovat Airdropper
 - Otestovat, jestli jde v token contractu pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop a mozna i smenarna (liquidity adresa))
 - Otestovat, jestli se navysuje likvidita transakcnima poplatkama
-- U TokenTax pridat redistribution tax (presune se vsem drzitelum)
+- U TokenTax pridat reflection tax (presune se vsem drzitelum)
 - Napsat Presale contract - 90% pujde do likvidity a 10% do msg.sender (nase penezenka)
 - Airdrop web
 - Airdop Telegram bot (mozna)
+- Presale web
+- Homepage
+- Whitepaper
