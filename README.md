@@ -5,6 +5,7 @@
 3. Edit .apikey_* files and add your api keys on the first line of each file
 4. > yarn install
 5. > ./deploy_[NETWORK_NAME]_[NETWORK].sh
+6. > ./verify.sh [CONTRACT_NAME] [NETWORK]
 
 # Used dependencies
 

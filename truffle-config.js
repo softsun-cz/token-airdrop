@@ -26,7 +26,7 @@ module.exports = {
       skipDryRun: true
     },
     polygonTestnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.maticvigil.com/`),
+      provider: () => new HDWalletProvider(mnemonic, `https://matic-mumbai.chainstacklabs.com`),
       network_id: 80001,
       confirmations: 1,
       timeoutBlocks: 200,

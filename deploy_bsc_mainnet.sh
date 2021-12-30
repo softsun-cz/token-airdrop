@@ -1,7 +1,13 @@
-#!/bin/sh
+LOG=log_bsc_mainnet.txt
+BUILD=build/
+NETWORK=bscMainnet
 
-rm -r build/contracts/
-rm out_bsc_mainnet.txt
-truffle deploy --network bscMainnet 2>&1 | tee out_bsc_mainnet.txt
-truffle run verify Token Airdropper --network bscMainnet
-
+if [ -d "$BUILD" ]; then
+ echo "Removing old builds ..."
+ rm -r $BUILD
+fi
+if [ -f "$LOG" ]; then
+ echo "Removing old log file: $LOG"
+ rm $LOG
+fi
+truffle deploy --network $NETWORK 2>&1 | tee $LOG

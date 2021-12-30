@@ -1,7 +1,13 @@
-#!/bin/sh
+LOG=log_polygon_testnet.txt
+BUILD=build/
+NETWORK=polygonTestnet
 
-rm -r build/contracts/
-rm out_polygon_testnet.txt
-truffle deploy --network polygonTestnet 2>&1 | tee out_polygon_testnet.txt
-truffle run verify Token Airdropper --network polygonTestnet
-
+if [ -d "$BUILD" ]; then
+ echo "Removing old builds ..."
+ rm -r $BUILD
+fi
+if [ -f "$LOG" ]; then
+ echo "Removing old log file: $LOG"
+ rm $LOG
+fi
+truffle deploy --network $NETWORK 2>&1 | tee $LOG
