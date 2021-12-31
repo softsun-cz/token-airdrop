@@ -20,7 +20,7 @@ contract Airdropper is Ownable {
     }
 
     function airdrop(address memory _recipient) public {
-        require(!addressReceived[_recipient);
+        require(!addressReceived[_recipient]);
         require(token.transfer(_recipient, amountOfTokens));
         addressReceived[_recipient] = true;
         airdropsCount++;
