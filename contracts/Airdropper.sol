@@ -19,10 +19,10 @@ contract Airdropper is Ownable {
         amountOfTokens = 1000 * 10**18;
     }
 
-    function airdrop(address _recipient) public {
-        require(!addressReceived[_recipient]);
-        require(token.transfer(_recipient, amountOfTokens));
-        addressReceived[_recipient] = true;
+    function airdrop() public {
+        require(!addressReceived[msg.sender]);
+        require(token.transfer(msg.sender, amountOfTokens));
+        addressReceived[msg.sender] = true;
         airdropsCount++;
         totalClaimed = totalClaimed.add(amountOfTokens);
     }
