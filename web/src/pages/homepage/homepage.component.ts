@@ -3,6 +3,9 @@ import { interval, Subscription } from 'rxjs';
 import { Config } from 'src/config';
 import { Web3Service } from 'src/services/web3.service';
 import { takeWhile } from 'rxjs/operators';
+import Web3 from 'web3';
+import { Web3ModalService } from 'src/services/web3-modal.service';
+import { AppState } from 'src/appState';
 
 @Component({
   selector: 'app-homepage',
@@ -16,7 +19,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
   remainingTokens: number = -1;
   totalClaimed: number = -1;
   tokenAddress: string | null = null;
-  constructor( private web3Service: Web3Service) { 
+  constructor( private web3Service: Web3Service, private web3ModalService: Web3ModalService) { 
 
   }
 
@@ -34,6 +37,10 @@ export class HomepageComponent implements OnInit, OnDestroy {
     });
   }
 
+  walletConnected(): boolean{
+    return AppState.walletConnected;
+  }
+
   private loadData(){
     this.amountOfTokens = this.remainingTokens = this.totalClaimed = -1;
     this.tokenAddress = null;
@@ -41,15 +48,19 @@ export class HomepageComponent implements OnInit, OnDestroy {
       this.tokenAddress = value;
     });
     this.web3Service.getTotalClaimed().then(value => {
-      this.totalClaimed = this.web3Service.reduceNumberDecimals(value);
+      this.totalClaimed = value;
       ;
     });
     this.web3Service.getAmountOfTokens().then(value => {
-      this.amountOfTokens = this.web3Service.reduceNumberDecimals(value);
+      this.amountOfTokens = value;
     });
     this.web3Service.getRemainingTokens().then(value => {
-      this.remainingTokens = this.web3Service.reduceNumberDecimals(value);
+      this.remainingTokens = value;
     });
+  }
+
+  connect(){
+    this.web3ModalService.web3Modal();
   }
 }
 

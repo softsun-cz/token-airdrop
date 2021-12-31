@@ -21,15 +21,17 @@ export class Web3Service {
     this.maxUint256 = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
     //this.web3Instance = new Web3(window.ethereum && window.ethereum.networkVersion == Config.main.chainID ? window.ethereum : Config.main.network);
     this.web3Instance = new Web3(Config.main.network);
-    this.airdropToken = new this.web3Instance.eth.Contract( Config.main.airdropAbi,  Config.main.addressAirdrop);
     this.taxToken = new this.web3Instance.eth.Contract(Config.main.tokenTexAbi, Config.main.addressTokenTax);
     this.tokenDecimalsPromise = this.taxToken.methods.decimals().call();
     this.tokenDecimalsPromise.then((value: number) => {
       this.tokenDecimals = value;
     });
+
+    this.airdropToken = new this.web3Instance.eth.Contract( Config.main.airdropAbi,  Config.main.addressAirdrop);
   }
 
-  reduceNumberDecimals(number: number) : number{
+  private async reduceNumberDecimals(number: number) : Promise<number>{
+    await this.tokenDecimalsPromise;
     return number / (10 ** this.tokenDecimals);
   }
 
@@ -50,18 +52,24 @@ export class Web3Service {
    }
 
    async getAmountOfTokens() : Promise<number>{
-      await this.tokenDecimalsPromise;
-      return await this.airdropToken.methods.amountOfTokens().call();
+    return new Promise(async (resolve) => {
+      const ret = await this.airdropToken.methods.amountOfTokens().call();
+      resolve(this.reduceNumberDecimals(ret));
+    });
    }
 
    async getRemainingTokens() : Promise<number>{
-    await this.tokenDecimalsPromise;
-    return await this.airdropToken.methods.remainingTokens().call();
+    return new Promise(async (resolve) => {
+      const ret = await this.airdropToken.methods.remainingTokens().call();
+      resolve(this.reduceNumberDecimals(ret));
+    });
    }
 
    async getTotalClaimed() : Promise<number>{
-    await this.tokenDecimalsPromise;
-    return await this.airdropToken.methods.totalClaimed().call();
+    return new Promise(async (resolve) => {
+      const ret = await this.airdropToken.methods.totalClaimed().call();
+      resolve(this.reduceNumberDecimals(ret));
+    });
    }
 
    async getTokenAddress() : Promise<string>{

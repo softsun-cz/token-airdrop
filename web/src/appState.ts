@@ -1,4 +1,5 @@
 export class AppState {
+    public static walletConnected: boolean = false;
     public static mobileMenuVisible : boolean = false;
     private static gridClass: string | null = null;
     private static onlyStacked: boolean | null = null;

@@ -27,5 +27,9 @@
             <span *ngIf="totalClaimed == -1">Loading....</span>
             <span *ngIf="totalClaimed != -1">{{totalClaimed}}</span>
         </td> 
-    </tr> 
+    </tr>
 </table>
+<div class="connectButton"> 
+    <span *ngIf="walletConnected()">WALLET CONNECTED</span>
+    <button *ngIf="!walletConnected()" (click)="connect()">CONNECT TO WALLET</button>
+</div>

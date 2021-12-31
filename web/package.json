@@ -33,7 +33,8 @@
     "stream": "0.0.2",
     "stream-http": "^3.2.0",
     "tslib": "^2.2.0",
-    "walletconnect": "^1.6.6",
+    "@walletconnect/web3-provider": "^1.6.6",
+    "web3modal": "^1.9.4",
     "web3": "^1.6.1",
     "webpack": "^5.65.0",
     "zone.js": "~0.11.4"
