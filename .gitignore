@@ -10,6 +10,6 @@
 log_*.txt
 *.log
 .secret
-.apikey_bscscan
+.apikey_*
 yarn.lock
 package-lock.json
