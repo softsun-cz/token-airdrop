@@ -1,0 +1,124 @@
+
+
+<table>
+  <td colspan="2"><h1>Presale</h1></td>
+  <tr>
+    <th>
+      Presale contract address: 
+    </th><td>
+      <span><a href="{{presaleContractAddress() | addressLink}}" target="_blank">{{presaleContractAddress()}}</a></span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Deposited Count: 
+    </th><td>
+        <span *ngIf="presale().depositedCount == -1">Loading....</span>
+        <span *ngIf="presale().depositedCount != -1">{{presale().depositedCount | number}}</span>
+    </td> 
+  </tr>
+  <tr>
+      <th>
+        Claimed Count: 
+      </th><td>
+          <span *ngIf="presale().claimedCount == -1">Loading....</span>
+          <span *ngIf="presale().claimedCount != -1">{{presale().claimedCount | number}}</span>
+      </td> 
+  </tr>
+  <tr>
+    <th>
+      Token Price: 
+    </th><td>
+        <span *ngIf="presale().tokenPrice == -1 || this.presale().tokenTheir.symbol =='' || this.presale().tokenOur.symbol ==''">Loading....</span>
+        <span *ngIf="presale().tokenPrice != -1 && this.presale().tokenTheir.symbol != '' && this.presale().tokenOur.symbol != ''">{{presale().tokenPrice | number}} {{this.presale().tokenTheir.symbol}} / 1 {{this.presale().tokenOur.symbol}}</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Total Deposited: 
+    </th><td>
+        <span *ngIf="presale().totalDeposited == -1 || this.presale().tokenTheir.symbol ==''">Loading....</span>
+        <span *ngIf="presale().totalDeposited != -1 &&  this.presale().tokenTheir.symbol != ''">{{presale().totalDeposited | number}} {{this.presale().tokenTheir.symbol}}</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Total Claimed: 
+    </th><td>
+        <span *ngIf="presale().totalClaimed == -1 || this.presale().tokenOur.symbol ==''">Loading....</span>
+        <span *ngIf="presale().totalClaimed != -1 && this.presale().tokenOur.symbol != ''">{{presale().totalClaimed | number}} {{this.presale().tokenOur.symbol}}</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Start Time: 
+    </th><td>
+        <span *ngIf="presale().startTime == -1">Loading....</span>
+        <span *ngIf="presale().startTime != -1">{{presale().startTime * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Deposit TimeOut: 
+    </th><td>
+        <span *ngIf="presale().depositTimeOut == -1">Loading....</span>
+        <span *ngIf="presale().depositTimeOut != -1">{{presale().depositTimeOut * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Claim TimeOut: 
+    </th><td>
+        <span *ngIf="presale().claimTimeOut == -1">Loading....</span>
+        <span *ngIf="presale().claimTimeOut != -1">{{presale().claimTimeOut * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Remaining Tokens: 
+    </th><td>
+        <span *ngIf="presale().remainingTokens == -1 || this.presale().tokenOur.symbol ==''">Loading....</span>
+        <span *ngIf="presale().remainingTokens != -1 && this.presale().tokenOur.symbol != ''">{{presale().remainingTokens | number}} {{this.presale().tokenOur.symbol}}</span>
+    </td> 
+  </tr>
+  <tr>
+    <td colspan="2"><h2>Our Token</h2></td>
+  </tr>
+  <tr>
+      <th>
+          Token: 
+      </th><td>
+          <span *ngIf="ourToken() == ''">Loading....</span>
+          <span *ngIf="ourToken() != ''">{{ourToken()}}</span>
+      </td> 
+  </tr>
+  <tr>
+    <th>
+        Token address: 
+    </th><td>
+        <span *ngIf="presale().tokenOur.address == ''">Loading....</span>
+        <span *ngIf="presale().tokenOur.address != ''"><a href="{{presale().tokenOur.address | addressLink}}" target="_blank">{{presale().tokenOur.address}}</a></span>
+    </td> 
+  </tr>
+
+  
+  <tr>
+    <td colspan="2"><h2>Their Token</h2></td>
+  </tr>
+  <tr>
+      <th>
+          Token: 
+      </th><td>
+          <span *ngIf="theirToken() == ''">Loading....</span>
+          <span *ngIf="theirToken() != ''">{{theirToken()}}</span>
+      </td> 
+  </tr>
+  <tr>
+    <th>
+        Token address: 
+    </th><td>
+        <span *ngIf="presale().tokenTheir.address == ''">Loading....</span>
+        <span *ngIf="presale().tokenTheir.address != ''"><a href="{{presale().tokenTheir.address | addressLink}}" target="_blank">{{presale().tokenTheir.address}}</a></span>
+    </td> 
+</tr>
+</table>

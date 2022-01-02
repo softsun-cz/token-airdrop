@@ -42,6 +42,10 @@ export class HomepageComponent implements OnInit, OnDestroy {
     return AppState.tokenName + " (" + AppState.tokenSymbol + ")"
   }
 
+  tokenSymbol(): string{
+    return AppState.tokenSymbol;
+  }
+
   airdropTokenAddress() : string{
     return Config.main.addressAirdrop.toLowerCase();
   }
@@ -50,22 +54,14 @@ export class HomepageComponent implements OnInit, OnDestroy {
     return AppState.walletConnected();
   }
 
-  badChainId(): boolean{
-    return AppState.badChainId();
-  }
-
-  walletAddress(): string{
-    return AppState.selectedAddress == null ? "" : AppState.selectedAddress;
-  }
-
   tokenAddress(): string{
     return AppState.addressToken;
   }
 
-  airdropsCountString(): string | null{
+  airdropsTotal(): null | number{
     if(this.remainingTokens == -1 || this.amountOfTokens == -1 || this.airdropsCount == -1)
       return null;
-    return this.airdropsCount + " / " + ((this.remainingTokens  / this.amountOfTokens) + this.airdropsCount);
+    return ((this.remainingTokens  / this.amountOfTokens) + this.airdropsCount);
   }
 
   airdropTransctionHash: string | undefined;
@@ -98,10 +94,6 @@ export class HomepageComponent implements OnInit, OnDestroy {
     this.web3ModalService.getAirdropsCount().then(value => {
       this.airdropsCount = value;
     });
-  }
-
-  connect(){
-    this.web3ModalService.web3Modal();
   }
 }
 

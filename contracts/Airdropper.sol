@@ -11,12 +11,14 @@ contract Airdropper is Ownable {
     uint256 public totalClaimed;
     uint256 public amountOfTokens;
     uint256 public airdropsCount;
+    address burnAddress;
     mapping (address => bool) public addressReceived;
     ERC20 public token;
 
     constructor() {
         totalClaimed = 0;
         amountOfTokens = 1000 * 10**18;
+        burnAddress = 0x000000000000000000000000000000000000dEaD;
     }
 
     function airdrop() public {
@@ -28,7 +30,15 @@ contract Airdropper is Ownable {
     }
 
     function returnTokens() public onlyOwner {
-        require(token.transfer(owner(), remainingTokens()));
+        require(token.transfer(owner(), getRemainingTokens()));
+    }
+
+    function burnRemainingTokens() public onlyOwner {
+        require(token.transfer(burnAddress, getRemainingTokens()));
+    }
+
+    function getRemainingTokens() public view returns (uint256) {
+        return token.balanceOf(address(this));
     }
 
     function setTokenAddress(address _tokenAddress) public onlyOwner {
@@ -37,9 +47,5 @@ contract Airdropper is Ownable {
 
     function setTokenAmount(uint256 _amount) public onlyOwner {
         amountOfTokens = _amount;
-    }
-
-    function remainingTokens() public view returns (uint256) {
-        return token.balanceOf(address(this));
     }
 }

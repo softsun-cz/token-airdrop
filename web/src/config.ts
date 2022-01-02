@@ -24,10 +24,24 @@ export class Config {
             "function totalClaimed () view returns (uint)",
             "function token () view returns (uint)",
         ],
-        tokenTaxContractInterface: [] = [
+        tokenContractInterface: [] = [
             "function name () view returns (string)",
             "function symbol () view returns (string)",
             "function decimals () view returns (uint)",
-        ]
+        ],
+        addressPresale: '0x34c060D578b2cbb980A675F3a1BA77f8e7D187C5',
+        presaleContractInterface: [] = [
+            "function tokenOur () view returns (uint)",
+            "function tokenTheir () view returns (uint)",
+            "function claimedCount () view returns (uint)",
+            "function depositedCount () view returns (uint)",
+            "function tokenPrice () view returns (uint)",
+            "function totalDeposited () view returns (uint)",
+            "function totalClaimed () view returns (uint)",
+            "function startTime () view returns (uint)",
+            "function claimTimeOut () view returns (uint)",
+            "function depositTimeOut () view returns (uint)",
+            "function getRemainingTokens () view returns (uint)",
+        ],
     } 
 }

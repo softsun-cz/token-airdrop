@@ -8,6 +8,19 @@
     box-shadow: 0 0 10px #ccc;
     header{
         border-radius: 10px 10px 0 0;
+        font-size: 20px;
+        .menu{
+            float: right;
+            a{
+                margin-left: 10px;
+                &.active{text-decoration: underline;}
+            }
+        }
+        &:after{
+            content: "";
+            display: block;
+            clear: both;
+        }
     }
     footer{
         border-radius: 0 0 10px 10px;
@@ -24,5 +37,21 @@
     main{
         padding: 20px;
         min-height: calc(100vh - 144px);
+    }
+    .connectButton, .error{
+        text-align: center;
+        background: #ccc;
+        padding: 10px;
+        color: #fff;
+        font-weight: bold;
+        a{
+            color: #fff;
+            word-break: break-all;
+        }
+        button{
+            margin: 0 auto;
+            width: 400px;
+            max-width: 100%;
+        }
     }
 }

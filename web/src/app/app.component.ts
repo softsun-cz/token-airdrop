@@ -14,7 +14,7 @@ export class AppComponent {
   title = 'airdrop';
   actualYear: string = "";
   
-  constructor(private router: Router, private Web3ModalService: Web3ModalService, private titleService: Title){
+  constructor(private router: Router, private web3ModalService: Web3ModalService, private titleService: Title){
     this.actualYear = new Date().getFullYear().toString();
     this.titleService.setTitle(this.projectName());
   }
@@ -43,4 +43,21 @@ export class AppComponent {
   public toogleMobileMenuVisible(){
     AppState.mobileMenuVisible = !AppState.mobileMenuVisible;
   }
+  
+  walletConnected(): boolean{
+    return AppState.walletConnected();
+  }
+
+  walletAddress(): string{
+    return AppState.selectedAddress == null ? "" : AppState.selectedAddress;
+  }
+
+  connect(){
+    this.web3ModalService.web3Modal();
+  }
+
+  badChainId(): boolean{
+    return AppState.badChainId();
+  }
+
 }

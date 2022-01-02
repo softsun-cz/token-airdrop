@@ -1,9 +1,19 @@
 <header>
     <a href="./" routerLink="">{{projectName()}}</a>
+    <div class="menu">
+        <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="">Airdrop</a>
+        <a routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="presale">Presale</a>
+    </div>
 </header>
 <main>
+    <div *ngIf="badChainId()" class="error"> 
+        Bad network - please change
+    </div>
+    <div class="connectButton"> 
+        <span *ngIf="walletConnected()">WALLET CONNECTED: <a href="{{walletAddress() | addressLink}}" target="_blank">{{walletAddress()}}</a></span>
+        <button *ngIf="!walletConnected()" (click)="connect()">CONNECT TO WALLET</button>
+    </div>
     <router-outlet></router-outlet>
 </main>
 <footer>
-
 </footer>
