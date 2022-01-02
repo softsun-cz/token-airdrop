@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract TokenTax is ERC20, Ownable {
+contract Token is ERC20, Ownable {
     using SafeMath for uint256;
     uint BURN_FEE = 1;
     uint OWNER_FEE = 2;

@@ -6,5 +6,5 @@
 - Presale contract - otestovat
 - Otestovat, jestli jde v token contractu pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop, LP adresa - tu ziskat nejak pres router)
 - TokenTax contract - pridat likvidity tax (nejak pres router ziskat LP adresu)
-- TokenTax contract - pridat reflection tax (presune se vsem drzitelum) - nejak okopirovat odtud: 
+- TokenTax contract - pridat reflection tax (presune se vsem drzitelum) - nejak okopirovat odtud: https://github.com/reflectfinance/reflect-contracts/blob/main/contracts/REFLECT.sol
 - Airdop Telegram bot (mozna)
