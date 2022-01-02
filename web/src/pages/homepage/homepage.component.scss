@@ -1,14 +1,24 @@
 :host{
-    th{width: 240px;}
-    .connectButton{
+    .connectButton, .error{
         text-align: center;
         background: #ccc;
         padding: 10px;
         color: #fff;
+        font-weight: bold;
+        a{
+            color: #fff;
+            word-break: break-all;
+        }
         button{
             margin: 0 auto;
             width: 400px;
             max-width: 100%;
         }
+    }
+    td span{
+        word-break: break-all;
+    }
+    .error{
+        background: #FF7979;
     }
 }

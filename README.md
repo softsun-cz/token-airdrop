@@ -15,3 +15,20 @@
 - NPM 8.3.0
 - Web3.js v1.5.3
 - Yarn 1.22.17
+
+# After deploy and verify
+
+## Token contract:
+1. set tax exceptions addresses (for example airdrop contract, presale contract, LP address contract, owner wallet, devs wallet,...)
+
+## Airdrop contract:
+1. Send some tokens to this contract
+2. Set setTokenAmount (number of tokens in each airdrop)
+3. Set setTokenAddress (address of our token)
+
+## Presale contract:
+1. Send some tokens to this contract
+2. set devAddress (if other than owner)
+3. set tokenOur (our token address)
+4. set tokenTheir (for example BUSD address)
+5. set setTokenPrice

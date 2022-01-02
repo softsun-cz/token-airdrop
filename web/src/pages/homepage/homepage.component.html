@@ -1,7 +1,30 @@
 <table>
     <tr>
         <th>
-            Amount Of Tokens: 
+            Token: 
+        </th><td>
+            <span *ngIf="token() == ''">Loading....</span>
+            <span *ngIf="token() != ''">{{token()}}</span>
+        </td> 
+    </tr>
+    <tr>
+        <th>
+            Token address: 
+        </th><td>
+            <span *ngIf="tokenAddress() == ''">Loading....</span>
+            <span *ngIf="tokenAddress() != ''"><a href="{{tokenAddress() | addressLink}}" target="_blank">{{tokenAddress()}}</a></span>
+        </td> 
+    </tr>
+    <tr>
+        <th>
+            Airdrop contract address:
+        </th><td>
+            <span><a href="{{airdropTokenAddress() | addressLink}}" target="_blank">{{airdropTokenAddress()}}</a></span>
+        </td> 
+    </tr>
+    <tr>
+        <th>
+            Tokens in each airdrop: 
         </th><td>
             <span *ngIf="amountOfTokens == -1">Loading....</span>
             <span *ngIf="amountOfTokens != -1">{{amountOfTokens}}</span>
@@ -13,12 +36,13 @@
             <span *ngIf="remainingTokens == -1">Loading....</span>
             <span *ngIf="remainingTokens != -1">{{remainingTokens}}</span>
         </td> 
-    </tr><tr>
+    </tr>
+    <tr>
         <th>
-            Token address: 
+            Airdrops Count: 
         </th><td>
-            <span *ngIf="tokenAddress == null">Loading....</span>
-            <span *ngIf="tokenAddress != null">{{tokenAddress}}</span>
+            <span *ngIf="airdropsCountString() == null">Loading....</span>
+            <span *ngIf="airdropsCountString() != null">{{airdropsCountString()}}</span>
         </td> 
     </tr><tr>
         <th>
@@ -29,7 +53,19 @@
         </td> 
     </tr>
 </table>
+
+<div *ngIf="badChainId()" class="error"> 
+    Bad network - please change
+</div>
 <div class="connectButton"> 
-    <span *ngIf="walletConnected()">WALLET CONNECTED</span>
+    <span *ngIf="walletConnected()">WALLET CONNECTED: <a href="{{walletAddress() | addressLink}}" target="_blank">{{walletAddress()}}</a></span>
     <button *ngIf="!walletConnected()" (click)="connect()">CONNECT TO WALLET</button>
+    <div *ngIf="airdropRecieved() != null" >
+        <br />
+        <button *ngIf="!airdropRecieved()" (click)="airDropClick()">You can recieve airdrop</button>
+        <span *ngIf="airdropRecieved()">
+            You recieved airdrop YET
+            <span *ngIf="airdropTransctionHash"><br />Transaction ID: <a href="{{airdropTransctionHash | transactionLink}}" target="_blank">{{airdropTransctionHash}}</a></span>
+        </span>
+    </div>
 </div>

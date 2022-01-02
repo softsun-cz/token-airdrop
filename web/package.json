@@ -35,7 +35,7 @@
     "tslib": "^2.2.0",
     "@walletconnect/web3-provider": "^1.6.6",
     "web3modal": "^1.9.4",
-    "web3": "^1.6.1",
+    "ethers": "^5.5.1",
     "webpack": "^5.65.0",
     "zone.js": "~0.11.4"
   },

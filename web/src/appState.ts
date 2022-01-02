@@ -1,5 +1,18 @@
+import { Config } from "./config";
+
 export class AppState {
-    public static walletConnected: boolean = false;
+    public static tokenName: string = "";
+    public static tokenSymbol: string = "";
+    public static selectedAddress: string | null = null;
+    public static chainId: number | null = null;
+    public static airdropRecieved: boolean | null = null;
+    public static addressToken: string = "";
+    public static walletConnected(): boolean {
+        return AppState.selectedAddress != null;
+    }
+    public static badChainId(): boolean {
+        return AppState.selectedAddress != null && this.chainId != Config.main.chainID;
+    }
     public static mobileMenuVisible : boolean = false;
     private static gridClass: string | null = null;
     private static onlyStacked: boolean | null = null;
