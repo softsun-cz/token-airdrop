@@ -10,6 +10,7 @@ import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
   providedIn: 'root'
 })
 export class Web3ModalService {
+  disconnectProvider: any | null = null;
   web3Provider: Web3Provider | null = null
   signer: Signer | null = null
   airdropContract: Contract | null = null;
@@ -121,8 +122,9 @@ export class Web3ModalService {
     const web3ModalConnector = this.getWeb3ModalConnector();
     web3ModalConnector.connect().then(provider => {
       this.initializeProvider(provider);
-
       this.web3Provider = new providers.Web3Provider(provider)
+      this.disconnectProvider = provider;
+
       this.signer = this.web3Provider.getSigner()
       this.airdropContract = new ethers.Contract(Config.main.addressAirdrop, Config.main.airdropContractInterface, this.signer);
       let network : ethers.providers.Network;
@@ -146,6 +148,15 @@ export class Web3ModalService {
     });
   }
 
+  disconnect(){
+    if(this.disconnectProvider){
+      if(typeof this.disconnectProvider.disconnect == "function")
+        this.disconnectProvider.disconnect();
+      else if(typeof this.disconnectProvider._handleDisconnect == "function")
+        this.disconnectProvider._handleDisconnect();
+    }
+  }
+
   airdrop(): Promise<ethers.Transaction> {
     return this.airdropContract?.airdrop();
   }
@@ -163,9 +174,12 @@ export class Web3ModalService {
 
   private initializeProvider(provider: any){
     provider.on("accountsChanged", (accounts: string[]) => {
+      location.reload();
+      /*
       console.log("accountsChanged");
       console.log(accounts);
       AppState.selectedAddress = this.getWalletAddress(provider);
+      */
     });
     
     // Subscribe to chainId change
@@ -185,6 +199,7 @@ export class Web3ModalService {
       AppState.selectedAddress = null;
       AppState.chainId = null;
       AppState.airdropRecieved = null;
+      this.disconnectProvider = null;
       this.airdropContract = null
     });
   }

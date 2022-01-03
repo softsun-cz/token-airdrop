@@ -14,7 +14,7 @@
       Deposited Count: 
     </th><td>
         <span *ngIf="presale().depositedCount == -1">Loading....</span>
-        <span *ngIf="presale().depositedCount != -1">{{presale().depositedCount | number}}</span>
+        <span *ngIf="presale().depositedCount != -1">{{presale().depositedCount | numberLocale}}</span>
     </td> 
   </tr>
   <tr>
@@ -22,7 +22,7 @@
         Claimed Count: 
       </th><td>
           <span *ngIf="presale().claimedCount == -1">Loading....</span>
-          <span *ngIf="presale().claimedCount != -1">{{presale().claimedCount | number}}</span>
+          <span *ngIf="presale().claimedCount != -1">{{presale().claimedCount | numberLocale}}</span>
       </td> 
   </tr>
   <tr>
@@ -30,7 +30,16 @@
       Token Price: 
     </th><td>
         <span *ngIf="presale().tokenPrice == -1 || this.presale().tokenTheir.symbol =='' || this.presale().tokenOur.symbol ==''">Loading....</span>
-        <span *ngIf="presale().tokenPrice != -1 && this.presale().tokenTheir.symbol != '' && this.presale().tokenOur.symbol != ''">{{presale().tokenPrice | number}} {{this.presale().tokenTheir.symbol}} / 1 {{this.presale().tokenOur.symbol}}</span>
+        <span *ngIf="presale().tokenPrice != -1 && this.presale().tokenTheir.symbol != '' && this.presale().tokenOur.symbol != ''">
+          <span class="float">
+            <span class="float">{{presale().tokenPrice | numberLocale}} {{this.presale().tokenTheir.symbol}} /</span>
+            <span class="float">1 {{this.presale().tokenOur.symbol}}</span>
+          </span>
+          <span class="float">
+            <span class="float">({{(1 / presale().tokenPrice) | numberLocale}} {{this.presale().tokenOur.symbol}} /</span>
+            <span class="float">1 {{this.presale().tokenTheir.symbol}})</span>
+          </span>
+        </span>
     </td> 
   </tr>
   <tr>
@@ -38,7 +47,7 @@
       Total Deposited: 
     </th><td>
         <span *ngIf="presale().totalDeposited == -1 || this.presale().tokenTheir.symbol ==''">Loading....</span>
-        <span *ngIf="presale().totalDeposited != -1 &&  this.presale().tokenTheir.symbol != ''">{{presale().totalDeposited | number}} {{this.presale().tokenTheir.symbol}}</span>
+        <span *ngIf="presale().totalDeposited != -1 &&  this.presale().tokenTheir.symbol != ''">{{presale().totalDeposited | numberLocale}} {{this.presale().tokenTheir.symbol}}</span>
     </td> 
   </tr>
   <tr>
@@ -46,7 +55,7 @@
       Total Claimed: 
     </th><td>
         <span *ngIf="presale().totalClaimed == -1 || this.presale().tokenOur.symbol ==''">Loading....</span>
-        <span *ngIf="presale().totalClaimed != -1 && this.presale().tokenOur.symbol != ''">{{presale().totalClaimed | number}} {{this.presale().tokenOur.symbol}}</span>
+        <span *ngIf="presale().totalClaimed != -1 && this.presale().tokenOur.symbol != ''">{{presale().totalClaimed | numberLocale}} {{this.presale().tokenOur.symbol}}</span>
     </td> 
   </tr>
   <tr>
@@ -54,7 +63,7 @@
       Start Time: 
     </th><td>
         <span *ngIf="presale().startTime == -1">Loading....</span>
-        <span *ngIf="presale().startTime != -1">{{presale().startTime * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+        <span *ngIf="presale().startTime != -1">{{presale().startTime * 1000 | dateTimeLocale}}</span>
     </td> 
   </tr>
   <tr>
@@ -62,7 +71,7 @@
       Deposit TimeOut: 
     </th><td>
         <span *ngIf="presale().depositTimeOut == -1">Loading....</span>
-        <span *ngIf="presale().depositTimeOut != -1">{{presale().depositTimeOut * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+        <span *ngIf="presale().depositTimeOut != -1">{{presale().depositTimeOut * 1000 | dateTimeLocale}}</span>
     </td> 
   </tr>
   <tr>
@@ -70,7 +79,7 @@
       Claim TimeOut: 
     </th><td>
         <span *ngIf="presale().claimTimeOut == -1">Loading....</span>
-        <span *ngIf="presale().claimTimeOut != -1">{{presale().claimTimeOut * 1000 | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+        <span *ngIf="presale().claimTimeOut != -1">{{presale().claimTimeOut * 1000 | dateTimeLocale}}</span>
     </td> 
   </tr>
   <tr>
@@ -78,7 +87,7 @@
       Remaining Tokens: 
     </th><td>
         <span *ngIf="presale().remainingTokens == -1 || this.presale().tokenOur.symbol ==''">Loading....</span>
-        <span *ngIf="presale().remainingTokens != -1 && this.presale().tokenOur.symbol != ''">{{presale().remainingTokens | number}} {{this.presale().tokenOur.symbol}}</span>
+        <span *ngIf="presale().remainingTokens != -1 && this.presale().tokenOur.symbol != ''">{{presale().remainingTokens | numberLocale}} {{this.presale().tokenOur.symbol}}</span>
     </td> 
   </tr>
   <tr>

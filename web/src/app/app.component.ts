@@ -56,6 +56,10 @@ export class AppComponent {
     this.web3ModalService.web3Modal();
   }
 
+  disconnect(){
+    this.web3ModalService.disconnect();
+  }
+
   badChainId(): boolean{
     return AppState.badChainId();
   }

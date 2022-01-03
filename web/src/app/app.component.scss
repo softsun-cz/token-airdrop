@@ -53,5 +53,12 @@
             width: 400px;
             max-width: 100%;
         }
+        span{
+            display: block;
+            margin-bottom: 10px;
+        }
+    }
+    .error{
+        background: #FF7979;
     }
 }

@@ -11,6 +11,7 @@
     </div>
     <div class="connectButton"> 
         <span *ngIf="walletConnected()">WALLET CONNECTED: <a href="{{walletAddress() | addressLink}}" target="_blank">{{walletAddress()}}</a></span>
+        <button *ngIf="walletConnected()" (click)="disconnect()">DISCONNECT</button>
         <button *ngIf="!walletConnected()" (click)="connect()">CONNECT TO WALLET</button>
     </div>
     <router-outlet></router-outlet>

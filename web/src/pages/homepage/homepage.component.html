@@ -28,14 +28,14 @@
             Tokens in each airdrop: 
         </th><td>
             <span *ngIf="amountOfTokens == -1">Loading....</span>
-            <span *ngIf="amountOfTokens != -1">{{amountOfTokens | number}}</span>
+            <span *ngIf="amountOfTokens != -1">{{amountOfTokens | numberLocale}}</span>
         </td>
     </tr><tr>
         <th>
             Remaining Tokens: 
         </th><td>
             <span *ngIf="remainingTokens == -1">Loading....</span>
-            <span *ngIf="remainingTokens != -1">{{remainingTokens | number}}</span>
+            <span *ngIf="remainingTokens != -1">{{remainingTokens | numberLocale}}</span>
         </td> 
     </tr>
     <tr>
@@ -43,14 +43,14 @@
             Airdrops Count: 
         </th><td>
             <span *ngIf="airdropsTotal() == null">Loading....</span>
-            <span *ngIf="airdropsTotal() != null">{{this.airdropsCount | number}} / {{airdropsTotal() | number}}</span>
+            <span *ngIf="airdropsTotal() != null">{{this.airdropsCount | numberLocale}} / {{airdropsTotal() | numberLocale}}</span>
         </td> 
     </tr><tr>
         <th>
             Total Claimed: 
         </th><td>
             <span *ngIf="totalClaimed == -1">Loading....</span>
-            <span *ngIf="totalClaimed != -1">{{totalClaimed | number}}</span>
+            <span *ngIf="totalClaimed != -1">{{totalClaimed | numberLocale}}</span>
         </td> 
     </tr>
 </table>

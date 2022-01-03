@@ -1,5 +1,15 @@
 :host{
     td span{
-        word-break: break-all;
+        a{
+            word-break: break-all;
+        }
+        .float{
+            display: block;
+            float: left;
+        }
+        .nowrap{
+            white-space: nowrap;
+            word-break: normal;
+        }
     }
 }

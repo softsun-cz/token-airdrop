@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HomepageComponent } from 'src/pages/homepage/homepage.component';
 import { PresaleComponent } from 'src/pages/presale/presale.component';
 import { AddressLinkPipe } from 'src/pipe/addressLink.pipe';
+import { DateTimeLocalePipe } from 'src/pipe/dateTimeLocale.pipe';
+import { NumberLocalePipe } from 'src/pipe/numberLocale.pipe';
 import { TransactionLinkPipe } from 'src/pipe/transactionLink.pipe';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,7 +16,9 @@ import { AppComponent } from './app.component';
     HomepageComponent,
     PresaleComponent,
     TransactionLinkPipe,
-    AddressLinkPipe
+    AddressLinkPipe,
+    NumberLocalePipe,
+    DateTimeLocalePipe
    ],
   imports: [
     BrowserModule,
