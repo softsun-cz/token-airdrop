@@ -14,6 +14,7 @@ export class Web3ModalService {
   web3Provider: Web3Provider | null = null
   signer: Signer | null = null
   airdropContract: Contract | null = null;
+  presaleContract: Contract | null = null;
 
   notLoggedProvider: JsonRpcProvider
   airdropNotLoggedContract: Contract;
@@ -25,7 +26,9 @@ export class Web3ModalService {
   constructor() {
     this.notLoggedProvider = new JsonRpcProvider(Config.main.network);
     this.airdropNotLoggedContract = new ethers.Contract(Config.main.addressAirdrop, Config.main.airdropContractInterface, this.notLoggedProvider);
-
+    this.notLoggedProvider.getBlock(this.notLoggedProvider._lastBlockNumber).then(block => {
+      AppState.reduceActualTimestamp = (block.timestamp * 1000 - Date.now()) / 1000;
+    });
     this.tokenDecimalsPromise = new Promise(async (resolve) => {
       this.airdropNotLoggedContract.token().then(async (value: BigNumber) => {
         AppState.token.address = value.toHexString();
@@ -130,6 +133,7 @@ export class Web3ModalService {
       this.signer = this.web3Provider.getSigner();
       
       this.airdropContract = new ethers.Contract(Config.main.addressAirdrop, Config.main.airdropContractInterface, this.signer);
+      this.presaleContract = new ethers.Contract(Config.main.addressPresale, Config.main.presaleContractInterface, this.signer);
       let network : ethers.providers.Network;
       
       const networkPromise = this.web3Provider?.getNetwork().then( value => {
@@ -138,7 +142,7 @@ export class Web3ModalService {
 
       this.signer?.getAddress().then( async address => {
         await networkPromise;
-        AppState.selectedAddress = address;  
+        AppState.selectedAddress = address.toLowerCase();  
         AppState.chainId = network.chainId;
         if(AppState.chainId == Config.main.chainID){     
           this.airdropNotLoggedContract.addressReceived(AppState.selectedAddress).then((value: boolean) => {
@@ -250,5 +254,16 @@ export class Web3ModalService {
        const ret: BigNumber = await this.presaleNotLoggedContract.deposited(address);
        resolve(AppState.reduceTheirDecimals(ret));
     });
+  }
+
+  presaleDeposit(amount: number): Promise<ethers.Transaction> {
+    const b = BigInt(amount * (10 ** AppState.presale.tokenTheir.decimals));
+    const bn = BigNumber.from(b);
+    console.log("deposit(" + bn.toString() + ")");
+    return this.presaleContract?.deposit(bn);
+  }
+
+  presaleClaim(): Promise<ethers.Transaction> {
+    return this.presaleContract?.claim();
   }
 }

@@ -37,7 +37,8 @@
     "web3modal": "^1.9.4",
     "ethers": "^5.5.1",
     "webpack": "^5.65.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "ngx-countdown": "^13.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.1.1",

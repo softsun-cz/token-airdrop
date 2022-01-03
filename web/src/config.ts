@@ -44,6 +44,8 @@ export class Config {
             "function getRemainingTokens () view returns (uint)",
             "function claimed(address) view returns (uint)",
             "function deposited(address) view returns (uint)",
+            "function deposit(uint)",
+            "function claim()",
         ],
     } 
 }

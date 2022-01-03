@@ -10,7 +10,7 @@
     </tr>
     <tr>
         <th>
-            Token address: 
+            Token Address: 
         </th><td>
             <span *ngIf="tokenAddress() == ''"><app-loader></app-loader></span>
             <span *ngIf="tokenAddress() != ''"><a href="{{tokenAddress() | addressLink}}" target="_blank">{{tokenAddress()}}</a></span>
@@ -18,14 +18,14 @@
     </tr>
     <tr>
         <th>
-            Airdrop contract address:
+            Airdrop Contract Address:
         </th><td>
             <span><a href="{{airdropTokenAddress() | addressLink}}" target="_blank">{{airdropTokenAddress()}}</a></span>
         </td> 
     </tr>
     <tr>
         <th>
-            Tokens in each airdrop: 
+            Tokens In Each Airdrop: 
         </th><td>
             <span *ngIf="amountOfTokens == -1"><app-loader></app-loader></span>
             <span *ngIf="amountOfTokens != -1">{{amountOfTokens | numberLocale}} {{tokenSymbol()}}</span>

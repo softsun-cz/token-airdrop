@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CountdownModule } from 'ngx-countdown';
 import { LoaderComponent } from 'src/component/loader/loader.component';
 import { HomepageComponent } from 'src/pages/homepage/homepage.component';
 import { PresaleComponent } from 'src/pages/presale/presale.component';
@@ -24,7 +25,8 @@ import { AppComponent } from './app.component';
    ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CountdownModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

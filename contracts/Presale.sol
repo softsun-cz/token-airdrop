@@ -41,9 +41,11 @@ contract Presale is Ownable {
 
     function deposit(uint256 _amount) public {
         require(block.timestamp <= depositTimeOut);
+        require((totalDeposited.add(_amount)).mul(tokenPrice) <= remainingTokens());
         require(tokenTheir.transfer(address(devAddress), _amount));
-        // TODO: 90% of tokenTheir should go into liquidity (somehow thru router address), the rest should go to devAddress. Now all goes to devAddress.
-        deposited[msg.sender] = deposited[msg.sender].add(_amount);
+        // TODO: 90% of tokenTheir should go into liquidity (somehow thru router / factory address), the rest should go to devAddress. Now all goes to devAddress.
+        uint256 dep = deposited[msg.sender];
+        deposited[msg.sender] = dep.add(_amount);
         totalDeposited = totalDeposited.add(_amount);
     }
 

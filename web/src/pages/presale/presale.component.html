@@ -4,7 +4,7 @@
   <tr><td colspan="2"><h1>Presale</h1></td></tr>
   <tr>
     <th>
-      Presale contract address: 
+      Presale Contract Address: 
     </th><td>
       <span><a href="{{presaleContractAddress() | addressLink}}" target="_blank">{{presaleContractAddress()}}</a></span>
     </td> 
@@ -63,23 +63,32 @@
       Start Time: 
     </th><td>
         <span *ngIf="presale().startTime == -1"><app-loader></app-loader></span>
-        <span *ngIf="presale().startTime != -1">{{presale().startTime * 1000 | dateTimeLocale}}</span>
+        <span *ngIf="presale().startTime != -1">
+          <span *ngIf="timestampToTimeout(this.presale().startTime) > 0"><countdown [config]="timeOutConfig(this.presale().startTime)"></countdown> | </span>
+          {{presale().startTime * 1000 | dateTimeLocale}}
+        </span>
     </td> 
   </tr>
   <tr>
     <th>
-      Deposit TimeOut: 
+      Deposit Timeout: 
     </th><td>
         <span *ngIf="presale().depositTimeOut == -1"><app-loader></app-loader></span>
-        <span *ngIf="presale().depositTimeOut != -1">{{presale().depositTimeOut * 1000 | dateTimeLocale}}</span>
+        <span *ngIf="presale().depositTimeOut != -1">
+          <span *ngIf="timestampToTimeout(this.presale().depositTimeOut) > 0"><countdown [config]="timeOutConfig(this.presale().depositTimeOut)"></countdown> | </span>
+          {{presale().depositTimeOut * 1000 | dateTimeLocale}}
+        </span>
     </td> 
   </tr>
   <tr>
     <th>
-      Claim TimeOut: 
+      Claim Timeout: 
     </th><td>
         <span *ngIf="presale().claimTimeOut == -1"><app-loader></app-loader></span>
-        <span *ngIf="presale().claimTimeOut != -1">{{presale().claimTimeOut * 1000 | dateTimeLocale}}</span>
+        <span *ngIf="presale().claimTimeOut != -1">
+          <span *ngIf="timestampToTimeout(this.presale().claimTimeOut) > 0"><countdown [config]="timeOutConfig(this.presale().claimTimeOut)"></countdown> | </span>
+          {{presale().claimTimeOut * 1000 | dateTimeLocale}}
+        </span>
     </td> 
   </tr>
   <tr>
@@ -124,6 +133,23 @@
         </div>
     </td> 
   </tr>
+  <tr *ngIf="presale().tokenOur.isReady() && walletSigned()">
+    <th>
+      &nbsp;
+    </th>
+    <td>
+      <button (click)="claim()">
+        <span *ngIf="!claimLoading">Claim</span>
+        <app-loader *ngIf="claimLoading" class="center"></app-loader>
+      </button>
+      <div *ngIf="claimTransactionHash" class="result">
+        Transaction ID: <a href="{{claimTransactionHash | transactionLink}}" target="_blank">{{claimTransactionHash}}</a>
+      </div>
+      <div *ngIf="claimError != null" class="resultError">
+        {{claimError}}
+      </div>
+    </td> 
+  </tr>
   
   <tr>
     <td colspan="2"><h2>Their Token</h2></td>
@@ -156,6 +182,24 @@
       </button>
       <div *ngIf="checkDepositedResult != -1" class="result">
           {{checkDepositedResult}} {{this.presale().tokenTheir.symbol}}
+      </div>
+    </td> 
+  </tr>
+  <tr *ngIf="presale().tokenTheir.isReady() && walletSigned()">
+    <th>
+      Amount: 
+    </th>
+    <td class="check">
+      <input #amount [attr.disabled]="depositLoading ? 'disabled' : null" placeholder="Amount ({{this.presale().tokenTheir.symbol}})" /> 
+      <button (click)="deposit(amount.value)">
+        <span *ngIf="!depositLoading">Deposit</span>
+        <app-loader *ngIf="depositLoading" class="center"></app-loader>
+      </button>
+      <div *ngIf="depositTransactionHash" class="result">
+        Transaction ID: <a href="{{depositTransactionHash | transactionLink}}" target="_blank">{{depositTransactionHash}}</a>
+      </div>
+      <div *ngIf="depositError != null" class="resultError">
+        {{depositError}}
       </div>
     </td> 
   </tr>

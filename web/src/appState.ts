@@ -2,6 +2,11 @@ import { BigNumber } from "ethers";
 import { Config } from "./config";
 
 export class AppState {
+    public static selectedAddress: string | null = null;
+    public static chainId: number | null = null;
+    public static airdropRecieved: boolean | null = null;
+    public static reduceActualTimestamp: number = -1;
+     
     public static token : ITokenInterface = {
         address: "",
         name: "",
@@ -14,16 +19,17 @@ export class AppState {
             return Number(number.toBigInt()) / (10 ** this.decimals);
         }
     };
-    public static selectedAddress: string | null = null;
-    public static chainId: number | null = null;
-    public static airdropRecieved: boolean | null = null;
-    static tokenDecimals: number;
     public static walletConnected(): boolean {
         return AppState.selectedAddress != null;
     }
     public static badChainId(): boolean {
         return AppState.selectedAddress != null && this.chainId != Config.main.chainID;
     }
+    
+    public static walletSigned(): boolean{
+        return AppState.walletConnected() && !AppState.badChainId();
+    }
+
     public static mobileMenuVisible : boolean = false;
 
     public static getPresale() : IPresale{
