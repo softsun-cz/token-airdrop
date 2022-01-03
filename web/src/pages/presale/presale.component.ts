@@ -39,15 +39,29 @@ export class PresaleComponent implements OnInit {
     return AppState.selectedAddress == null ? "" : AppState.selectedAddress;
   }
 
+  checkClaimedResult: number = -1;
+  checkClaimedLoading: boolean = false;
   checkClaimed(address: string){
+    if(this.checkClaimedLoading)
+      return;
+    this.checkClaimedResult = -1;
+    this.checkClaimedLoading = true;
     this.web3ModalSevice.presaleClaimed(address).then(value => {
-      alert("Claimed: " + value + " "+ AppState.presale.tokenOur.symbol);
+      this.checkClaimedResult = value;
+      this.checkClaimedLoading = false;
     });
   }
 
+  checkDepositedResult: number = -1;
+  checkDepositedLoading: boolean = false;
   checkDeposited(address: string){
+    if(this.checkDepositedLoading)
+      return;
+    this.checkDepositedResult = -1;
+    this.checkDepositedLoading = true;
     this.web3ModalSevice.presaleDeposited(address).then(value => {
-      alert("Deposited: " + value + " "+ AppState.presale.tokenTheir.symbol);
+      this.checkDepositedResult = value;
+      this.checkDepositedLoading = false;
     });
   }
 }

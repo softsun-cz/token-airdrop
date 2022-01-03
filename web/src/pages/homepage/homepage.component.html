@@ -4,7 +4,7 @@
         <th>
             Token: 
         </th><td>
-            <span *ngIf="token() == ''">Loading....</span>
+            <span *ngIf="token() == ''"><app-loader></app-loader></span>
             <span *ngIf="token() != ''">{{token()}}</span>
         </td> 
     </tr>
@@ -12,7 +12,7 @@
         <th>
             Token address: 
         </th><td>
-            <span *ngIf="tokenAddress() == ''">Loading....</span>
+            <span *ngIf="tokenAddress() == ''"><app-loader></app-loader></span>
             <span *ngIf="tokenAddress() != ''"><a href="{{tokenAddress() | addressLink}}" target="_blank">{{tokenAddress()}}</a></span>
         </td> 
     </tr>
@@ -27,14 +27,14 @@
         <th>
             Tokens in each airdrop: 
         </th><td>
-            <span *ngIf="amountOfTokens == -1">Loading....</span>
+            <span *ngIf="amountOfTokens == -1"><app-loader></app-loader></span>
             <span *ngIf="amountOfTokens != -1">{{amountOfTokens | numberLocale}} {{tokenSymbol()}}</span>
         </td>
     </tr><tr>
         <th>
             Remaining Tokens: 
         </th><td>
-            <span *ngIf="remainingTokens == -1">Loading....</span>
+            <span *ngIf="remainingTokens == -1"><app-loader></app-loader></span>
             <span *ngIf="remainingTokens != -1">{{remainingTokens | numberLocale}} {{tokenSymbol()}}</span>
         </td> 
     </tr>
@@ -42,14 +42,14 @@
         <th>
             Airdrops Count: 
         </th><td>
-            <span *ngIf="airdropsTotal() == null">Loading....</span>
+            <span *ngIf="airdropsTotal() == null"><app-loader></app-loader></span>
             <span *ngIf="airdropsTotal() != null">{{this.airdropsCount | numberLocale}} / {{airdropsTotal() | numberLocale}}</span>
         </td> 
     </tr><tr>
         <th>
             Total Claimed: 
         </th><td>
-            <span *ngIf="totalClaimed == -1">Loading....</span>
+            <span *ngIf="totalClaimed == -1"><app-loader></app-loader></span>
             <span *ngIf="totalClaimed != -1">{{totalClaimed | numberLocale}} {{tokenSymbol()}}</span>
         </td> 
     </tr>

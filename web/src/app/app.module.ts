@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { LoaderComponent } from 'src/component/loader/loader.component';
 import { HomepageComponent } from 'src/pages/homepage/homepage.component';
 import { PresaleComponent } from 'src/pages/presale/presale.component';
 import { AddressLinkPipe } from 'src/pipe/addressLink.pipe';
@@ -15,6 +16,7 @@ import { AppComponent } from './app.component';
     AppComponent,
     HomepageComponent,
     PresaleComponent,
+    LoaderComponent,
     TransactionLinkPipe,
     AddressLinkPipe,
     NumberLocalePipe,

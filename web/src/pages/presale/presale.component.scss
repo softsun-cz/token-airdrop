@@ -1,18 +1,36 @@
 :host{
-    td span{
-        a{
-            word-break: break-all;
+    td {
+        app-loader{
+            font-size: 1.7px;
         }
-        .float{
-            display: block;
-            float: left;
+        span{
+            a{
+                word-break: break-all;
+            }
+            .float{
+                display: block;
+                float: left;
+            }
+            .nowrap{
+                white-space: nowrap;
+                word-break: normal;
+            }
         }
-        .nowrap{
-            white-space: nowrap;
-            word-break: normal;
+        &.check{
+            input{width: calc(100% - 105px); float: left; margin-right: 5px; }
+            button{width: 100px}
+            input, button{margin-bottom: 5px;}
         }
     }
     input{
         background: #fff;
+    }
+    .result{
+        border-radius: 10px;
+        padding: 5px;
+        color: #fff;
+        text-align: center;
+        background-color: #7BEE93;
+        font-weight: bold;
     }
 }

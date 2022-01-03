@@ -17,8 +17,13 @@
             max-width: 100%;
         }
     }
-    td span a{
-        word-break: break-all;
+    td {
+        app-loader{
+            font-size: 1.7px;
+        }
+        span a{
+            word-break: break-all;
+        }
     }
     .error{
         background: #FF7979;
