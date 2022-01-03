@@ -10,7 +10,7 @@ import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
   providedIn: 'root'
 })
 export class Web3ModalService {
-  disconnectProvider: any | null = null;
+  walletProvider: any | null = null;
   web3Provider: Web3Provider | null = null
   signer: Signer | null = null
   airdropContract: Contract | null = null;
@@ -20,7 +20,6 @@ export class Web3ModalService {
   taxTokenNotLoggedContract: Contract | null = null;
   presaleNotLoggedContract: Contract;
 
-  tokenDecimals: number = 0;
   tokenDecimalsPromise: Promise<boolean>;
 
   constructor() {
@@ -29,16 +28,16 @@ export class Web3ModalService {
 
     this.tokenDecimalsPromise = new Promise(async (resolve) => {
       this.airdropNotLoggedContract.token().then(async (value: BigNumber) => {
-        AppState.addressToken = value.toHexString();
-        this.taxTokenNotLoggedContract = new ethers.Contract( AppState.addressToken , Config.main.tokenContractInterface, this.notLoggedProvider);
+        AppState.token.address = value.toHexString();
+        this.taxTokenNotLoggedContract = new ethers.Contract( AppState.token.address , Config.main.tokenContractInterface, this.notLoggedProvider);
         this.taxTokenNotLoggedContract.name().then((value: string) => {
-          AppState.tokenName = value;
+          AppState.token.name = value;
         });
         this.taxTokenNotLoggedContract.symbol().then((value: string) => {
-          AppState.tokenSymbol = value;
+          AppState.token.symbol = value;
         });
         const decimals: BigNumber = await this.taxTokenNotLoggedContract.decimals();
-        this.tokenDecimals = decimals.toNumber();
+        AppState.token.decimals = decimals.toNumber();
         resolve(true);
       });
     });
@@ -55,11 +54,14 @@ export class Web3ModalService {
       const contract = new ethers.Contract( AppState.presale.tokenTheir.address, Config.main.tokenContractInterface, this.notLoggedProvider);
       contract.name().then((value: string) => { AppState.presale.tokenTheir.name = value; });
       contract.symbol().then((value: string) => { AppState.presale.tokenTheir.symbol = value; });
-      contract.decimals().then((value: BigNumber) => { 
-        AppState.presale.tokenTheir.decimals = value.toNumber(); 
-        this.presaleNotLoggedContract.tokenPrice().then((value: BigNumber) => { 
-          AppState.presale.tokenPrice = Number(value.toString()) / (10 ** this.tokenDecimals); 
-        });
+      const decimalsPromise =contract.decimals().then((value: BigNumber) => { AppState.presale.tokenTheir.decimals = value.toNumber(); });
+      this.presaleNotLoggedContract.tokenPrice().then(async (value: BigNumber) => { 
+        await decimalsPromise;
+        AppState.presale.tokenPrice = AppState.reduceTheirDecimals(value); 
+      });
+      this.presaleNotLoggedContract.totalDeposited().then(async (value: BigNumber) => { 
+        await decimalsPromise;
+        AppState.presale.totalDeposited = AppState.reduceTheirDecimals(value); 
       });
     });
     this.presaleNotLoggedContract.tokenOur().then((value: BigNumber) => {
@@ -67,17 +69,18 @@ export class Web3ModalService {
       const contract = new ethers.Contract( AppState.presale.tokenOur.address, Config.main.tokenContractInterface, this.notLoggedProvider);
       contract.name().then((value: string) => { AppState.presale.tokenOur.name = value; });
       contract.symbol().then((value: string) => { AppState.presale.tokenOur.symbol = value; });      
-      contract.decimals().then((value: BigNumber) => { 
-        AppState.presale.tokenOur.decimals = value.toNumber(); 
-        this.presaleNotLoggedContract.getRemainingTokens().then((value: BigNumber) => { 
-          AppState.presale.remainingTokens = Number(value.toString()) / (10 ** this.tokenDecimals); 
-        });
+      const decimalsPromise = contract.decimals().then((value: BigNumber) => { AppState.presale.tokenOur.decimals = value.toNumber(); });
+      this.presaleNotLoggedContract.getRemainingTokens().then(async (value: BigNumber) => { 
+        await decimalsPromise;
+        AppState.presale.remainingTokens =  AppState.reduceOurDecimals(value); 
+      });
+      this.presaleNotLoggedContract.totalClaimed().then(async (value: BigNumber) => { 
+        await decimalsPromise;
+        AppState.presale.totalClaimed = AppState.reduceOurDecimals(value); 
       });
     });
     this.presaleNotLoggedContract.claimedCount().then((value: BigNumber) => { AppState.presale.claimedCount = Number(value.toString()); });
-    this.presaleNotLoggedContract.depositedCount().then((value: BigNumber) => { AppState.presale.depositedCount = Number(value.toString()); });
-    this.presaleNotLoggedContract.totalDeposited().then((value: BigNumber) => { AppState.presale.totalDeposited = Number(value.toString()); });
-    this.presaleNotLoggedContract.totalClaimed().then((value: BigNumber) => { AppState.presale.totalClaimed = Number(value.toString()); });
+    this.presaleNotLoggedContract.depositedCount().then((value: BigNumber) => { AppState.presale.depositedCount = Number(value.toString()); });    
     this.presaleNotLoggedContract.startTime().then((value: BigNumber) => { AppState.presale.startTime = Number(value.toString()); });
     this.presaleNotLoggedContract.claimTimeOut().then((value: BigNumber) => { AppState.presale.claimTimeOut = Number(value.toString()); });
     this.presaleNotLoggedContract.depositTimeOut().then((value: BigNumber) => { AppState.presale.depositTimeOut = Number(value.toString()); });
@@ -85,7 +88,7 @@ export class Web3ModalService {
   
   private async reduceNumberDecimals(number: BigNumber) : Promise<number>{
     await this.tokenDecimalsPromise;
-    return Number(number.toBigInt()) / (10 ** this.tokenDecimals);
+    return AppState.token.reduceDecimals(number);
   }
 
 
@@ -122,10 +125,10 @@ export class Web3ModalService {
     const web3ModalConnector = this.getWeb3ModalConnector();
     web3ModalConnector.connect().then(provider => {
       this.initializeProvider(provider);
-      this.web3Provider = new providers.Web3Provider(provider)
-      this.disconnectProvider = provider;
-
-      this.signer = this.web3Provider.getSigner()
+      this.web3Provider = new providers.Web3Provider(provider);
+      this.walletProvider = provider;
+      this.signer = this.web3Provider.getSigner();
+      
       this.airdropContract = new ethers.Contract(Config.main.addressAirdrop, Config.main.airdropContractInterface, this.signer);
       let network : ethers.providers.Network;
       
@@ -149,37 +152,36 @@ export class Web3ModalService {
   }
 
   disconnect(){
-    if(this.disconnectProvider){
-      if(typeof this.disconnectProvider.disconnect == "function")
-        this.disconnectProvider.disconnect();
-      else if(typeof this.disconnectProvider._handleDisconnect == "function")
-        this.disconnectProvider._handleDisconnect();
+    if(this.walletProvider){
+      if(typeof this.walletProvider.disconnect == "function")
+        this.walletProvider.disconnect();
+      else if(typeof this.walletProvider._handleDisconnect == "function")
+        this.walletProvider._handleDisconnect();
     }
+  }
+
+  addToken(){
+    if(this.walletProvider)
+      this.walletProvider.request({
+        method: 'wallet_watchAsset',
+        params: {
+            type: 'ERC20',
+            options: {
+                address: AppState.token.address,
+                symbol: AppState.token.symbol,
+                decimals: AppState.token.decimals
+            }
+        }
+      });
   }
 
   airdrop(): Promise<ethers.Transaction> {
     return this.airdropContract?.airdrop();
   }
 
-
-  private getWalletAddress(provider: any) : string{
-    console.log(provider);
-    provider.enable()
-    if(provider.accounts && provider.accounts.length > 0)
-      return provider.accounts[0];
-    if(provider.selectedAddress)
-      return provider.selectedAddress;
-    return "UnknownAddress";
-  }
-
   private initializeProvider(provider: any){
     provider.on("accountsChanged", (accounts: string[]) => {
       location.reload();
-      /*
-      console.log("accountsChanged");
-      console.log(accounts);
-      AppState.selectedAddress = this.getWalletAddress(provider);
-      */
     });
     
     // Subscribe to chainId change
@@ -190,7 +192,6 @@ export class Web3ModalService {
     // Subscribe to provider connection
     provider.on("connect", (info: { chainId: number }) => {
       console.log("connect" + info.chainId);
-      AppState.selectedAddress = this.getWalletAddress(provider);
     });
     
     // Subscribe to provider disconnection
@@ -199,7 +200,7 @@ export class Web3ModalService {
       AppState.selectedAddress = null;
       AppState.chainId = null;
       AppState.airdropRecieved = null;
-      this.disconnectProvider = null;
+      this.walletProvider = null;
       this.airdropContract = null
     });
   }
@@ -237,6 +238,17 @@ export class Web3ModalService {
     });
    }
 
+   presaleClaimed(address: string) : Promise<number>{
+     return new Promise(async (resolve) => {
+        const ret: BigNumber = await this.presaleNotLoggedContract.claimed(address);
+        resolve(AppState.reduceOurDecimals(ret));
+     });
+   }
 
-
+   presaleDeposited(address: string) : Promise<number>{
+    return new Promise(async (resolve) => {
+       const ret: BigNumber = await this.presaleNotLoggedContract.deposited(address);
+       resolve(AppState.reduceTheirDecimals(ret));
+    });
+  }
 }

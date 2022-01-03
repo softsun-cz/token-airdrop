@@ -24,11 +24,11 @@ export class AppComponent {
   }
 
   public tokenName(): string{
-    return AppState.tokenName;
+    return AppState.token.name;
   }
 
   public tokenSYmbol(): string{
-    return AppState.tokenSymbol;
+    return AppState.token.symbol;
   }
 
   public goToHomepage(event: any){
@@ -58,6 +58,10 @@ export class AppComponent {
 
   disconnect(){
     this.web3ModalService.disconnect();
+  }
+
+  addToken(){
+    this.web3ModalService.addToken();
   }
 
   badChainId(): boolean{

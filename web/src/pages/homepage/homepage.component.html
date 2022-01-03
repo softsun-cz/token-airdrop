@@ -1,5 +1,5 @@
 <table>
-    <td colspan="2"><h1>Airdrop</h1></td>
+    <tr><td colspan="2"><h1>Airdrop</h1></td></tr>
     <tr>
         <th>
             Token: 
@@ -28,14 +28,14 @@
             Tokens in each airdrop: 
         </th><td>
             <span *ngIf="amountOfTokens == -1">Loading....</span>
-            <span *ngIf="amountOfTokens != -1">{{amountOfTokens | numberLocale}}</span>
+            <span *ngIf="amountOfTokens != -1">{{amountOfTokens | numberLocale}} {{tokenSymbol()}}</span>
         </td>
     </tr><tr>
         <th>
             Remaining Tokens: 
         </th><td>
             <span *ngIf="remainingTokens == -1">Loading....</span>
-            <span *ngIf="remainingTokens != -1">{{remainingTokens | numberLocale}}</span>
+            <span *ngIf="remainingTokens != -1">{{remainingTokens | numberLocale}} {{tokenSymbol()}}</span>
         </td> 
     </tr>
     <tr>
@@ -50,14 +50,14 @@
             Total Claimed: 
         </th><td>
             <span *ngIf="totalClaimed == -1">Loading....</span>
-            <span *ngIf="totalClaimed != -1">{{totalClaimed | numberLocale}}</span>
+            <span *ngIf="totalClaimed != -1">{{totalClaimed | numberLocale}} {{tokenSymbol()}}</span>
         </td> 
     </tr>
 </table>
 
 <div *ngIf="airdropRecieved() != null" class="connectButton"> 
-    <button *ngIf="!airdropRecieved()" (click)="airDropClick()">You can recieve airdrop</button>
-    <span *ngIf="airdropRecieved() && tokenSymbol() != ''">
+    <button *ngIf="isAirdropPossible()" (click)="airDropClick()">Get your free {{tokenSymbol()}} tokens</button>
+    <span *ngIf="airdropRecieved()">
         You have already received your {{tokenSymbol()}} tokens
         <span *ngIf="airdropTransctionHash"><br />Transaction ID: <a href="{{airdropTransctionHash | transactionLink}}" target="_blank">{{airdropTransctionHash}}</a></span>
     </span>

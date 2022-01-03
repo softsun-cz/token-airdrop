@@ -1,7 +1,7 @@
 
 
 <table>
-  <td colspan="2"><h1>Presale</h1></td>
+  <tr><td colspan="2"><h1>Presale</h1></td></tr>
   <tr>
     <th>
       Presale contract address: 
@@ -34,7 +34,7 @@
           <span class="float">
             <span class="float">{{presale().tokenPrice | numberLocale}} {{this.presale().tokenTheir.symbol}} /</span>
             <span class="float">1 {{this.presale().tokenOur.symbol}}</span>
-          </span>
+          </span><br />
           <span class="float">
             <span class="float">({{(1 / presale().tokenPrice) | numberLocale}} {{this.presale().tokenOur.symbol}} /</span>
             <span class="float">1 {{this.presale().tokenTheir.symbol}})</span>
@@ -109,7 +109,13 @@
         <span *ngIf="presale().tokenOur.address != ''"><a href="{{presale().tokenOur.address | addressLink}}" target="_blank">{{presale().tokenOur.address}}</a></span>
     </td> 
   </tr>
-
+  <tr *ngIf="presale().tokenOur.isReady()">
+    <th>
+        Claimed: 
+    </th><td>
+        <input #tokenOurAddress placeholder="Wallet address" value="{{walletAddress()}}" /> <button (click)="checkClaimed(tokenOurAddress.value)">Check</button>
+    </td> 
+  </tr>
   
   <tr>
     <td colspan="2"><h2>Their Token</h2></td>
@@ -129,5 +135,12 @@
         <span *ngIf="presale().tokenTheir.address == ''">Loading....</span>
         <span *ngIf="presale().tokenTheir.address != ''"><a href="{{presale().tokenTheir.address | addressLink}}" target="_blank">{{presale().tokenTheir.address}}</a></span>
     </td> 
-</tr>
+  </tr>
+  <tr *ngIf="presale().tokenOur.isReady()">
+    <th>
+      Deposited: 
+    </th><td>
+        <input #tokenTheirAddress placeholder="Wallet address" value="{{walletAddress()}}" /> <button (click)="checkDeposited(tokenTheirAddress.value)">Check</button>
+    </td> 
+  </tr>
 </table>

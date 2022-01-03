@@ -1,5 +1,7 @@
 :host{
     .connectButton, .error{
+        border-radius: 10px;
+        border: 1px solid #fff;
         text-align: center;
         background: #ccc;
         padding: 10px;
@@ -20,5 +22,8 @@
     }
     .error{
         background: #FF7979;
+    }
+    table{
+        background: transparent;
     }
 }

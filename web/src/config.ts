@@ -42,6 +42,8 @@ export class Config {
             "function claimTimeOut () view returns (uint)",
             "function depositTimeOut () view returns (uint)",
             "function getRemainingTokens () view returns (uint)",
+            "function claimed(address) view returns (uint)",
+            "function deposited(address) view returns (uint)",
         ],
     } 
 }

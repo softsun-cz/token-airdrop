@@ -2,10 +2,11 @@
     margin: 20px auto;
     width: 1250px;
     max-width: calc(100% - 40px);
-    background-color: #fff;
+    background-color: #F8F8F8;
     display: block;
     border-radius: 10px;
-    box-shadow: 0 0 10px #ccc;
+    border: 1px solid #fff;
+    box-shadow: 0 0 5px #ccc;
     header{
         border-radius: 10px 10px 0 0;
         font-size: 20px;
@@ -39,9 +40,11 @@
         min-height: calc(100vh - 144px);
     }
     .connectButton, .error{
+        border-radius: 10px;
+        border: 1px solid #fff;
+        padding: 5px;
         text-align: center;
         background: #ccc;
-        padding: 10px;
         color: #fff;
         font-weight: bold;
         a{
@@ -49,13 +52,14 @@
             word-break: break-all;
         }
         button{
-            margin: 0 auto;
+            margin: 5px;
             width: 400px;
-            max-width: 100%;
+            max-width: calc(100% - 10px);
+            display: inline-block
         }
         span{
             display: block;
-            margin-bottom: 10px;
+            padding: 5px;
         }
     }
     .error{

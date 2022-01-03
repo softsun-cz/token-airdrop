@@ -37,13 +37,13 @@ export class HomepageComponent implements OnInit, OnDestroy {
   }
 
   token(): string{
-    if(AppState.tokenName == "" || AppState.tokenSymbol == "")
+    if(!AppState.token.isReady())
       return "";
-    return AppState.tokenName + " (" + AppState.tokenSymbol + ")"
+    return AppState.token.name + " (" + AppState.token.symbol + ")"
   }
 
   tokenSymbol(): string{
-    return AppState.tokenSymbol;
+    return AppState.token.symbol;
   }
 
   airdropTokenAddress() : string{
@@ -55,7 +55,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
   }
 
   tokenAddress(): string{
-    return AppState.addressToken;
+    return AppState.token.address;
   }
 
   airdropsTotal(): null | number{
@@ -66,9 +66,15 @@ export class HomepageComponent implements OnInit, OnDestroy {
 
   airdropTransctionHash: string | undefined;
   airdropRecieved(): boolean | null{
-    if(AppState.badChainId())
+    if(AppState.badChainId() || this.tokenSymbol() == '')
       return null;
     return AppState.airdropRecieved;
+  }
+
+  isAirdropPossible(): boolean{
+    if(this.airdropRecieved() || this.airdropsTotal() == null || this.remainingTokens < this.amountOfTokens)
+      return false;
+    return true;
   }
   
   airDropClick(){
