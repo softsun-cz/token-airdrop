@@ -18,5 +18,5 @@ git status
 git add *
 git status
 git commit -m "$1"
-git push https://softsun-cz@github.com/softsun-cz/token-airdrop.git
+git push
 git status
