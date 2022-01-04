@@ -6,7 +6,6 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 contract Presale is Ownable {
-    using SafeMath for uint256;
     uint256 public depositedCount;
     uint256 public claimedCount;
     uint256 public tokenPrice;
