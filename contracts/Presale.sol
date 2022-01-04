@@ -14,6 +14,7 @@ contract Presale is Ownable {
     uint256 public startTime;
     uint256 public depositTimeOut;
     uint256 public claimTimeOut;
+    uint256 public devFeePercent;
     ERC20 public tokenOur;
     ERC20 public tokenTheir;
     address public devAddress;
