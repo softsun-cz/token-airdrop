@@ -61,7 +61,7 @@ contract Presale is Ownable {
     }
 
     function claim() public {
-        require(block.timestamp > depositTimeOut, "claim: Deposit time did not timed out yet.");
+        require(block.timestamp > depositTimeOut, "claim: Deposit period did not timed out yet");
         require(block.timestamp <= claimTimeOut, "claim: Claim period already timed out");
         if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
         uint256 amount = ((10**tokenTheir.decimals()) / tokenPrice) * tokenTheir.balanceOf(address(this));
@@ -76,17 +76,17 @@ contract Presale is Ownable {
     }
 
     function setTokenOurAddress(address _tokenAddress) public onlyOwner {
-        require(address(tokenOur) == zeroAddress);
+        require(address(tokenOur) == zeroAddress, "setTokenOurAddress: tokenOur can be set only once");
         tokenOur = ERC20(_tokenAddress);
     }
 
     function setTokenTheirAddress(address _tokenAddress) public onlyOwner {
-        require(address(tokenTheir) == zeroAddress);
+        require(address(tokenTheir) == zeroAddress, "setTokenTheirAddress: tokenTheir can be set only once");
         tokenTheir = ERC20(_tokenAddress);
     }
 
     function setTokenPrice(uint256 _price) public onlyOwner {
-        require(tokenPrice == 0);
+        require(tokenPrice == 0, "setTokenPrice: tokenPrice can be set only once");
         tokenPrice = _price;
     }
 
@@ -95,7 +95,8 @@ contract Presale is Ownable {
     }
 
     function createLiquidity() private { // the first person who runs claim() after depositTimeOut also creates liquidity
-        require(block.timestamp > depositTimeOut && !liquidityCreated);
+        require(block.timestamp > depositTimeOut, "createLiquidity: Deposit period did not timed out yet");
+        require(!liquidityCreated, "createLiquidity: Liquidity was created already before");
 
         // TODO:
         // - move remaining tokenTheir (stored in this contract address) to liquidity
@@ -112,7 +113,7 @@ contract Presale is Ownable {
     }
 
     function burnRemainingTokens() public { // to be fair anyone can start it after claimTimeout
-        require(block.timestamp > claimTimeOut);
+        require(block.timestamp > claimTimeOut, "burnRemainingTokens: Claim period did not timed out yet");
         require(tokenOur.transfer(burnAddress, getRemainingTokens()));
     }
 }
