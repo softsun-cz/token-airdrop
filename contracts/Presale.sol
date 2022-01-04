@@ -3,7 +3,6 @@
 pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 contract Presale is Ownable {
@@ -41,6 +40,7 @@ contract Presale is Ownable {
         startTime = block.timestamp;
         depositTimeOut = startTime + 1 days;
         claimTimeOut = depositTimeOut + 14 days;
+        devFeePercent = 50;
 
         // TODO: DELETE THIS AFTER TESTS ARE OVER!!!
         setTokenOurAddress(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
@@ -50,24 +50,24 @@ contract Presale is Ownable {
 
     function deposit(uint256 _amount) public {
         uint256 allowance = tokenTheir.allowance(msg.sender, address(this));
-        require(allowance >= _amount, "Check the token allowance");
-        require(block.timestamp <= depositTimeOut);
-        require((totalDeposited.add(_amount)).mul(tokenPrice) <= getRemainingTokens());
+        require(allowance >= _amount, "deposit: Allowance is too low");
+        require(block.timestamp <= depositTimeOut, "deposit: Deposit period already timed out");
+        require((totalDeposited + _amount) * tokenPrice <= getRemainingTokens(), "deposit: Not enough tokens in this contract");
         require(tokenTheir.transferFrom(msg.sender, address(this), _amount));
-        require(tokenTheir.transfer(address(devAddress), _amount.div(2))); // 50% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
-        deposited[msg.sender] = deposited[msg.sender].add(_amount);
-        totalDeposited = totalDeposited.add(_amount);
+        require(tokenTheir.transfer(address(devAddress), _amount / (1 / devFeePercent) * 100)); // 50% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
+        deposited[msg.sender] = deposited[msg.sender] + _amount;
+        totalDeposited = totalDeposited + _amount;
         emit eventDeposited(_amount);
     }
 
     function claim() public {
-        require(block.timestamp > depositTimeOut);
-        require(block.timestamp <= claimTimeOut);
+        require(block.timestamp > depositTimeOut, "claim: Deposit time did not timed out yet.");
+        require(block.timestamp <= claimTimeOut, "claim: Claim period already timed out");
         if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
-        uint256 amount = ((10**tokenTheir.decimals()).div(tokenPrice)).mul(tokenTheir.balanceOf(address(this)));
+        uint256 amount = ((10**tokenTheir.decimals()) / tokenPrice) * tokenTheir.balanceOf(address(this));
         require(tokenOur.transfer(msg.sender, amount));
-        claimed[msg.sender] = claimed[msg.sender].add(amount);
-        totalClaimed = totalClaimed.add(amount);
+        claimed[msg.sender] = claimed[msg.sender] + amount;
+        totalClaimed = totalClaimed + amount;
         emit eventClaimed(amount);
     }
 
