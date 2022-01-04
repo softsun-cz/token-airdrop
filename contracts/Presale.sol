@@ -23,6 +23,8 @@ contract Presale is Ownable {
     address zeroAddress;
     mapping (address => uint256) public deposited;
     mapping (address => uint256) public claimed;
+    event eventDeposited(uint256 amount);
+    event eventClaimed(uint256 amount);
     // address public routerAddress;
 
     constructor() {
@@ -40,13 +42,16 @@ contract Presale is Ownable {
     }
 
     function deposit(uint256 _amount) public {
+        uint256 allowance = tokenTheir.allowance(msg.sender, address(this));
+        require(allowance >= _amount, "Check the token allowance");
         require(block.timestamp <= depositTimeOut);
-        require((totalDeposited.add(_amount)).mul(tokenPrice) <= remainingTokens());
+        require((totalDeposited.add(_amount)).mul(tokenPrice) <= getRemainingTokens());
         require(tokenTheir.transfer(address(devAddress), _amount));
         // TODO: 90% of tokenTheir should go into liquidity (somehow thru router / factory address), the rest should go to devAddress. Now all goes to devAddress.
         uint256 dep = deposited[msg.sender];
         deposited[msg.sender] = dep.add(_amount);
         totalDeposited = totalDeposited.add(_amount);
+        emit eventDeposited(_amount);
     }
 
     function claim() public {
@@ -56,6 +61,7 @@ contract Presale is Ownable {
         require(tokenOur.transfer(msg.sender, amount));
         claimed[msg.sender] = claimed[msg.sender].add(amount);
         totalClaimed = totalClaimed.add(amount);
+        emit eventClaimed(amount);
     }
 
     function getRemainingTokens() public view returns (uint256) {

@@ -29,7 +29,7 @@ export class Config {
             "function symbol () view returns (string)",
             "function decimals () view returns (uint)",
         ],
-        addressPresale: '0x34c060D578b2cbb980A675F3a1BA77f8e7D187C5',
+        addressPresale: '0x726202bFDEFD136ACD6736B08c58C750515B32Ae',
         presaleContractInterface: [] = [
             "function tokenOur () view returns (uint)",
             "function tokenTheir () view returns (uint)",
