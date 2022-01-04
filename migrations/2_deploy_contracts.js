@@ -8,4 +8,6 @@ module.exports = async function(deployer) {
   // await deployer.deploy(Airdropper);
   // await Airdropper.deployed();
   await deployer.deploy(Presale);
+  //await Presale.deployed();
+  //await deployer.deploy(Pool);
 };

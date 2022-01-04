@@ -19,32 +19,33 @@ contract Presale is Ownable {
     ERC20 public tokenOur;
     ERC20 public tokenTheir;
     address public devAddress;
+    // address public routerAddress;
     address burnAddress;
     address zeroAddress;
     mapping (address => uint256) public deposited;
     mapping (address => uint256) public claimed;
     event eventDeposited(uint256 amount);
     event eventClaimed(uint256 amount);
-    // address public routerAddress;
+    bool liquidityCreated;
 
     constructor() {
         // routerAddress = 0x10ED43C718714eb63d5aA57B78B54704E256024E; // pancakeswap.finance (BSC Mainnet)
         // routerAddress = 0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3; // pancake.kiemtienonline360.com (BSC Testnet)
         // routerAddress = 0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff; // quickswap.exchange (Polygon Mainnet)
+        liquidityCreated = false;
         depositedCount = 0;
         claimedCount = 0;
         devAddress = owner();
         burnAddress = 0x000000000000000000000000000000000000dEaD;
         zeroAddress = 0x0000000000000000000000000000000000000000;
         startTime = block.timestamp;
-        depositTimeOut = startTime + 14 days;
+        depositTimeOut = startTime + 1 days;
         claimTimeOut = depositTimeOut + 14 days;
 
         // TODO: DELETE THIS AFTER TESTS ARE OVER!!!
-        setTokenOurAddress(0xad531a13b61e6caf50cacdceebebfa8e6f5cbc4d);
-        setTokenOutAddress(0x326c977e6efc84e512bb9c30f76e30c160ed06fb);
+        setTokenOurAddress(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
+        setTokenTheirAddress(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
         setTokenPrice(1000000000000000);
-
     }
 
     function deposit(uint256 _amount) public {
@@ -52,10 +53,9 @@ contract Presale is Ownable {
         require(allowance >= _amount, "Check the token allowance");
         require(block.timestamp <= depositTimeOut);
         require((totalDeposited.add(_amount)).mul(tokenPrice) <= getRemainingTokens());
-        require(tokenTheir.transferFrom(msg.sender, address(devAddress), _amount));
-        // TODO: 90% of tokenTheir should go into liquidity (somehow thru router / factory address), the rest should go to devAddress. Now all goes to devAddress.
-        uint256 dep = deposited[msg.sender];
-        deposited[msg.sender] = dep.add(_amount);
+        require(tokenTheir.transferFrom(msg.sender, address(this), _amount));
+        require(tokenTheir.transfer(address(devAddress), _amount.div(2))); // 50% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
+        deposited[msg.sender] = deposited[msg.sender].add(_amount);
         totalDeposited = totalDeposited.add(_amount);
         emit eventDeposited(_amount);
     }
@@ -63,6 +63,7 @@ contract Presale is Ownable {
     function claim() public {
         require(block.timestamp > depositTimeOut);
         require(block.timestamp <= claimTimeOut);
+        if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
         uint256 amount = ((10**tokenTheir.decimals()).div(tokenPrice)).mul(tokenTheir.balanceOf(address(this)));
         require(tokenOur.transfer(msg.sender, amount));
         claimed[msg.sender] = claimed[msg.sender].add(amount);
@@ -93,7 +94,24 @@ contract Presale is Ownable {
         devAddress = _devAddress;
     }
 
-    function burnRemainingTokens() public onlyOwner {
+    function createLiquidity() private { // the first person who runs claim() after depositTimeOut also creates liquidity
+        require(block.timestamp > depositTimeOut && !liquidityCreated);
+
+        // TODO:
+        // - move remaining tokenTheir (stored in this contract address) to liquidity
+        //   somehow using router / factory address with specified price
+        //   for example:
+        //   Amount of tokenTheir in this contract: 1 000 TOK
+        //   Amount of tokenOur in this contract: some huge number (bilions) of TOK2
+        //   Price of TOK2 = 0.001
+        //   Add to liquidity 1 000 TOK + 1 000 000 TOK2
+        //   After that burn remaining TOK2 in this contract, but reserve these 1 000 000 and number of tokens people can claim
+        //   (which means there will be 0 TOK2 after everyone will claim their tokens)
+
+        liquidityCreated = true;
+    }
+
+    function burnRemainingTokens() public { // to be fair anyone can start it after claimTimeout
         require(block.timestamp > claimTimeOut);
         require(tokenOur.transfer(burnAddress, getRemainingTokens()));
     }
