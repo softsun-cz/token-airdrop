@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ethers } from 'ethers';
 import { CountdownConfig } from 'ngx-countdown';
 import { AppState, IPresale } from 'src/appState';
 import { Config } from 'src/config';
@@ -42,7 +43,12 @@ export class PresaleComponent implements OnInit {
   }
 
   walletSigned(): boolean{
-    return AppState.walletSigned();
+    const ret = AppState.walletSigned();
+    if(!ret){
+      this.presaleApproved = null;
+      this.presaleApprovedWaiting = this.presaleApproveWaiting = false;
+    }
+    return ret;
   }
 
   checkClaimedResult: number = -1;
@@ -132,5 +138,43 @@ export class PresaleComponent implements OnInit {
         this.claimError = reject;
       this.claimLoading = false;
     })
+  }
+
+  presaleApprovedWaiting: boolean = false;
+  presaleApproved: boolean | null = null;
+  ispresaleApproved() : boolean | null{
+    if(this.presaleApproved == null && !this.presaleApprovedWaiting){
+      this.presaleApprovedWaiting = true;
+      AppState.presale.tokenTheir.isApproved(Config.main.addressPresale).then(value => {
+        this.presaleApproved = value;
+        this.presaleApprovedWaiting = false;
+        this.presaleApproveWaiting = false;
+      });
+    }
+    return this.presaleApproved;
+  }
+
+  presaleApproveWaiting: boolean = false;
+  presaleApprove(){
+    if(this.presaleApproveWaiting)
+      return;
+    this.presaleApproveWaiting = true;
+    AppState.presale.tokenTheir.approve(Config.main.addressPresale).then(value => {
+      console.log(value);
+      if(value == false) {
+        this.presaleApproved = value;
+        this.presaleApproveWaiting = false;
+      } else {
+        const t = value as ethers.Transaction;
+        if(t.hash){
+          this.depositTransactionHash = t.hash;
+          this.web3ModalSevice.notLoggedProvider.waitForTransaction(this.depositTransactionHash).then(value => {
+            this.presaleApprovedWaiting = false;
+            this.presaleApproved = true;
+            this.ispresaleApproved();
+          });
+        }
+      }
+    });
   }
 }

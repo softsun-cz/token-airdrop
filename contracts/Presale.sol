@@ -39,6 +39,12 @@ contract Presale is Ownable {
         startTime = block.timestamp;
         depositTimeOut = startTime + 14 days;
         claimTimeOut = depositTimeOut + 14 days;
+
+        // TODO: DELETE THIS AFTER TESTS ARE OVER!!!
+        setTokenOurAddress(0xad531a13b61e6caf50cacdceebebfa8e6f5cbc4d);
+        setTokenOutAddress(0x326c977e6efc84e512bb9c30f76e30c160ed06fb);
+        setTokenPrice(1000000000000000);
+
     }
 
     function deposit(uint256 _amount) public {
@@ -46,7 +52,7 @@ contract Presale is Ownable {
         require(allowance >= _amount, "Check the token allowance");
         require(block.timestamp <= depositTimeOut);
         require((totalDeposited.add(_amount)).mul(tokenPrice) <= getRemainingTokens());
-        require(tokenTheir.transfer(address(devAddress), _amount));
+        require(tokenTheir.transferFrom(msg.sender, address(devAddress), _amount));
         // TODO: 90% of tokenTheir should go into liquidity (somehow thru router / factory address), the rest should go to devAddress. Now all goes to devAddress.
         uint256 dep = deposited[msg.sender];
         deposited[msg.sender] = dep.add(_amount);

@@ -185,7 +185,7 @@
       </div>
     </td> 
   </tr>
-  <tr *ngIf="presale().tokenTheir.isReady() && walletSigned()">
+  <tr *ngIf="presale().tokenTheir.isReady() && walletSigned() && ispresaleApproved() == true">
     <th>
       Amount: 
     </th>
@@ -200,6 +200,20 @@
       </div>
       <div *ngIf="depositError != null" class="resultError">
         {{depositError}}
+      </div>
+    </td> 
+  </tr>
+  <tr *ngIf="presale().tokenTheir.isReady() && walletSigned() && ispresaleApproved() == false">
+    <th>
+      Approve Presale Contract: 
+    </th>
+    <td>
+      <button (click)="presaleApprove()">
+        <span *ngIf="!presaleApproveWaiting">Approve</span>
+        <app-loader *ngIf="presaleApproveWaiting" class="center"></app-loader>
+      </button>
+      <div *ngIf="depositTransactionHash" class="result">
+        Transaction ID: <a href="{{depositTransactionHash | transactionLink}}" target="_blank">{{depositTransactionHash}}</a>
       </div>
     </td> 
   </tr>

@@ -28,8 +28,10 @@ export class Config {
             "function name () view returns (string)",
             "function symbol () view returns (string)",
             "function decimals () view returns (uint)",
+            "function allowance (address, address) view returns (uint)",
+            "function approve (address, uint)",
         ],
-        addressPresale: '0x726202bFDEFD136ACD6736B08c58C750515B32Ae',
+        addressPresale: '0x0dd2C7f923BD101C8D014e0Ee17f8C131D2305AB',
         presaleContractInterface: [] = [
             "function tokenOur () view returns (uint)",
             "function tokenTheir () view returns (uint)",

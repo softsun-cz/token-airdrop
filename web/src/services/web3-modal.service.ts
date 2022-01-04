@@ -10,6 +10,7 @@ import { Web3Provider, JsonRpcProvider } from '@ethersproject/providers';
   providedIn: 'root'
 })
 export class Web3ModalService {
+  public static instance: Web3ModalService | null = null;
   walletProvider: any | null = null;
   web3Provider: Web3Provider | null = null
   signer: Signer | null = null
@@ -43,6 +44,7 @@ export class Web3ModalService {
         AppState.token.decimals = decimals.toNumber();
         resolve(true);
       });
+      Web3ModalService.instance = this;
     });
 
     this.presaleNotLoggedContract = new ethers.Contract(Config.main.addressPresale, Config.main.presaleContractInterface, this.notLoggedProvider);
