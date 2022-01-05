@@ -7,6 +7,7 @@
 - Web - otestovat presale
 - Web - pridat homepage (info o coinu, airdrop presunout z homepage na vlastni stranku)
 - Web - pridat Whitepaper
+- Presale contract - i kdyz uz vlozim neco do depositu, tak to neubira remainingTokens, protoze jeste nejsou claimnuty - je potreba pridat jiny indikator!
 - Presale contract - hazi chybu Fail with error 'deposit: Not enough tokens in this contract'
 - Presale contract - dodelat funkci createLiquidity - nejak pres router / factory address
 - Presale contract - otestovat
