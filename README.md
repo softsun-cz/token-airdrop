@@ -28,7 +28,16 @@
 
 ## Presale contract:
 1. Send some tokens to this contract
-2. set devAddress (if other than owner)
-3. set tokenOur (our token address)
-4. set tokenTheir (for example BUSD address)
-5. set setTokenPrice
+2. Set devAddress (if other than owner)
+3. Set tokenOur (our token address)
+4. Set tokenTheir (for example BUSD address)
+5. Set setTokenPrice
+
+## Web page:
+1. edit ./web/src/config.ts and paste your contract addresses
+2. cd ./web
+3. ./build.sh
+
+Note: 
+
+edit ./build.sh if you'd like to move the build to different web root

@@ -2,6 +2,7 @@
 - Web - pri pridavani coinu do MetaMasku chybi ikonky u our token i their token
 - Web - presale - pridat automatickou kalkulacku (bud pisu cenu v jedny mene nebo v druhy a ihned se to prepocitava
 - Web - presale - pridat kolik procent jde developerum a kolik do likvidity (likvidita se pocita 100 - devAddress)
+- Web - presale - u their token je sice kolik jsem vlozil XUSD, ale je potreba i zjistit, na kolik mam narok claimnout (je tam jen claimed)
 - Web - otestovat airdrop
 - Web - otestovat presale
 - Web - pridat homepage (info o coinu, airdrop presunout z homepage na vlastni stranku)
