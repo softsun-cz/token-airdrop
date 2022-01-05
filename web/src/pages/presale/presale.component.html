@@ -108,6 +108,7 @@
       </th><td>
           <span *ngIf="ourToken() == ''"><app-loader></app-loader></span>
           <span *ngIf="ourToken() != ''">{{ourToken()}}</span>
+          <app-add-token-to-wallet [token]=this.presale().tokenOur></app-add-token-to-wallet>
       </td> 
   </tr>
   <tr>
@@ -160,6 +161,7 @@
       </th><td>
           <span *ngIf="theirToken() == ''"><app-loader></app-loader></span>
           <span *ngIf="theirToken() != ''">{{theirToken()}}</span>
+          <app-add-token-to-wallet [token]=this.presale().tokenTheir></app-add-token-to-wallet>
       </td> 
   </tr>
   <tr>

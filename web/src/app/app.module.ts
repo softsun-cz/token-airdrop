@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CountdownModule } from 'ngx-countdown';
+import { AddTokenToWalletComponent } from 'src/component/add-token-to-wallet/add-token-to-wallet.component';
 import { LoaderComponent } from 'src/component/loader/loader.component';
 import { HomepageComponent } from 'src/pages/homepage/homepage.component';
 import { PresaleComponent } from 'src/pages/presale/presale.component';
@@ -18,6 +19,7 @@ import { AppComponent } from './app.component';
     HomepageComponent,
     PresaleComponent,
     LoaderComponent,
+    AddTokenToWalletComponent,
     TransactionLinkPipe,
     AddressLinkPipe,
     NumberLocalePipe,

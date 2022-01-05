@@ -166,21 +166,6 @@ export class Web3ModalService {
     }
   }
 
-  addToken(){
-    if(this.walletProvider)
-      this.walletProvider.request({
-        method: 'wallet_watchAsset',
-        params: {
-            type: 'ERC20',
-            options: {
-                address: AppState.token.address,
-                symbol: AppState.token.symbol,
-                decimals: AppState.token.decimals
-            }
-        }
-      });
-  }
-
   airdrop(): Promise<ethers.Transaction> {
     return this.airdropContract?.airdrop();
   }

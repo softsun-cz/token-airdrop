@@ -5,7 +5,10 @@
             Token: 
         </th><td>
             <span *ngIf="token() == ''"><app-loader></app-loader></span>
-            <span *ngIf="token() != ''">{{token()}}</span>
+            <span *ngIf="token() != ''">
+                {{token()}} 
+                <app-add-token-to-wallet [token]=tokenInstance()></app-add-token-to-wallet>
+            </span>
         </td> 
     </tr>
     <tr>

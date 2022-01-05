@@ -3,7 +3,7 @@ import { interval, Subscription } from 'rxjs';
 import { Config } from 'src/config';
 import { takeWhile } from 'rxjs/operators';
 import { Web3ModalService } from 'src/services/web3-modal.service';
-import { AppState } from 'src/appState';
+import { AppState, StateToken } from 'src/appState';
 import { ethers } from 'ethers';
 
 @Component({
@@ -34,6 +34,10 @@ export class HomepageComponent implements OnInit, OnDestroy {
     .subscribe(() => {
       this.loadData();
     });
+  }
+
+  tokenInstance(): StateToken{
+    return AppState.token;
   }
 
   token(): string{

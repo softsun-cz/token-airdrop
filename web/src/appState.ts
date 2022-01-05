@@ -55,7 +55,21 @@ export class StateToken {
             }
             resolve(ret);
         })
-    }
+    };
+    addToWallet(){
+        if(Web3ModalService.instance !== null && Web3ModalService.instance.walletProvider !== null)
+            Web3ModalService.instance.walletProvider.request({
+                method: 'wallet_watchAsset',
+                params: {
+                    type: 'ERC20',
+                    options: {
+                        address: this.address,
+                        symbol: this.symbol,
+                        decimals: this.decimals
+                    }
+                }
+            });
+      }
 }
 
 export interface IPresale {

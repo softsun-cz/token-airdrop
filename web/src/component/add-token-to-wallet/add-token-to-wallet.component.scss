@@ -1,0 +1,20 @@
+:host{
+    button{
+        position: relative;
+        display: inline-block;
+        width: 55px;
+        margin: -5px 0 -5px 10px;
+        padding: 1px 21px 3px 5px;
+        &::after{
+            content: "+";
+            display: inline-block;
+            position: absolute;
+            right: 5px;
+            top: 3px;
+            font-weight: bold;
+        }
+        img{
+            max-width: 100%;
+        }
+    }
+}
