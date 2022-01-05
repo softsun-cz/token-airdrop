@@ -1,8 +1,12 @@
+- Web - pridat moznost pridat celou sit - https://docs.avax.network/build/tutorials/smart-contracts/add-avalanche-to-metamask-programmatically/
+- Web - pridat moznost pridani i druheho tokenu jako ikonku do MetaMasku (Their Token) - ikonka lisky s pluskem vedle nazvu tokenu
+- Web - u pridani tokenu chybi ikonka
 - Web - otestovat airdrop
 - Web - pridat presale a otestovat
 - Web - pridat homepage
 - Web - pridat Whitepaper
-- Presale contract - pridat funkci, ze 90% pujde do likvidity a 10% do msg.sender (nase penezenka) - nejak pres router
+- Presale contract - deposit nefunguje, hlasi malou allowance
+- Presale contract - dodelat funkci createLiquidity - nejak pres router / factory address
 - Presale contract - otestovat
 - Otestovat, jestli jde v token contractu pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop, LP adresa - tu ziskat nejak pres router)
 - Token contract - pridat likvidity tax (nejak pres router ziskat LP adresu)

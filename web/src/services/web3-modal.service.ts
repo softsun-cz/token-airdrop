@@ -144,7 +144,7 @@ export class Web3ModalService {
 
       this.signer?.getAddress().then( async address => {
         await networkPromise;
-        AppState.selectedAddress = address.toLowerCase();  
+        AppState.selectedAddress = address;  
         AppState.chainId = network.chainId;
         if(AppState.chainId == Config.main.chainID){     
           this.airdropNotLoggedContract.addressReceived(AppState.selectedAddress).then((value: boolean) => {

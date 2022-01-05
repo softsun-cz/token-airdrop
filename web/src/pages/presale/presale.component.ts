@@ -23,7 +23,7 @@ export class PresaleComponent implements OnInit {
   }
 
   presaleContractAddress(): string{
-    return Config.main.addressPresale.toLowerCase();
+    return Config.main.addressPresale;
   }
 
   ourToken(): string{

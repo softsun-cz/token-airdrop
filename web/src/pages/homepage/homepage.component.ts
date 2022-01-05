@@ -47,7 +47,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
   }
 
   airdropTokenAddress() : string{
-    return Config.main.addressAirdrop.toLowerCase();
+    return Config.main.addressAirdrop;
   }
 
   walletConnected(): boolean{

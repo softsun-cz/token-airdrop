@@ -31,7 +31,7 @@ export class Config {
             "function allowance (address, address) view returns (uint)",
             "function approve (address, uint)",
         ],
-        addressPresale: '0x143D1f7349b06a1c9c4683ed4Cbc6E8dD9cd9633',
+        addressPresale: '0xf5E8D4333b4330C1A974D7d590EDa4130841205d',
         presaleContractInterface: [] = [
             "function tokenOur () view returns (uint)",
             "function tokenTheir () view returns (uint)",
