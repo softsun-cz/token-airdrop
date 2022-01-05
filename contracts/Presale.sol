@@ -53,15 +53,8 @@ contract Presale is Ownable {
         require(allowance >= _amount, "deposit: Allowance is too low");
         require(block.timestamp <= depositTimeOut, "deposit: Deposit period already timed out");
         require((totalDeposited + _amount) * tokenPrice <= getRemainingTokens(), "deposit: Not enough tokens in this contract");
-        // require(tokenTheir.transferFrom(msg.sender, address(devAddress), _amount * devFeePercent / 100); // devFeePercent% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
-        // to o radek vyse je asi cely spatne
-        // 1. transferuje se jen 50% castky, zbytek nikde
-        // 2. allowance je na address(this) a transfer je na address(devAddress)... asi to bude bud jen jedno nebo jen druhy
-        
         require(tokenTheir.transferFrom(msg.sender, address(this), _amount));
-        require(tokenTheir.transfer(address(devAddress), _amount * devFeePercent / 100);
-        
-        
+        require(tokenTheir.transfer(address(devAddress), _amount * devFeePercent / 100)); // devFeePercent% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
         deposited[msg.sender] = deposited[msg.sender] + _amount;
         totalDeposited = totalDeposited + _amount;
         emit eventDeposited(_amount);
