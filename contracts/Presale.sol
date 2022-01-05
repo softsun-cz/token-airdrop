@@ -52,7 +52,7 @@ contract Presale is Ownable {
         uint256 allowance = tokenTheir.allowance(msg.sender, address(this));
         require(allowance >= _amount, "deposit: Allowance is too low");
         require(block.timestamp <= depositTimeOut, "deposit: Deposit period already timed out");
-        require((totalDeposited + _amount) * tokenPrice <= getRemainingTokens(), "deposit: Not enough tokens in this contract");
+        require((totalDeposited + _amount) * tokenPrice / (10**tokenTheir.decimals()) <= getRemainingTokens(), "deposit: Not enough tokens in this contract");
         require(tokenTheir.transferFrom(msg.sender, address(this), _amount));
         require(tokenTheir.transfer(address(devAddress), _amount * devFeePercent / 100)); // devFeePercent% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
         deposited[msg.sender] = deposited[msg.sender] + _amount;
