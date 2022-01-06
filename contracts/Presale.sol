@@ -11,6 +11,7 @@ contract Presale is Ownable {
     uint256 public tokenPrice;
     uint256 public totalDeposited;
     uint256 public totalClaimed;
+    // uint256 public totalToClaim;
     uint256 public startTime;
     uint256 public depositTimeOut;
     uint256 public claimTimeOut;
@@ -46,6 +47,7 @@ contract Presale is Ownable {
         setTokenOurAddress(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
         setTokenTheirAddress(0xF42a4429F107bD120C5E42E069FDad0AC625F615);
         setTokenPrice(1000000000000000);
+        setDevWallet(0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41);
     }
 
     function deposit(uint256 _amount) public {
@@ -53,10 +55,12 @@ contract Presale is Ownable {
         require(allowance >= _amount, "deposit: Allowance is too low");
         require(block.timestamp <= depositTimeOut, "deposit: Deposit period already timed out");
         require((totalDeposited + _amount) * tokenPrice / (10**tokenTheir.decimals()) <= getRemainingTokens(), "deposit: Not enough tokens in this contract");
+        // require((totalDeposited + _amount) * tokenPrice / (10**tokenTheir.decimals()) <= getRemainingTokens() - totalToClaim, "deposit: Not enough tokens in this contract");        
         require(tokenTheir.transferFrom(msg.sender, address(this), _amount));
         require(tokenTheir.transfer(address(devAddress), _amount * devFeePercent / 100)); // devFeePercent% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
-        deposited[msg.sender] = deposited[msg.sender] + _amount;
-        totalDeposited = totalDeposited + _amount;
+        deposited[msg.sender] += _amount;
+        totalDeposited += _amount;
+        // totalToClaim = totalToClaim + (_amount * tokenPrice / (10**tokenOur.decimals()));
         emit eventDeposited(_amount);
     }
 
@@ -66,8 +70,9 @@ contract Presale is Ownable {
         if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
         uint256 amount = ((10**tokenTheir.decimals()) / tokenPrice) * tokenTheir.balanceOf(address(this));
         require(tokenOur.transfer(msg.sender, amount));
-        claimed[msg.sender] = claimed[msg.sender] + amount;
-        totalClaimed = totalClaimed + amount;
+        claimed[msg.sender] += amount;
+        totalClaimed += amount;
+        // totalToClaim -= amount;
         emit eventClaimed(amount);
     }
 
