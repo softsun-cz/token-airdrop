@@ -6,7 +6,7 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 
-contract Airdropper is Ownable, ReentrancyGuard {
+contract Airdrop is Ownable, ReentrancyGuard {
     uint256 public totalClaimed;
     uint256 public amountToClaim;
     uint256 public claimCount;
