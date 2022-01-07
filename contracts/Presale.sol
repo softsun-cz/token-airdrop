@@ -26,8 +26,14 @@ contract Presale is Ownable, ReentrancyGuard {
     mapping (address => uint256) public deposited;
     mapping (address => uint256) public claimed;
     mapping (address => uint256) public claimable;
-    event eventDeposited(uint256 amount);
-    event eventClaimed(uint256 amount);
+    event eventDeposited(address sender, uint256 amount);
+    event eventClaimed(address sender, uint256 amount);
+    event eventSetTokenOurAddress(address tokenAddress);
+    event eventSetTokenTheirAddress(address tokenAddress);
+    event eventSetTokenPrice(uint256 price);
+    event eventSetDevAddress(address devAddress);
+    event eventBurnRemainingTokens(uint256 amount);
+
     bool liquidityCreated = false;
 
     constructor() {
@@ -43,7 +49,7 @@ contract Presale is Ownable, ReentrancyGuard {
         setTokenOurAddress(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
         setTokenTheirAddress(0xF42a4429F107bD120C5E42E069FDad0AC625F615);
         setTokenPrice(1000000000000000);
-        setDevWallet(0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41);
+        setDevAddress(0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41);
     }
 
     function deposit(uint256 _amount) public nonReentrant {
@@ -58,7 +64,7 @@ contract Presale is Ownable, ReentrancyGuard {
         claimable[msg.sender] += toClaim;
         totalDeposited += _amount;
         totalClaimable += toClaim;
-        emit eventDeposited(_amount);
+        emit eventDeposited(msg.sender, _amount);
     }
 
     function claim() public nonReentrant {
@@ -71,7 +77,7 @@ contract Presale is Ownable, ReentrancyGuard {
         claimable[msg.sender] -= amount;
         totalClaimed += amount;
         totalClaimable -= amount;
-        emit eventClaimed(amount);
+        emit eventClaimed(msg.sender, amount);
     }
 
     function getRemainingTokens() public view returns (uint256) {
@@ -85,20 +91,24 @@ contract Presale is Ownable, ReentrancyGuard {
     function setTokenOurAddress(address _tokenAddress) public onlyOwner {
         require(address(tokenOur) == zeroAddress, "setTokenOurAddress: tokenOur can be set only once");
         tokenOur = ERC20(_tokenAddress);
+        emit eventSetTokenOurAddress(_tokenAddress);
     }
 
     function setTokenTheirAddress(address _tokenAddress) public onlyOwner {
         require(address(tokenTheir) == zeroAddress, "setTokenTheirAddress: tokenTheir can be set only once");
         tokenTheir = ERC20(_tokenAddress);
+        emit eventSetTokenTheirAddress(_tokenAddress);
     }
 
     function setTokenPrice(uint256 _price) public onlyOwner {
         require(tokenPrice == 0, "setTokenPrice: tokenPrice can be set only once");
         tokenPrice = _price;
+        emit eventSetTokenPrice(_price);
     }
 
-    function setDevWallet(address _devAddress) public onlyOwner {
+    function setDevAddress(address _devAddress) public onlyOwner {
         devAddress = _devAddress;
+        emit eventSetDevAddress(_devAddress);
     }
 
     function createLiquidity() private { // the first person who runs claim() after depositTimeOut also creates liquidity
@@ -121,6 +131,8 @@ contract Presale is Ownable, ReentrancyGuard {
 
     function burnRemainingTokens() public { // to be fair anyone can start it after claimTimeout
         require(block.timestamp > claimTimeOut, "burnRemainingTokens: Claim period did not timed out yet");
-        require(tokenOur.transfer(burnAddress, getRemainingTokens()));
+        uint256 remaining = getRemainingTokens();
+        require(tokenOur.transfer(burnAddress, remaining));
+        emit eventBurnRemainingTokens(remaining);
     }
 }

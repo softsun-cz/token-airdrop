@@ -13,6 +13,11 @@ contract Airdrop is Ownable, ReentrancyGuard {
     address burnAddress = 0x000000000000000000000000000000000000dEaD;
     mapping (address => bool) public addressReceived;
     ERC20 public token;
+    event eventClaimed(address sender, uint256 amount);
+    event eventBurnRemainingTokens(uint256 amount);
+    event eventSetAmountToClaim(uint256 amount);
+    event eventSetTokenAddress(address amount);
+    event eventReturnRemainingTokensToOwner(uint256 amount);
 
     function claim() public nonReentrant {
         require(!addressReceived[msg.sender]);
@@ -20,14 +25,19 @@ contract Airdrop is Ownable, ReentrancyGuard {
         addressReceived[msg.sender] = true;
         claimCount++;
         totalClaimed += amountToClaim;
+        emit eventClaimed(msg.sender, amountToClaim);
     }
 
     function returnRemainingTokensToOwner() public nonReentrant onlyOwner {
-        require(token.transfer(owner(), getRemainingTokens()));
+        uint256 remaining = getRemainingTokens();
+        require(token.transfer(owner(), remaining));
+        emit eventReturnRemainingTokensToOwner(remaining);
     }
 
     function burnRemainingTokens() public nonReentrant onlyOwner {
-        require(token.transfer(burnAddress, getRemainingTokens()));
+        uint256 remaining = getRemainingTokens();
+        require(token.transfer(burnAddress, remaining));
+        emit eventBurnRemainingTokens(remaining);
     }
 
     function getRemainingTokens() public view returns (uint256) {
@@ -36,9 +46,11 @@ contract Airdrop is Ownable, ReentrancyGuard {
 
     function setTokenAddress(address _tokenAddress) public onlyOwner {
         token = ERC20(_tokenAddress);
+        emit eventSetTokenAddress(_tokenAddress);
     }
 
     function setAmountToClaim(uint256 _amount) public onlyOwner {
         amountToClaim = _amount;
+        emit eventSetAmountToClaim(_amount);
     }
 }
