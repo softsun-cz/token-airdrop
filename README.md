@@ -23,7 +23,7 @@
 
 ## Airdrop contract:
 1. Send some tokens to this contract
-2. Set setTokenAmount (number of tokens in each airdrop)
+2. Set setAmountToClaim (number of tokens in each airdrop claim)
 3. Set setTokenAddress (address of our token)
 
 ## Presale contract:

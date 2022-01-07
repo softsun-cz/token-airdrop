@@ -1,18 +1,23 @@
+- Web - presale - pridat kolik procent jde developerum a kolik do likvidity (developeri = devFeePercent, likvidita = 100 - devFeePercent)
+- Web - presale - pridat adresu developeru (devAddress)
+- Web - presale - pridat adresu ownera (owner())
+- Web - presale - pridat totalClaimable (TAX)
+- Web - presale - pridat dotaz na claimable pro jakoukoliv adresu (TAX)
+- Web - presale - pridat automatickou kalkulacku (bud pisu cenu v jedny mene nebo v druhy a ihned se to prepocitava
 - Web - pridat moznost pridat celou sit - https://docs.avax.network/build/tutorials/smart-contracts/add-avalanche-to-metamask-programmatically/
 - Web - pri pridavani coinu do MetaMasku chybi ikonky u our token i their token
-- Web - presale - pridat automatickou kalkulacku (bud pisu cenu v jedny mene nebo v druhy a ihned se to prepocitava
-- Web - presale - pridat kolik procent jde developerum a kolik do likvidity (likvidita se pocita 100 - devAddress)
-- Web - presale - u their token je sice kolik jsem vlozil XUSD, ale je potreba i zjistit, na kolik mam narok claimnout (je tam jen claimed)
+- Web - airdrop - novy airdrop contract ma zmeneno:
+¨       - remainingTokens() -> getRemainingTokens()
+        - airdrop() -> claim()
+        - airdropCount -> claimCount
+        - amountOfTokens -> amountToClaim
 - Web - otestovat airdrop
 - Web - otestovat presale
 - Web - pridat homepage (info o coinu, airdrop presunout z homepage na vlastni stranku)
 - Web - pridat Whitepaper
-- Presale contract - i kdyz uz vlozim neco do depositu, tak to neubira remainingTokens, protoze jeste nejsou claimnuty - je potreba pridat jiny indikator!
-- Presale contract - hazi chybu Fail with error 'deposit: Not enough tokens in this contract'
 - Presale contract - dodelat funkci createLiquidity - nejak pres router / factory address
-- Presale contract - otestovat
 - Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop, LP adresa - tu ziskat nejak pres router)
 - Token contract - (mozna) pridat likvidity tax (nejak pres router ziskat LP adresu)
 - Token contract - (mozna) pridat reflection tax (presune se vsem drzitelum) - nejak okopirovat odtud: https://github.com/reflectfinance/reflect-contracts/blob/main/contracts/REFLECT.sol
 - v adresari NEW_CONTRACTS jsou 2 ruzne stake contracty, nejak dopsat
-- Airdop Telegram bot (mozna)
+- Airdrop Telegram bot (mozna)

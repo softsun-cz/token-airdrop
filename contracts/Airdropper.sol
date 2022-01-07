@@ -3,37 +3,30 @@
 pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 
-contract Airdropper is Ownable {
-    using SafeMath for uint256;
+contract Airdropper is Ownable, ReentrancyGuard {
     uint256 public totalClaimed;
-    uint256 public amountOfTokens;
-    uint256 public airdropsCount;
-    address burnAddress;
+    uint256 public amountToClaim;
+    uint256 public claimCount;
+    address burnAddress = 0x000000000000000000000000000000000000dEaD;
     mapping (address => bool) public addressReceived;
     ERC20 public token;
 
-    constructor() {
-        totalClaimed = 0;
-        amountOfTokens = 1000 * 10**18;
-        burnAddress = 0x000000000000000000000000000000000000dEaD;
-    }
-
-    function airdrop() public {
+    function claim() public nonReentrant {
         require(!addressReceived[msg.sender]);
-        require(token.transfer(msg.sender, amountOfTokens));
+        require(token.transfer(msg.sender, amountToClaim));
         addressReceived[msg.sender] = true;
-        airdropsCount++;
-        totalClaimed = totalClaimed.add(amountOfTokens);
+        claimCount++;
+        totalClaimed += amountToClaim;
     }
 
-    function returnTokens() public onlyOwner {
+    function returnRemainingTokensToOwner() public nonReentrant onlyOwner {
         require(token.transfer(owner(), getRemainingTokens()));
     }
 
-    function burnRemainingTokens() public onlyOwner {
+    function burnRemainingTokens() public nonReentrant onlyOwner {
         require(token.transfer(burnAddress, getRemainingTokens()));
     }
 
@@ -45,7 +38,7 @@ contract Airdropper is Ownable {
         token = ERC20(_tokenAddress);
     }
 
-    function setTokenAmount(uint256 _amount) public onlyOwner {
-        amountOfTokens = _amount;
+    function setAmountToClaim(uint256 _amount) public onlyOwner {
+        amountToClaim = _amount;
     }
 }
