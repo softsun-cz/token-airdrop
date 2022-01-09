@@ -13,7 +13,7 @@ export class Config {
         explorer: 'https://mumbai.polygonscan.com/', // Polygon (MATIC) - Testnet
         chainID: 80001,
        
-        addressAirdrop: '0x5fC943649f324456349233F43C16dBdfa6CF55D6',
+        addressAirdrop: '0xA36d81D829DFB0074c387E39B1e99A3E9892c2AE',
         airdropContractInterface: [] = [
             "function airdropsCount () view returns (uint)",
             //"event Transfer(address indexed from, address indexed to, uint amount)",
@@ -31,7 +31,7 @@ export class Config {
             "function allowance (address, address) view returns (uint)",
             "function approve (address, uint)",
         ],
-        addressPresale: '0x9198A144B4892EB800e95C3370048aB3b5B7aF6b',
+        addressPresale: '0xaf945B5F836474009A08142120c8Bd3044Af1BCA',
         presaleContractInterface: [] = [
             "function tokenOur () view returns (uint)",
             "function tokenTheir () view returns (uint)",

@@ -14,7 +14,7 @@ contract Pool is Ownable, ReentrancyGuard {
     }
 
     struct PoolInfo {
-        ERC20 token;           // Address of token contract.
+        ERC20 token;              // Address of token contract.
         uint256 lastRewardBlock;  // Last block number that Tokens distribution occurs.
         uint256 accTokenPerShare; // Accumulated tokens per share, times 10**12. See below.
     }
@@ -90,7 +90,7 @@ contract Pool is Ownable, ReentrancyGuard {
     // Withdraw LP tokens from MasterChef.
     function withdraw(uint256 _amount) public nonReentrant {
         UserInfo storage user = userInfo[msg.sender];
-        require(user.amount >= _amount, "withdraw: amount is too big");
+        require(user.amount >= _amount, 'withdraw: Amount is too big');
         updatePool();
         uint256 pending = user.amount * pool.accTokenPerShare / 10**12 - user.rewardDebt;
         if (pending > 0) {
@@ -123,6 +123,6 @@ contract Pool is Ownable, ReentrancyGuard {
         } else {
             transferSuccess = token.transfer(_to, _amount);
         }
-        require(transferSuccess, "safeTokenTransfer: transfer failed");
+        require(transferSuccess, 'safeTokenTransfer: transfer failed');
     }
 }

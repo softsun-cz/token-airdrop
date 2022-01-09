@@ -46,18 +46,18 @@ contract Presale is Ownable, ReentrancyGuard {
         devAddress = owner();
 
         // TODO: DELETE THIS AFTER TESTS ARE OVER!!!
-        setTokenOurAddress(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
-        setTokenTheirAddress(0xF42a4429F107bD120C5E42E069FDad0AC625F615);
-        setTokenPrice(1000000000000000);
-        setDevAddress(0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41);
+        tokenOur = ERC20(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
+        tokenTheir = ERC20(0xF42a4429F107bD120C5E42E069FDad0AC625F615);
+        tokenPrice = 1000000000000000;
+        devAddress = 0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41;
     }
 
     function deposit(uint256 _amount) public nonReentrant {
         uint256 allowance = tokenTheir.allowance(msg.sender, address(this));
-        require(allowance >= _amount, "deposit: Allowance is too low");
-        require(block.timestamp <= depositTimeOut, "deposit: Deposit period already timed out");
+        require(allowance >= _amount, 'deposit: Allowance is too low');
+        require(block.timestamp <= depositTimeOut, 'deposit: Deposit period already timed out');
         uint256 toClaim = (_amount * 10**tokenTheir.decimals()) / tokenPrice;
-        require(totalClaimable + toClaim <= getRemainableTokens(), "deposit: Not enough tokens in this contract");        
+        require(totalClaimable + toClaim <= getRemainableTokens(), 'deposit: Not enough tokens in this contract');
         require(tokenTheir.transferFrom(msg.sender, address(this), _amount));
         require(tokenTheir.transfer(address(devAddress), _amount * devFeePercent / 100)); // devFeePercent% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
         deposited[msg.sender] += _amount;
@@ -68,8 +68,8 @@ contract Presale is Ownable, ReentrancyGuard {
     }
 
     function claim() public nonReentrant {
-        require(block.timestamp > depositTimeOut, "claim: Deposit period did not timed out yet");
-        require(block.timestamp <= claimTimeOut, "claim: Claim period already timed out");
+        require(block.timestamp > depositTimeOut, 'claim: Deposit period did not timed out yet');
+        require(block.timestamp <= claimTimeOut, 'claim: Claim period already timed out');
         if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
         uint256 amount = claimable[msg.sender];
         require(tokenOur.transfer(msg.sender, amount));
@@ -89,19 +89,19 @@ contract Presale is Ownable, ReentrancyGuard {
     }
 
     function setTokenOurAddress(address _tokenAddress) public onlyOwner {
-        require(address(tokenOur) == zeroAddress, "setTokenOurAddress: tokenOur can be set only once");
+        require(address(tokenOur) == zeroAddress, 'setTokenOurAddress: tokenOur can be set only once');
         tokenOur = ERC20(_tokenAddress);
         emit eventSetTokenOurAddress(_tokenAddress);
     }
 
     function setTokenTheirAddress(address _tokenAddress) public onlyOwner {
-        require(address(tokenTheir) == zeroAddress, "setTokenTheirAddress: tokenTheir can be set only once");
+        require(address(tokenTheir) == zeroAddress, 'setTokenTheirAddress: tokenTheir can be set only once');
         tokenTheir = ERC20(_tokenAddress);
         emit eventSetTokenTheirAddress(_tokenAddress);
     }
 
     function setTokenPrice(uint256 _price) public onlyOwner {
-        require(tokenPrice == 0, "setTokenPrice: tokenPrice can be set only once");
+        require(tokenPrice == 0, 'setTokenPrice: tokenPrice can be set only once');
         tokenPrice = _price;
         emit eventSetTokenPrice(_price);
     }
@@ -112,8 +112,8 @@ contract Presale is Ownable, ReentrancyGuard {
     }
 
     function createLiquidity() private { // the first person who runs claim() after depositTimeOut also creates liquidity
-        require(block.timestamp > depositTimeOut, "createLiquidity: Deposit period did not timed out yet");
-        require(!liquidityCreated, "createLiquidity: Liquidity was created already before");
+        require(block.timestamp > depositTimeOut, 'createLiquidity: Deposit period did not timed out yet');
+        require(!liquidityCreated, 'createLiquidity: Liquidity was created already before');
 
         // TODO:
         // - move remaining tokenTheir (stored in this contract address) to liquidity
@@ -130,7 +130,7 @@ contract Presale is Ownable, ReentrancyGuard {
     }
 
     function burnRemainingTokens() public { // to be fair anyone can start it after claimTimeout
-        require(block.timestamp > claimTimeOut, "burnRemainingTokens: Claim period did not timed out yet");
+        require(block.timestamp > claimTimeOut, 'burnRemainingTokens: Claim period did not timed out yet');
         uint256 remaining = getRemainingTokens();
         require(tokenOur.transfer(burnAddress, remaining));
         emit eventBurnRemainingTokens(remaining);
