@@ -1,6 +1,5 @@
 - Web - presale - pridat kolik procent jde developerum a kolik do likvidity (developeri = devFeePercent, likvidita = 100 - devFeePercent)
 - Web - presale - pridat adresu developeru (devAddress)
-- Web - presale - pridat adresu ownera (owner())
 - Web - presale - pridat totalClaimable (TAX)
 - Web - presale - pridat dotaz na claimable pro jakoukoliv adresu (TAX)
 - Web - presale - pridat automatickou kalkulacku (bud pisu cenu v jedny mene nebo v druhy a ihned se to prepocitava
