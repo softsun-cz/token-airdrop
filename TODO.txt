@@ -13,12 +13,12 @@
         - amountOfTokens -> amountToClaim
 - Web - otestovat airdrop
 - Web - otestovat presale
-- Web - pridat Dice stranku (adresa tokenu, se kterym se hraje, jmeno tokenu, symbol tokenu, minimalni castka, maximalni castka, vlozit castku k vsazeni a hadane cislo 1 - 6) - dokumentace je tady: https://docs.chain.link/docs/intermediates-tutorial/
+- Web - pridat Dice stranku (adresa tokenu, se kterym se hraje, jmeno tokenu, symbol tokenu, minimalni castka, maximalni castka, zustatek uctu, feecko v procentech, vlozeni castky vkladu, vlozeni castky k vyberu, zadani sazky, hadani cisla 1 - 6) - dokumentace k random funkci je tady: https://docs.chain.link/docs/intermediates-tutorial/
 - Web - pridat Pool stranku
 - Web - pridat homepage (info o coinu, airdrop presunout z homepage na vlastni stranku)
 - Web - kdyz je vybrana spatna sit, tak tam je sice error, ale neni tam odkaz na zmenu site - pridat
 - Web - pridat Whitepaper
-- Dice contract - dodelat
+- Dice contract - dodelat, pridat moznost si prednabit ucet (aby se nemusela pokazde delat transakce)
 - Presale contract - dodelat funkci createLiquidity - nejak pres router / factory address
 - Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop, LP adresa - tu ziskat nejak pres router)
 - Token contract - (mozna) pridat likvidity tax (nejak pres router ziskat LP adresu)
