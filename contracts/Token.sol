@@ -3,7 +3,6 @@
 pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
-import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 contract Token is ERC20, Ownable {
@@ -31,15 +30,15 @@ contract Token is ERC20, Ownable {
             // TODO: now it's excluded only when sending TO such address - also make it FROM such address
             _transfer(_msgSender(), recipient, amount);
         } else {
-            uint burnAmount = amount.mul(BURN_FEE) / 100;
-            uint devAmount = amount.mul(DEV_FEE) / 100;
-            // uint liquidityAmount = amount.mul(LIQUIDITY_FEE) / 100;
+            uint burnAmount = amount * BURN_FEE / 100;
+            uint devAmount = amount * DEV_FEE / 100;
+            // uint liquidityAmount = amount * LIQUIDITY_FEE / 100;
             //TODO: REFLECTION FEE
             //TODO: LIQUIDITY FEE (somehow get LP pair contract from router contract address - send there liquidityAmount)
             _burn(_msgSender(), burnAmount);
             _transfer(_msgSender(), devAddress, devAmount);
-            _transfer(_msgSender(), recipient, amount.sub(burnAmount).sub(devAmount);
-            // .sub(liquidityAmount));
+            _transfer(_msgSender(), recipient, amount - burnAmount - devAmount);
+            // - liquidityAmount);
         }
         return true;
     }

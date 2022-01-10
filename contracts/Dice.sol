@@ -1,58 +1,73 @@
-pragma solidity 0.6.2;
+// SPDX-License-Identifier: MIT
 
-import "https://raw.githubusercontent.com/smartcontractkit/chainlink/develop/evm-contracts/src/v0.6/VRFConsumerBase.sol";
+pragma solidity ^0.8.0;
 
-contract Verifiable6SidedDiceRoll is VRFConsumerBase {
-    using SafeMath for uint;
+import '@chainlink/contracts/src/v0.8/VRFConsumerBase.sol';
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
+import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
+contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
     bytes32 internal keyHash;
-    uint256 internal fee;
+    ERC20 public token;
+    uint8 public feePercent;
+    uint256 minBet;
+    uint256 maxBet;
+    address public devAddress;
+    address zeroAddress = 0x0000000000000000000000000000000000000000;
+    event RequestRandomness(bytes32 indexed requestId, bytes32 keyHash, uint256 seed);
+    event RequestRandomnessFulfilled(bytes32 indexed requestId, uint256 randomness);
+    event eventSetTokenAddress(address tokenAddress);
+    event eventSetDevAddress(address devAddress);
 
-    event RequestRandomness(
-        bytes32 indexed requestId,
-        bytes32 keyHash,
-        uint256 seed
-    );
-
-    event RequestRandomnessFulfilled(
-        bytes32 indexed requestId,
-        uint256 randomness
-    );
-
-    /**
-     * @notice Constructor inherits VRFConsumerBase
-     * @dev Ropsten deployment params:
-     * @dev   _vrfCoordinator: 0xf720CF1B963e0e7bE9F58fd471EFa67e7bF00cfb
-     * @dev   _link:           0x20fE562d797A42Dcb3399062AE9546cd06f63280
-     */
-    constructor(address _vrfCoordinator, address _link)
-        VRFConsumerBase(_vrfCoordinator, _link) public
-    {
+    constructor(address _vrfCoordinator) VRFConsumerBase(_vrfCoordinator, _tokenAddress) public {
         vrfCoordinator = _vrfCoordinator;
-        LINK = LinkTokenInterface(_link);
         keyHash = 0xced103054e349b8dfb51352f0f8fa9b5d20dde3d06f9f43cb2b85bc64b238205; // hard-coded for Ropsten
-        fee = 10 ** 18; // 1 LINK hard-coded for Ropsten
+
+        //TODO: delete this after tests are over:
+        devAddress = 0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41;
+        token = ERC20(0xF42a4429F107bD120C5E42E069FDad0AC625F615); // XUSD
+        minBet = 1000000000000000000; // 1 XUSD
+        maxBet = 100000000000000000000; // 100 XUSD
+        feePercent = 3;
     }
 
-    /** 
-     * @notice Requests randomness from a user-provided seed
-     * @dev The user-provided seed is hashed with the current blockhash as an additional precaution.
-     * @dev   1. In case of block re-orgs, the revealed answers will not be re-used again.
-     * @dev   2. In case of predictable user-provided seeds, the seed is mixed with the less predictable blockhash.
-     * @dev This is only an example implementation and not necessarily suitable for mainnet.
-     * @dev You must review your implementation details with extreme care.
-     */
-    function rollDice(uint256 userProvidedSeed) public returns (bytes32 requestId) {
-        require(LINK.balanceOf(address(this)) > fee, "Not enough LINK - fill contract with faucet");
-        uint256 seed = uint256(keccak256(abi.encode(userProvidedSeed, blockhash(block.number)))); // Hash user seed and blockhash
-        bytes32 _requestId = requestRandomness(keyHash, fee, seed);
+    function rollDice(uint256 _bet, uint8 _guessNumber, uint256 _userProvidedSeed) public nonReentrant returns (bytes32 _requestId) {
+        require(_bet >= minBet, 'rollDice: Your bet has not reached the allowed minimum');
+        require(_bet <= maxBet, 'rollDice: Your bet has exceeded the allowed maximum');
+        require(token.balanceOf(address(this)) >= _bet * 6, 'rollDice: Not enough ballance in Dice contract');
+        uint256 seed = uint256(keccak256(abi.encode(_userProvidedSeed, blockhash(block.number)))); // Hash user seed and blockhash
+        bytes32 _requestId = requestRandomness(keyHash, _bet, seed);
         emit RequestRandomness(_requestId, keyHash, seed);
+        if (diceResult == guessNumber) token.transfer(msg.sender, _bet * (100 - feePercent) / 100);
+        token.transfer(devAddress, bet * feePercent / 100);
         return _requestId;
     }
 
-    function fulfillRandomness(bytes32 requestId, uint256 randomness) external override {
-        uint256 d6Result = randomness.mod(6).add(1);
+    function fulfillRandomness(bytes32 requestId, uint256 randomness) external override returns (uint256 result) {
+        uint256 diceResult = randomness % 6 + 1;
         emit RequestRandomnessFulfilled(requestId, randomness);
+        return diceResult;
     }
 
+    function setTokenAddress(address _tokenAddress) public onlyOwner {
+        require(address(token) == zeroAddress, 'setTokenAddress: token can be set only once');
+        token = ERC20(_tokenAddress);
+        emit eventSetTokenAddress(_tokenAddress);
+    }
+
+    function setDevAddress(address _devAddress) public onlyOwner {
+        devAddress = _devAddress;
+        emit eventSetDevAddress(_devAddress);
+    }
+
+    function setMinBet(uint256 _minBet) public onlyOwner {
+        minBet = _minBet;
+        emit eventSetMinBet(_minBet);
+    }
+
+    function setMinBet(uint256 _maxBet) public onlyOwner {
+        maxBet = _maxBet;
+        emit eventSetMaxBet(_maxBet);
+    }
 }
