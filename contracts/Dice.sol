@@ -15,6 +15,7 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
     uint256 maxBet;
     address public devAddress;
     address zeroAddress = 0x0000000000000000000000000000000000000000;
+    mapping (address => uint256) public balances;
     event RequestRandomness(bytes32 indexed requestId, bytes32 keyHash, uint256 seed);
     event RequestRandomnessFulfilled(bytes32 indexed requestId, uint256 randomness);
     event eventSetTokenAddress(address tokenAddress);
@@ -39,8 +40,10 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
         uint256 seed = uint256(keccak256(abi.encode(_userProvidedSeed, blockhash(block.number)))); // Hash user seed and blockhash
         bytes32 _requestId = requestRandomness(keyHash, _bet, seed);
         emit RequestRandomness(_requestId, keyHash, seed);
-        if (diceResult == guessNumber) token.transfer(msg.sender, _bet * (100 - feePercent) / 100);
-        token.transfer(devAddress, bet * feePercent / 100);
+        fee = _bet * feePercent / 100;
+        require(token.transfer(devAddress, fee)); // sends fee (3%) from bet to devWallet
+        if (diceResult == guessNumber) balances[msg.sender] += (_bet - fee) * 6;
+        else balances[msg.sender] -= _bet;
         return _requestId;
     }
 
@@ -48,6 +51,18 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
         uint256 diceResult = randomness % 6 + 1;
         emit RequestRandomnessFulfilled(requestId, randomness);
         return diceResult;
+    }
+
+    function deposit(uint256 _amount) public {
+        require(_amount <= token.balanceOf(msg.sender), 'deposit: You cannot deposit more than your wallet balance');
+        require(token.transferFrom(msg.sender, address(this), _amount));
+        balances[msg.sender] -= amount;
+    }
+
+    function withdraw(uint256 _amount) public {
+        require(_amount <= balances[msg.sender], 'withdraw: You cannot withdraw more than your balance');
+        require(token.transfer(msg.sender, _amount));
+        balances[msg.sender] -= amount;
     }
 
     function setTokenAddress(address _tokenAddress) public onlyOwner {
