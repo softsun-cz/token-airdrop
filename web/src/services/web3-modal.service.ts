@@ -99,11 +99,17 @@ export class Web3ModalService {
   public addNetwork(){
     this.walletProvider.request({
       method: 'wallet_addEthereumChain',
-      params: { 
+      params: [{ 
         chainId: Config.main.getHexChainId(), 
         rpcUrls: [Config.main.network],
-        blockExplorerUrls: [Config.main.explorer]
-      }
+        blockExplorerUrls: [Config.main.explorer],
+        chainName: Config.main.networkName,
+        "nativeCurrency": {
+          "name": AppState.token.name,
+          "symbol": AppState.token.symbol,
+          "decimals": AppState.token.decimals
+        },
+      }]
     }).then((success: any) => {
       console.log("ok add");
       console.log(success);
@@ -287,6 +293,12 @@ export class Web3ModalService {
       const ret: BigNumber = await this.presaleNotLoggedContract.claimed(address);
       resolve(ret.toNumber());
    });
+  }
+
+  airdropTimeout(){
+    this.airdropNotLoggedContract.timeOut().then((ret: BigNumber) => {
+      AppState.airDropTimeout = ret.toNumber();
+    });
   }
 
   presaleDevAddress(){

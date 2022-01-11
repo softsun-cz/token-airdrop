@@ -1,4 +1,5 @@
 import { BigNumber, Contract, ethers } from "ethers";
+import { CountdownConfig } from "ngx-countdown";
 import { Config } from "./config";
 import { Web3ModalService } from "./services/web3-modal.service";
 
@@ -98,6 +99,7 @@ export class AppState {
     public static selectedAddress: string | null = null;
     public static chainId: number | null = null;
     public static airdropRecieved: boolean | null = null;
+    public static airDropTimeout: number = -1;
     public static reduceActualTimestamp: number = -1;
      
     public static token : StateToken = new StateToken("/assets/token.png");
@@ -124,6 +126,29 @@ export class AppState {
 
     public static reduceOurDecimals(number: BigNumber) : number{
         return Number(number.toBigInt()) / (10 ** AppState.presale.tokenOur.decimals);
+    }
+
+    public static timestampToTimeout(timestamp: number) : number{
+        return timestamp - (Date.now() / 1000) + AppState.reduceActualTimestamp;
+    }
+
+    public static timeOutConfig(timestamp: number): CountdownConfig {
+    return {
+        leftTime: this.timestampToTimeout(timestamp),
+        format: 'dd:HH:mm:ss',
+        prettyText: (text) => {
+        let ret = "";
+        const sp = text.split(':');
+        const symbols = ["d","h","m","s"];
+        sp.forEach((val, idx) => {
+            if(idx == 0)
+            val = (Number(val) - 1).toLocaleString( undefined, {minimumIntegerDigits: 2})
+            if(ret != "" || val != "00")
+            ret += '<span class="item">' + val + '' + symbols[idx] + '</span>'
+        });
+        return ret;
+        }
+    };
     }
 
     public static presale : IPresale = {

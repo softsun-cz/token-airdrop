@@ -103,27 +103,13 @@ export class PresaleComponent implements OnInit {
   }
 
   timestampToTimeout(timestamp: number) : number{
-    return timestamp - (Date.now() / 1000) + AppState.reduceActualTimestamp;
+    return AppState.timestampToTimeout(timestamp);
   }
 
   timeOutConfig(timestamp: number): CountdownConfig {
-    return {
-      leftTime: this.timestampToTimeout(timestamp),
-      format: 'dd:HH:mm:ss',
-      prettyText: (text) => {
-        let ret = "";
-        const sp = text.split(':');
-        const symbols = ["d","h","m","s"];
-        sp.forEach((val, idx) => {
-          if(idx == 0)
-            val = (Number(val) - 1).toLocaleString( undefined, {minimumIntegerDigits: 2})
-          if(ret != "" || val != "00")
-            ret += '<span class="item">' + val + '' + symbols[idx] + '</span>'
-        });
-        return ret;
-      }
-    };
+    return AppState.timeOutConfig(timestamp);
   }
+  
   depositTransactionHash: string | undefined;
   depositError: string | null = null;
   depositLoading: boolean = false;

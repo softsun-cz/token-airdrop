@@ -8,7 +8,7 @@ export class Config {
         // network: 'https://rpc-mainnet.matic.quiknode.pro', // Polygon (MATIC) - Mainnet
         // explorer: 'https://polygonscan.com/', // Polygon (MATIC) - Mainnet
         // chainID: '137',
-       
+        networkName: "Polygon (MATIC) - Testnet",
         network: 'https://matic-mumbai.chainstacklabs.com', // Polygon (MATIC) - Testnet
         explorer: 'https://mumbai.polygonscan.com/', // Polygon (MATIC) - Testnet
         chainID: 80001,
@@ -25,6 +25,7 @@ export class Config {
             "function getRemainingTokens () view returns (uint)",
             "function totalClaimed () view returns (uint)",
             "function token () view returns (uint)",
+            "function timeOut () view returns (uint)",
         ],
         tokenContractInterface: [] = [
             "function name () view returns (string)",

@@ -5,6 +5,7 @@ import { takeWhile } from 'rxjs/operators';
 import { Web3ModalService } from 'src/services/web3-modal.service';
 import { AppState, StateToken } from 'src/appState';
 import { ethers } from 'ethers';
+import { CountdownConfig } from 'ngx-countdown';
 
 @Component({
   selector: 'app-airdrop',
@@ -29,6 +30,7 @@ export class AirdropComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.initialized = true;
+    this.web3ModalService.airdropTimeout();
     this.loadData();
     this.subscription = interval(Config.main.updateInterval * 1000)
     .pipe(takeWhile(() => this.initialized))
@@ -63,6 +65,10 @@ export class AirdropComponent implements OnInit, OnDestroy {
     return AppState.token.address;
   }
 
+  airdropTimeout(): number{
+    return AppState.airDropTimeout;
+  }
+
   airdropsTotal(): null | number{
     if(this.remainingTokens == -1 || this.amountOfTokens == -1 || this.airdropsCount == -1)
       return null;
@@ -89,6 +95,14 @@ export class AirdropComponent implements OnInit, OnDestroy {
     }, (error: any) => {
       //console.log(error);
     });
+  }
+
+  timestampToTimeout(timestamp: number) : number{
+    return AppState.timestampToTimeout(timestamp);
+  }
+
+  timeOutConfig(timestamp: number): CountdownConfig {
+    return AppState.timeOutConfig(timestamp);
   }
 
   private loadData(){

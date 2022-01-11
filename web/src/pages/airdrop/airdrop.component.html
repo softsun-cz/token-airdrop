@@ -1,6 +1,20 @@
 <table>
   <tr><td colspan="2"><h1>Airdrop</h1></td></tr>
   <tr>
+    <th>
+      End Time: 
+    </th><td>
+        <span *ngIf="airdropTimeout() == -1"><app-loader></app-loader></span>
+        <span *ngIf="airdropTimeout() == 0">
+            <span>Not started</span>
+        </span>
+        <span *ngIf="airdropTimeout() > 0">
+          <span *ngIf="timestampToTimeout(airdropTimeout()) > 0"><countdown [config]="timeOutConfig(airdropTimeout())"></countdown> | </span>
+          {{airdropTimeout() * 1000 | dateTimeLocale}}
+        </span>
+    </td> 
+  </tr>
+  <tr>
       <th>
           Token: 
       </th><td>
