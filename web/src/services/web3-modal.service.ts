@@ -96,6 +96,40 @@ export class Web3ModalService {
     return AppState.token.reduceDecimals(number);
   }
 
+  public addNetwork(){
+    this.walletProvider.request({
+      method: 'wallet_addEthereumChain',
+      params: { 
+        chainId: Config.main.getHexChainId(), 
+        rpcUrls: [Config.main.network],
+        blockExplorerUrls: [Config.main.explorer]
+      }
+    }).then((success: any) => {
+      console.log("ok add");
+      console.log(success);
+      this.switchNetwork();
+    }, (reject: any) =>{
+      console.log("error add");
+      console.log(reject);
+    });
+  }
+
+  public switchNetwork(){
+    this.walletProvider.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: Config.main.getHexChainId()}],
+    }).then((success: any) => {
+      console.log("ok switch");
+      console.log(success);
+    }, (reject: any) =>{
+      console.log("error switch");
+      console.log(reject);
+      if (reject.code === 4902) {
+        this.addNetwork();
+      }
+    });
+  }
+
 
   tryConnect(){
     const cahckedproviderJson = localStorage.getItem("WEB3_CONNECT_CACHED_PROVIDER");
@@ -167,7 +201,7 @@ export class Web3ModalService {
   }
 
   airdrop(): Promise<ethers.Transaction> {
-    return this.airdropContract?.airdrop();
+    return this.airdropContract?.claim();
   }
 
   private initializeProvider(provider: any){
@@ -202,14 +236,14 @@ export class Web3ModalService {
   
    async getAmountOfTokens() : Promise<number>{
     return new Promise(async (resolve) => {
-      const ret: BigNumber = await this.airdropNotLoggedContract.amountOfTokens();
+      const ret: BigNumber = await this.airdropNotLoggedContract.amountToClaim();
       resolve(this.reduceNumberDecimals(ret));
     });
    }
 
    async getRemainingTokens() : Promise<number>{
     return new Promise(async (resolve) => {
-      const ret: BigNumber  = await this.airdropNotLoggedContract.remainingTokens();
+      const ret: BigNumber  = await this.airdropNotLoggedContract.getRemainingTokens();
       resolve(this.reduceNumberDecimals(ret));
     });
    }
@@ -224,7 +258,7 @@ export class Web3ModalService {
    async getAirdropsCount() : Promise<number>
    {
     return new Promise(async (resolve) => {
-      const ret: BigNumber = await this.airdropNotLoggedContract.airdropsCount();
+      const ret: BigNumber = await this.airdropNotLoggedContract.claimCount();
       resolve(ret.toNumber());
     });
    }

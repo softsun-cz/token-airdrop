@@ -32,11 +32,11 @@
         <span *ngIf="presale().tokenPrice == -1 || this.presale().tokenTheir.symbol =='' || this.presale().tokenOur.symbol ==''"><app-loader></app-loader></span>
         <span *ngIf="presale().tokenPrice != -1 && this.presale().tokenTheir.symbol != '' && this.presale().tokenOur.symbol != ''">
           <span class="float">
-            <span class="float">{{presale().tokenPrice | numberLocale}} {{this.presale().tokenTheir.symbol}} /</span>
+            <span class="float">{{presale().tokenPrice | numberLocale}} {{this.presale().tokenTheir.symbol}} /&nbsp;</span>
             <span class="float">1 {{this.presale().tokenOur.symbol}}</span>
           </span><br />
           <span class="float">
-            <span class="float">({{(1 / presale().tokenPrice) | numberLocale}} {{this.presale().tokenOur.symbol}} /</span>
+            <span class="float">({{(1 / presale().tokenPrice) | numberLocale}} {{this.presale().tokenOur.symbol}} /&nbsp;</span>
             <span class="float">1 {{this.presale().tokenTheir.symbol}})</span>
           </span>
         </span>

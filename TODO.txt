@@ -3,10 +3,10 @@
 - Web - presale - pridat totalClaimable (TAX)
 - Web - presale - pridat dotaz na claimable pro jakoukoliv adresu (TAX)
 - Web - presale - pridat automatickou kalkulacku (bud pisu cenu v jedny mene nebo v druhy a ihned se to prepocitava
-- Web - pridat moznost pridat celou sit - https://docs.avax.network/build/tutorials/smart-contracts/add-avalanche-to-metamask-programmatically/
-- Web - pri pridavani coinu do MetaMasku chybi ikonky u our token i their token
-- Web - airdrop - pridat odpocitavadlo do konce airdropu, pripadne, ze contract jeste nebyl spusten (timeOut != 0)
-- Web - airdrop - novy airdrop contract ma zmeneno:
+✅ - Web - pridat moznost pridat celou sit - https://docs.avax.network/build/tutorials/smart-contracts/add-avalanche-to-metamask-programmatically/
+✅ - Web - pri pridavani coinu do MetaMasku chybi ikonky u our token i their token
+✅ - Web - airdrop - pridat odpocitavadlo do konce airdropu, pripadne, ze contract jeste nebyl spusten (timeOut != 0)
+✅ - Web - airdrop - novy airdrop contract ma zmeneno:
         - remainingTokens() -> getRemainingTokens()
         - airdrop() -> claim()
         - airdropCount -> claimCount
@@ -15,9 +15,9 @@
 - Web - otestovat presale
 - Web - pridat Dice stranku (adresa tokenu, se kterym se hraje, jmeno tokenu, symbol tokenu, minimalni castka, maximalni castka, zustatek uctu, feecko v procentech, vlozeni castky vkladu, vlozeni castky k vyberu, zadani sazky, hadani cisla 1 - 6) - dokumentace k random funkci je tady: https://docs.chain.link/docs/intermediates-tutorial/
 - Web - pridat Pool stranku
-- Web - pridat homepage (info o coinu, airdrop presunout z homepage na vlastni stranku)
-- Web - kdyz je vybrana spatna sit, tak tam je sice error, ale neni tam odkaz na zmenu site - pridat
-- Web - pridat Whitepaper
+✅ (jeste pridat to info, nevim co tam chces) - Web - pridat homepage (info o coinu, airdrop presunout z homepage na vlastni stranku)
+✅ - Web - kdyz je vybrana spatna sit, tak tam je sice error, ale neni tam odkaz na zmenu site - pridat
+✅ - Web - pridat Whitepaper
 - Dice contract - dodelat, pridat moznost si prednabit ucet (aby se nemusela pokazde delat transakce)
 - Presale contract - dodelat funkci createLiquidity - nejak pres router / factory address
 - Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop, LP adresa - tu ziskat nejak pres router)

@@ -40,6 +40,14 @@ export class AppComponent {
     return AppState.mobileMenuVisible;
   }
   
+  public addNetwork(){
+    this.web3ModalService.addNetwork();
+  }
+
+  public switchNetwork(){
+    this.web3ModalService.switchNetwork();
+  }
+
   public toogleMobileMenuVisible(){
     AppState.mobileMenuVisible = !AppState.mobileMenuVisible;
   }

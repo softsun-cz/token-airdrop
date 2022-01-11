@@ -7,8 +7,12 @@ export class StateToken {
     name: string = "";
     symbol: string = "";
     decimals: number = -1;
+    icon: string = "";
     private approvedAddreses: Array<string> = new Array<string>();
-    constructor(){}
+    constructor(icon: string = ""){
+        if(icon != "")
+            this.icon  = location.protocol + "//" + location.host + icon;
+    }
     private getContract(signed: boolean = true) : Contract | null{
         if(Web3ModalService.instance == null || Web3ModalService.instance.signer == null || !AppState.walletSigned())
             return null;
@@ -65,7 +69,8 @@ export class StateToken {
                     options: {
                         address: this.address,
                         symbol: this.symbol,
-                        decimals: this.decimals
+                        decimals: this.decimals,
+                        image: this.icon
                     }
                 }
             });
@@ -119,8 +124,8 @@ export class AppState {
     }
 
     public static presale : IPresale = {
-        tokenOur : new StateToken(), 
-        tokenTheir: new StateToken(), 
+        tokenOur : new StateToken("/assets/token.png"), 
+        tokenTheir: new StateToken("/assets/XUSD.png"), 
         depositedCount: -1,
         claimedCount: -1,
         tokenPrice: -1,

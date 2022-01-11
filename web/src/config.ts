@@ -12,15 +12,17 @@ export class Config {
         network: 'https://matic-mumbai.chainstacklabs.com', // Polygon (MATIC) - Testnet
         explorer: 'https://mumbai.polygonscan.com/', // Polygon (MATIC) - Testnet
         chainID: 80001,
-       
+        getHexChainId() : string{
+            return "0x" +Config.main.chainID.toString(16);
+        },       
         addressAirdrop: '0xA36d81D829DFB0074c387E39B1e99A3E9892c2AE',
         airdropContractInterface: [] = [
-            "function airdropsCount () view returns (uint)",
+            "function claimCount () view returns (uint)",
             //"event Transfer(address indexed from, address indexed to, uint amount)",
             "function addressReceived(address) view returns (bool)",
-            "function airdrop()",
-            "function amountOfTokens () view returns (uint)",
-            "function remainingTokens () view returns (uint)",
+            "function claim()",
+            "function amountToClaim () view returns (uint)",
+            "function getRemainingTokens () view returns (uint)",
             "function totalClaimed () view returns (uint)",
             "function token () view returns (uint)",
         ],
