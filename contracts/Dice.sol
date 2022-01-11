@@ -11,16 +11,23 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
     bytes32 internal keyHash;
     ERC20 public token;
     uint8 public feePercent;
-    uint256 minBet;
-    uint256 maxBet;
+    uint256 public minBet;
+    uint256 public maxBet;
+    uint256 public totalBalances;
+    uint256 public devBalance;
     address public devAddress;
     address zeroAddress = 0x0000000000000000000000000000000000000000;
     mapping (address => uint256) public balances;
     event RequestRandomness(bytes32 indexed requestId, bytes32 keyHash, uint256 seed);
     event RequestRandomnessFulfilled(bytes32 indexed requestId, uint256 randomness);
+    event eventDeposit(uint256 amount);
+    event eventWithdraw(uint256 amount);
+    event eventDevWithdraw(uint256 amount);
     event eventSetTokenAddress(address tokenAddress);
     event eventSetDevAddress(address devAddress);
-
+    event eventSetMinBet(uint256 minBet);
+    event eventSetMaxBet(uint256 maxBet);
+    
     constructor(address _vrfCoordinator) VRFConsumerBase(_vrfCoordinator, _tokenAddress) public {
         vrfCoordinator = _vrfCoordinator;
         keyHash = 0xced103054e349b8dfb51352f0f8fa9b5d20dde3d06f9f43cb2b85bc64b238205; // hard-coded for Ropsten
@@ -36,14 +43,20 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
     function rollDice(uint256 _bet, uint8 _guessNumber, uint256 _userProvidedSeed) public nonReentrant returns (bytes32 _requestId) {
         require(_bet >= minBet, 'rollDice: Your bet has not reached the allowed minimum');
         require(_bet <= maxBet, 'rollDice: Your bet has exceeded the allowed maximum');
-        require(token.balanceOf(address(this)) >= _bet * 6, 'rollDice: Not enough ballance in Dice contract');
+        require(getRealBalance() >= _bet * 6, 'rollDice: Not enough ballance in Dice contract');
         uint256 seed = uint256(keccak256(abi.encode(_userProvidedSeed, blockhash(block.number)))); // Hash user seed and blockhash
         bytes32 _requestId = requestRandomness(keyHash, _bet, seed);
         emit RequestRandomness(_requestId, keyHash, seed);
         fee = _bet * feePercent / 100;
-        require(token.transfer(devAddress, fee)); // sends fee (3%) from bet to devWallet
-        if (diceResult == guessNumber) balances[msg.sender] += (_bet - fee) * 6;
-        else balances[msg.sender] -= _bet;
+        devBalance += fee;
+        if (diceResult == guessNumber) {
+            uint256 win = (_bet - fee) * 6;
+            balances[msg.sender] += win;
+            totalBalances += win;
+        } else {
+            balances[msg.sender] -= _bet;
+            totalBalances -= _bet;
+        } 
         return _requestId;
     }
 
@@ -57,12 +70,25 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
         require(_amount <= token.balanceOf(msg.sender), 'deposit: You cannot deposit more than your wallet balance');
         require(token.transferFrom(msg.sender, address(this), _amount));
         balances[msg.sender] -= amount;
+        emit eventDeposit(_amount);
     }
 
     function withdraw(uint256 _amount) public {
         require(_amount <= balances[msg.sender], 'withdraw: You cannot withdraw more than your balance');
         require(token.transfer(msg.sender, _amount));
         balances[msg.sender] -= amount;
+        emit eventWithdraw(_amount);
+    }
+
+    function getRealBalance() public returns(uint256) {
+        return token.balanceOf(address(this));
+    }
+
+    function devWithdraw(uint256 _amount) public onlyOwner {
+        require(_amount <= devBalance, 'devWithdraw: You cannot withdraw more than devBalance');
+        require(token.transfer(devAddress, _amount));
+        devBalance -= _amount;
+        emit eventDevWithdraw(_amount);
     }
 
     function setTokenAddress(address _tokenAddress) public onlyOwner {
