@@ -88,7 +88,10 @@ export interface IPresale {
     startTime: number,
     depositTimeOut: number,
     claimTimeOut: number,
-    remainingTokens: number
+    remainingTokens: number,
+    totalClaimable: number,
+    devFeePercent: number;
+    devAddress: string
 }
 
 export class AppState {
@@ -97,7 +100,7 @@ export class AppState {
     public static airdropRecieved: boolean | null = null;
     public static reduceActualTimestamp: number = -1;
      
-    public static token : StateToken = new StateToken();
+    public static token : StateToken = new StateToken("/assets/token.png");
     public static walletConnected(): boolean {
         return AppState.selectedAddress != null;
     }
@@ -135,6 +138,9 @@ export class AppState {
         depositTimeOut: -1,
         claimTimeOut: -1,
         remainingTokens: -1,
+        devFeePercent: -1,
+        totalClaimable: -1,
+        devAddress: ""
     }
 }
 

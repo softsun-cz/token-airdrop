@@ -20,6 +20,45 @@
                     white-space: nowrap;
                     word-break: normal;
                 }
+                &.calc{
+                    text-align: center;
+                    display: flex;
+                    flex-flow: row;
+                    width: 100%;
+                    padding-top: 10px;
+                    align-items: center;
+                    .delimiter{
+                        font-size: 25px;
+                        font-weight: bold;
+                        padding: 0 10px;
+                        color: #1095C1;
+                    }
+                    .inputWrap{
+                        width: 200px;
+                        max-width: 40%;
+                        position: relative;
+                        input{
+                            padding-right: 75px;
+                            margin: 0;
+                            align-items: center;
+                            text-align: right;
+                        }
+                        span{
+                            position: absolute;
+                            pointer-events: none;
+                            right: 10px;
+                            top:50%;
+                            transform: translate(0, -50%);
+                            padding: 5px 0;
+                            width: 60px;
+                            text-align: center;
+                            border-radius: 5px;
+                            background: #1095C1;
+                            color: #fff;
+                            font-weight: bold;
+                        }
+                    }
+                }
             }
             &.check{
                 input{width: calc(100% - 105px); float: left; margin-right: 5px; }

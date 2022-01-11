@@ -11,6 +11,38 @@
   </tr>
   <tr>
     <th>
+      Dev Address: 
+    </th><td>
+        <span *ngIf="presale().devAddress  == ''"><app-loader></app-loader></span>
+        <span *ngIf="presale().devAddress  != ''"><a href="{{presale().devAddress | addressLink}}" target="_blank">{{presale().devAddress}}</a></span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Dev Fee Percent: 
+    </th><td>
+        <span *ngIf="presale().devFeePercent  == -1"><app-loader></app-loader></span>
+        <span *ngIf="presale().devFeePercent  != -1">{{presale().devFeePercent}}%</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Liquidity: 
+    </th><td>
+        <span *ngIf="presale().devFeePercent  == -1"><app-loader></app-loader></span>
+        <span *ngIf="presale().devFeePercent  != -1">{{100 - presale().devFeePercent}}%</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Total Claimable: 
+    </th><td>
+        <span *ngIf="presale().totalClaimable  == -1 || this.presale().tokenOur.symbol ==''"><app-loader></app-loader></span>
+        <span *ngIf="presale().totalClaimable  != -1 && this.presale().tokenOur.symbol != ''">{{presale().totalClaimable  | numberLocale}} {{this.presale().tokenOur.symbol}}</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
       Deposited Count: 
     </th><td>
         <span *ngIf="presale().depositedCount == -1"><app-loader></app-loader></span>
@@ -40,6 +72,17 @@
             <span class="float">1 {{this.presale().tokenTheir.symbol}})</span>
           </span>
         </span>
+        <span class="calc"  *ngIf="presale().tokenPrice != -1 && this.presale().tokenTheir.symbol != '' && this.presale().tokenOur.symbol != ''">
+          <span class="inputWrap">
+            <input onlyNumbers [allowDecimals]="true" #tokenOurPrice (change)="calcPrice(tokenOurPrice, tokenTheirPrice,  presale().tokenPrice)" (keyup)="calcPrice(tokenOurPrice, tokenTheirPrice,  presale().tokenPrice)"  value="" /> 
+            <span>{{this.presale().tokenOur.symbol}}</span>
+          </span> 
+          <span class="delimiter">/</span> 
+          <span class="inputWrap">
+            <input #tokenTheirPrice (change)="calcPrice(tokenTheirPrice, tokenOurPrice, 1 / presale().tokenPrice)" (keyup)="calcPrice(tokenTheirPrice, tokenOurPrice, 1 / presale().tokenPrice)"  value="" /> 
+            <span>{{this.presale().tokenTheir.symbol}}</span>
+          </span>
+        </span>
     </td> 
   </tr>
   <tr>
@@ -48,6 +91,14 @@
     </th><td>
         <span *ngIf="presale().totalDeposited == -1 || this.presale().tokenTheir.symbol ==''"><app-loader></app-loader></span>
         <span *ngIf="presale().totalDeposited != -1 &&  this.presale().tokenTheir.symbol != ''">{{presale().totalDeposited | numberLocale}} {{this.presale().tokenTheir.symbol}}</span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Total Claimable: 
+    </th><td>
+        <span *ngIf="presale().totalClaimable  == -1 || this.presale().tokenOur.symbol ==''"><app-loader></app-loader></span>
+        <span *ngIf="presale().totalClaimable  != -1 && this.presale().tokenOur.symbol != ''">{{presale().totalClaimable  | numberLocale}} {{this.presale().tokenOur.symbol}}</span>
     </td> 
   </tr>
   <tr>
@@ -131,6 +182,21 @@
         </button>
         <div *ngIf="checkClaimedResult != -1" class="result">
             {{checkClaimedResult}} {{this.presale().tokenOur.symbol}}
+        </div>
+    </td> 
+  </tr>
+  <tr *ngIf="presale().tokenOur.isReady()">
+    <th>
+        Claimable: 
+    </th>
+    <td class="check">
+        <input #tokenOurAddress (keyup)="checkClaimableResult = -1" (change)="checkClaimableResult = -1" [attr.disabled]="checkClaimableLoading ? 'disabled' : null" placeholder="Wallet address" value="{{walletAddress()}}" /> 
+        <button (click)="checkClaimable(tokenOurAddress.value)">
+          <span *ngIf="!checkClaimableLoading">Check</span>
+          <app-loader *ngIf="checkClaimableLoading" class="center"></app-loader>
+        </button>
+        <div *ngIf="checkClaimableResult != -1" class="result">
+            {{checkClaimableResult}} {{this.presale().tokenOur.symbol}}
         </div>
     </td> 
   </tr>

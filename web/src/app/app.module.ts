@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CountdownModule } from 'ngx-countdown';
 import { AddTokenToWalletComponent } from 'src/component/add-token-to-wallet/add-token-to-wallet.component';
 import { LoaderComponent } from 'src/component/loader/loader.component';
+import { OnlyNumbers } from 'src/directive/only-numbers.directive';
 import { AirdropComponent } from 'src/pages/airdrop/airdrop.component';
 import { HomepageComponent } from 'src/pages/homepage/homepage.component';
 import { PresaleComponent } from 'src/pages/presale/presale.component';
@@ -27,7 +28,8 @@ import { AppComponent } from './app.component';
     TransactionLinkPipe,
     AddressLinkPipe,
     NumberLocalePipe,
-    DateTimeLocalePipe
+    DateTimeLocalePipe,
+    OnlyNumbers
    ],
   imports: [
     BrowserModule,

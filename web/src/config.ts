@@ -42,6 +42,7 @@ export class Config {
             "function tokenPrice () view returns (uint)",
             "function totalDeposited () view returns (uint)",
             "function totalClaimed () view returns (uint)",
+            "function totalClaimable () view returns (uint)",
             "function startTime () view returns (uint)",
             "function claimTimeOut () view returns (uint)",
             "function depositTimeOut () view returns (uint)",
@@ -50,6 +51,8 @@ export class Config {
             "function deposited(address) view returns (uint)",
             "function deposit(uint)",
             "function claim()",
+            "function devFeePercent() view returns (uint)",
+            "function devAddress() view returns (uint)",
         ],
     } 
 }

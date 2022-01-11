@@ -270,6 +270,31 @@ export class Web3ModalService {
      });
    }
 
+   presaleDevFeePercent(){
+    this.presaleNotLoggedContract.devFeePercent().then((ret: BigNumber) => {
+      AppState.presale.devFeePercent = ret.toNumber();
+    });
+  }
+
+  presaleTotalClaimable(){
+    this.presaleNotLoggedContract.totalClaimable().then((ret: BigNumber) => {
+      AppState.presale.totalClaimable = ret.toNumber();
+    });
+  }
+
+  presaleClaimeable(address: string): Promise<number>{
+    return new Promise(async (resolve) => {
+      const ret: BigNumber = await this.presaleNotLoggedContract.claimed(address);
+      resolve(ret.toNumber());
+   });
+  }
+
+  presaleDevAddress(){
+    this.presaleNotLoggedContract.devAddress().then((ret: any) => {
+      AppState.presale.devAddress = ret.toHexString();
+    });
+  }
+
    presaleDeposited(address: string) : Promise<number>{
     return new Promise(async (resolve) => {
        const ret: BigNumber = await this.presaleNotLoggedContract.deposited(address);

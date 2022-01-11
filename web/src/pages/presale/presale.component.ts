@@ -16,6 +16,9 @@ export class PresaleComponent implements OnInit {
   constructor(private web3ModalSevice: Web3ModalService) { }
 
   ngOnInit() {
+    this.web3ModalSevice.presaleDevAddress();
+    this.web3ModalSevice.presaleTotalClaimable();
+    this.web3ModalSevice.presaleDevFeePercent();
   }
 
   presale() : IPresale{
@@ -24,6 +27,15 @@ export class PresaleComponent implements OnInit {
 
   presaleContractAddress(): string{
     return Config.main.addressPresale;
+  }
+
+  calcPrice(el: any, el2: any, coef: number){
+    let number = Number.parseFloat(el.value);
+    if(isNaN(number)){
+      el2.value = "";
+    } else {
+      el2.value = number * coef;
+    }
   }
 
   ourToken(): string{
@@ -61,6 +73,19 @@ export class PresaleComponent implements OnInit {
     this.web3ModalSevice.presaleClaimed(address).then(value => {
       this.checkClaimedResult = value;
       this.checkClaimedLoading = false;
+    });
+  }
+
+  checkClaimableResult: number = -1;
+  checkClaimableLoading: boolean = false;
+  checkClaimable(address: string){
+    if(this.checkClaimedLoading)
+      return;
+    this.checkClaimableResult = -1;
+    this.checkClaimableLoading = true;
+    this.web3ModalSevice.presaleClaimeable(address).then(value => {
+      this.checkClaimableResult = value;
+      this.checkClaimableLoading = false;
     });
   }
 
