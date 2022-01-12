@@ -33,6 +33,8 @@ export class Config {
             "function decimals () view returns (uint)",
             "function allowance (address, address) view returns (uint)",
             "function approve (address, uint)",
+            "function totalSupply () view returns (uint)",
+            "function balanceOf (address) view returns (uint)",            
         ],
         addressPresale: '0xaf945B5F836474009A08142120c8Bd3044Af1BCA',
         presaleContractInterface: [] = [

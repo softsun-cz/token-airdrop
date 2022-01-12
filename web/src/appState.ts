@@ -9,6 +9,10 @@ export class StateToken {
     symbol: string = "";
     decimals: number = -1;
     icon: string = "";
+    totalSupply: number = -1;
+    balance: number = -1;
+    burned: number = -1;
+
     private approvedAddreses: Array<string> = new Array<string>();
     constructor(icon: string = ""){
         if(icon != "")
@@ -24,6 +28,50 @@ export class StateToken {
     private approveKey(contractAddress : string): string{
         return AppState.selectedAddress + contractAddress;
     }
+    updateTotalSupply(){
+        if(this.totalSupply == -2)
+            return;
+        const c= this.getContract(false);
+        if(c){
+            const that = this;
+            that.totalSupply = -2;
+            c.totalSupply().then((value: BigNumber) => {
+                that.totalSupply = that.reduceDecimals(value);
+            }, (reject: any) => {
+                that.totalSupply = -1;
+            });
+        }
+    }
+    updateBalance(){
+        if(!AppState.walletSigned() || this.balance == -2)
+            return;
+        if(Web3ModalService.instance && Web3ModalService.instance.signer){
+            const that = this;
+            that.balance = -2;
+            Web3ModalService.instance?.signer?.getBalance().then((value: BigNumber) => {
+                that.balance = that.reduceDecimals(value);
+            }, (reject: any) => {
+                console.log(reject);
+                that.balance = -1;
+            });
+        }
+    }
+
+    updateBurned(){
+        if(this.burned == -2)
+            return;
+        const c= this.getContract(false);
+        if(c){
+            const that = this;
+            that.burned = -2;
+            c.balanceOf("0x000000000000000000000000000000000000dEaD").then((value: BigNumber) => {
+                that.burned = that.reduceDecimals(value);
+            }, (reject: any) => {
+                that.burned = -1;
+            });
+        }
+    }    
+
     isReady(): boolean{
         return this.address != "" && this.name != "" && this.symbol != "" && this.decimals != -1;
     };

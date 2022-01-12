@@ -1,1 +1,57 @@
-homepage
+<table>
+    <tr><td colspan="2"><h1>Homepage</h1></td></tr>
+    <tr>
+      <th>
+            Token: 
+      </th><td>
+            <span *ngIf="token()  == ''"><app-loader></app-loader></span>
+            <span *ngIf="token()  != ''">
+                {{token()}}
+                <app-add-token-to-wallet [token]=tokenInstance()></app-add-token-to-wallet>
+            </span>
+      </td> 
+    </tr>
+    <tr>
+        <th>
+              Token Address: 
+        </th><td>
+                <span *ngIf="token()  == ''"><app-loader></app-loader></span>
+                <span *ngIf="token()  != ''">
+                  <a href="{{tokenInstance().address | addressLink}}" target="_blank">{{tokenInstance().address}}</a>
+                </span>
+        </td> 
+      </tr>
+    <tr>
+        <th>
+            Total Supply: 
+        </th><td>
+            <span *ngIf="tokenInstance().totalSupply < 0 || token() == ''"><app-loader></app-loader></span>
+            <span *ngIf="tokenInstance().totalSupply >= 0 &&  token() != ''">{{tokenInstance().totalSupply | numberLocale}} {{tokenInstance().symbol}}</span>
+        </td> 
+    </tr>
+    <tr>
+        <th>
+            Burned: 
+        </th><td>
+            <span *ngIf="tokenInstance().burned < 0 || token() == ''"><app-loader></app-loader></span>
+            <span *ngIf="tokenInstance().burned >= 0 &&  token() != ''">{{tokenInstance().burned | numberLocale}} {{tokenInstance().symbol}}</span>
+        </td> 
+    </tr>
+    <tr>
+        <th>
+            Circulating Supply: 
+        </th><td>
+            <span *ngIf="tokenInstance().burned < 0 || tokenInstance().totalSupply < 0 || token() == ''"><app-loader></app-loader></span>
+            <span *ngIf="tokenInstance().burned >= 0 && tokenInstance().totalSupply >= 0 &&  token() != ''">{{(tokenInstance().totalSupply - tokenInstance().burned) | numberLocale}} {{tokenInstance().symbol}}</span>
+        </td> 
+    </tr>
+    <tr>
+        <th>
+            Your Wallet Balance: 
+        </th><td>
+            <span *ngIf="!walletConnected()">Wallet Not Connected</span>
+            <span *ngIf="walletConnected() && tokenInstance().balance < 0"><app-loader></app-loader></span>
+            <span *ngIf="walletConnected() && tokenInstance().balance >= 0">{{tokenInstance().balance | numberLocale}} {{tokenInstance().symbol}}</span>
+        </td> 
+    </tr>
+</table>
