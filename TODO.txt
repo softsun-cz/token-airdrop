@@ -1,17 +1,12 @@
-☑ - Web - presale - pridat kolik procent jde developerum a kolik do likvidity (developeri = devFeePercent, likvidita = 100 - devFeePercent)
-☑ - Web - presale - pridat adresu developeru (devAddress)
-☑ - Web - presale - pridat totalClaimable (TAX)
-☑ - Web - presale - pridat dotaz na claimable pro jakoukoliv adresu (TAX)
-☑ - Web - presale - pridat automatickou kalkulacku (bud pisu cenu v jedny mene nebo v druhy a ihned se to prepocitava
-☑ - Web - switch network sice funguje, ale pridani networku (stejnym tlacitkem) pokud tam ta sit neni, nefunguje a hazi error do console - https://docs.avax.network/build/tutorials/smart-contracts/add-avalanche-to-metamask-programmatically/
-☑ - Web - na strance airdropu pri kliknuti na pridani tokenu do MetaMasku chybi ikonka (u Presale je to OK)
-☑ - Web - airdrop - pridat odpocitavadlo do konce airdropu, pripadne, ze contract jeste nebyl spusten (timeOut != 0) - stale to tam neni
-- Web - otestovat airdrop
-- Web - otestovat presale
+- Web - presale - kdyz u claimed a claimable dam check a nenapisu adresu, tak se tam objevi tocici kolecko a nic to nedela
+- Web - presale - u kalkulacky povolit carku i tecku na desetinny mista
+- Web - presale - kalkulacka sice prepocitava, ale neni tam u ni tlacitko pro koupeni
+- Web - kdyz kliknu na presale a chci si pridat ikonku do MetaMasku jednoho tokenu, tak to jde a pak nasledne znovu nebo toho druhyho, tak to nic nedela - ale vypada to, ze to je spis bug MetaMasku
 - Web - pridat Dice stranku (adresa tokenu, se kterym se hraje, jmeno tokenu, symbol tokenu, minimalni castka, maximalni castka, zustatek uctu, feecko v procentech, vlozeni castky vkladu, vlozeni castky k vyberu, zadani sazky, hadani cisla 1 - 6) - dokumentace k random funkci je tady: https://docs.chain.link/docs/intermediates-tutorial/
 - Web - pridat Pool stranku
 - Web - homepage - info o tokenu - jmeno, symbol, token address, total supply, burned, circulating supply (total minus burned), your wallet balance (pokud neni connectnuto, tak tam dat napis "Wallet not connected")
-
+- Web - otestovat airdrop
+- Web - otestovat presale
 - Dice contract - dodelat randomness a otestovat
 - Presale contract - dodelat funkci createLiquidity - nejak pres router / factory address
 - Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop, LP adresa - tu ziskat nejak pres router)
