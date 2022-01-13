@@ -28,7 +28,7 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
     event eventSetMinBet(uint256 minBet);
     event eventSetMaxBet(uint256 maxBet);
     
-    constructor(address _vrfCoordinator) VRFConsumerBase(_vrfCoordinator, _tokenAddress) public {
+    constructor(address _vrfCoordinator, _tokenAddress) VRFConsumerBase(_vrfCoordinator, _tokenAddress) public {
         vrfCoordinator = _vrfCoordinator;
         keyHash = 0xced103054e349b8dfb51352f0f8fa9b5d20dde3d06f9f43cb2b85bc64b238205; // hard-coded for Ropsten
 
@@ -40,15 +40,16 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
         feePercent = 3;
     }
 
-    function rollDice(uint256 _bet, uint8 _guessNumber, uint256 _userProvidedSeed) public nonReentrant returns (bytes32 _requestId) {
+    function rollDice(uint256 _bet, uint8 _guessNumber, uint256 _userProvidedSeed) public nonReentrant returns (bytes32 requestId) {
         require(_bet >= minBet, 'rollDice: Your bet has not reached the allowed minimum');
         require(_bet <= maxBet, 'rollDice: Your bet has exceeded the allowed maximum');
         require(getRealBalance() >= _bet * 6, 'rollDice: Not enough ballance in Dice contract');
         uint256 seed = uint256(keccak256(abi.encode(_userProvidedSeed, blockhash(block.number)))); // Hash user seed and blockhash
         bytes32 _requestId = requestRandomness(keyHash, _bet, seed);
         emit RequestRandomness(_requestId, keyHash, seed);
-        fee = _bet * feePercent / 100;
+        uint256 fee = _bet * feePercent / 100;
         devBalance += fee;
+        /*
         if (diceResult == guessNumber) {
             uint256 win = (_bet - fee) * 6;
             balances[msg.sender] += win;
@@ -56,7 +57,8 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
         } else {
             balances[msg.sender] -= _bet;
             totalBalances -= _bet;
-        } 
+        }
+        */
         return _requestId;
     }
 
@@ -69,14 +71,14 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
     function deposit(uint256 _amount) public {
         require(_amount <= token.balanceOf(msg.sender), 'deposit: You cannot deposit more than your wallet balance');
         require(token.transferFrom(msg.sender, address(this), _amount));
-        balances[msg.sender] -= amount;
+        balances[msg.sender] -= _amount;
         emit eventDeposit(_amount);
     }
 
     function withdraw(uint256 _amount) public {
         require(_amount <= balances[msg.sender], 'withdraw: You cannot withdraw more than your balance');
         require(token.transfer(msg.sender, _amount));
-        balances[msg.sender] -= amount;
+        balances[msg.sender] -= _amount;
         emit eventWithdraw(_amount);
     }
 
