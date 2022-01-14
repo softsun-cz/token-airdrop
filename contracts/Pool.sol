@@ -4,9 +4,17 @@ pragma solidity ^0.8.0;
 
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
-import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
+import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
 contract Pool is Ownable, ReentrancyGuard {
+    IERC20 public token;
+    uint256 public tokensPerBlock;
+    PoolInfo public pool; // Info of our pool
+    mapping(address => UserInfo) public userInfo; // Info of each user that stakes tokens.
+    uint256 public startBlock = block.number; // The block number when token mining starts.
+    event eventDeposit(address indexed user, uint256 amount);
+    event eventWithdraw(address indexed user, uint256 amount);
+    event eventEmergencyWithdraw(address indexed user, uint256 amount);
 
     struct UserInfo {
         uint256 amount;           // How many tokens the user has provided.
@@ -14,27 +22,15 @@ contract Pool is Ownable, ReentrancyGuard {
     }
 
     struct PoolInfo {
-        ERC20 token;              // Address of token contract.
+        IERC20 token;              // Address of token contract.
         uint256 lastRewardBlock;  // Last block number that Tokens distribution occurs.
         uint256 accTokenPerShare; // Accumulated tokens per share, times 10**12. See below.
     }
 
-    ERC20 public token;
-    uint256 public tokensPerBlock;
-    PoolInfo public pool; // Info of our pool
-    mapping(address => UserInfo) public userInfo; // Info of each user that stakes tokens.
-    uint256 public startBlock; // The block number when token mining starts.
-
-    event eventDeposit(address indexed user, uint256 amount);
-    event eventWithdraw(address indexed user, uint256 amount);
-    event eventEmergencyWithdraw(address indexed user, uint256 amount);
-
-    constructor() {
-        // TODO: DELETE THIS AFTER TESTS ARE OVER:
-        token = ERC20(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
-        tokensPerBlock = 1000000000000000000;
-        startBlock = block.number;
-        pool.token = ERC20(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
+    constructor(address _tokenAddress, uint256 _tokensPerBlock) {
+        token = IERC20(_tokenAddress);
+        tokensPerBlock = _tokensPerBlock;
+        pool.token = IERC20(_tokenAddress);
         pool.lastRewardBlock = block.number;
         pool.accTokenPerShare = 0;
     }

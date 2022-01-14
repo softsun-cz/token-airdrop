@@ -5,7 +5,8 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
-//import '@uniswap/v2-periphery/contracts/UniswapV2Router01.sol';
+import './libs/IUniswapV2Router.sol';
+import './libs/IUniswapV2Factory.sol';
 
 contract Presale is Ownable, ReentrancyGuard {
     uint256 public devFeePercent = 50;
@@ -39,22 +40,16 @@ contract Presale is Ownable, ReentrancyGuard {
     uint256 MAX_INT = 2**256 - 1;
     bool liquidityCreated = false;
 
-    constructor() {
-        // routerAddress = 0x10ED43C718714eb63d5aA57B78B54704E256024E; // pancakeswap.finance (BSC Mainnet)
-        // routerAddress = 0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3; // pancake.kiemtienonline360.com (BSC Testnet)
-        // routerAddress = 0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff; // quickswap.exchange (Polygon Mainnet)
-        routerAddress = 0x8954AfA98594b838bda56FE4C12a09D7739D179b; // quickswap.exchange (Polygon Testnet)
+    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, uint256 _tokenPricePresale, uint256 _tokenPriceLiquidity, uint256 _depositTime, uint256 _claimTime) {
+        tokenOur = ERC20(_tokenOurAddress);
+        tokenTheir = ERC20(_tokenTheirAddress);
+        routerAddress = _routerAddress;
+        tokenPricePresale = _tokenPricePresale;
+        tokenPriceLiquidity = _tokenPriceLiquidity;
+        devAddress = _devAddress;
         startTime = block.timestamp;
-        depositTimeOut = startTime + 10 minutes;
-        claimTimeOut = depositTimeOut + 14 days;
-        devAddress = owner();
-
-        // TODO: DELETE THIS AFTER TESTS ARE OVER!!!
-        tokenOur = ERC20(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
-        tokenTheir = ERC20(0xF42a4429F107bD120C5E42E069FDad0AC625F615);
-        tokenPricePresale = 1000000000000000;
-        tokenPriceLiquidity = 2000000000000000;
-        devAddress = 0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41;
+        depositTimeOut = startTime + _depositTime;
+        claimTimeOut = depositTimeOut + _claimTime;
     }
 
     function deposit(uint256 _amount) public nonReentrant {
@@ -93,30 +88,6 @@ contract Presale is Ownable, ReentrancyGuard {
         return getRemainingTokens() - totalClaimable;
     }
 
-    function setTokenOurAddress(address _tokenAddress) public onlyOwner {
-        require(address(tokenOur) == zeroAddress, 'setTokenOurAddress: tokenOur can be set only once');
-        tokenOur = ERC20(_tokenAddress);
-        emit eventSetTokenOurAddress(_tokenAddress);
-    }
-
-    function setTokenTheirAddress(address _tokenAddress) public onlyOwner {
-        require(address(tokenTheir) == zeroAddress, 'setTokenTheirAddress: tokenTheir can be set only once');
-        tokenTheir = ERC20(_tokenAddress);
-        emit eventSetTokenTheirAddress(_tokenAddress);
-    }
-
-    function setTokenPricePresale(uint256 _price) public onlyOwner {
-        require(tokenPricePresale == 0, 'setTokenPricePresale: tokenPricePresale can be set only once');
-        tokenPricePresale = _price;
-        emit eventSetTokenPricePresale(_price);
-    }
-
-    function setTokenPriceLiquidity(uint256 _price) public onlyOwner {
-        require(tokenPriceLiquidity == 0, 'setTokenPriceLiquidity: tokenPriceLiquidity can be set only once');
-        tokenPriceLiquidity = _price;
-        emit eventSetTokenPriceLiquidity(_price);
-    }
-
     function setDevAddress(address _devAddress) public onlyOwner {
         devAddress = _devAddress;
         emit eventSetDevAddress(_devAddress);
@@ -151,25 +122,4 @@ contract Presale is Ownable, ReentrancyGuard {
         require(tokenOur.transfer(burnAddress, remaining));
         emit eventBurnRemainingTokens(remaining);
     }
-}
-
-
-interface IUniswapV2Router {
-    function factory() external pure returns (address);
-    function addLiquidity(
-        address tokenA,
-        address tokenB,
-        uint amountADesired,
-        uint amountBDesired,
-        uint amountAMin,
-        uint amountBMin,
-        address to,
-        uint deadline
-    ) external returns (uint amountA, uint amountB, uint liquidity);
-}
-
-interface IUniswapV2Factory {
-    event PairCreated(address indexed token0, address indexed token1, address pair, uint);
-    function getPair(address tokenA, address tokenB) external view returns (address pair);
-    function createPair(address tokenA, address tokenB) external returns (address pair);
 }

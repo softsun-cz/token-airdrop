@@ -5,13 +5,12 @@ pragma solidity ^0.8.0;
 import '@chainlink/contracts/src/v0.8/VRFConsumerBase.sol';
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
-import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
+import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
 contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
-    bytes32 internal keyHash = 0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4;//mumbai
-    address internal tokenAddress = 0xF42a4429F107bD120C5E42E069FDad0AC625F615;
-    address internal vrfCoordinator = 0x8C7382F9D8f56b33781fE506E897a4F1e2d17255;
-    ERC20 public token;
+    bytes32 internal keyHash = 0x6e75b569a01ef56d18cab6a8e71e6600d6ce853834d4a5748b720d06f878b3a4; // Polygon (MATIC) - Testnet
+    address internal vrfCoordinator = 0x8C7382F9D8f56b33781fE506E897a4F1e2d17255; // Polygon (MATIC) - Testnet
+    IERC20 public token;
     uint8 public feePercent;
     uint256 public minBet;
     uint256 public maxBet;
@@ -38,13 +37,13 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
     event eventSetMaxBet(uint256 maxBet);
     event eventResult(bool win, uint256 bet);
     
-    constructor() VRFConsumerBase(vrfCoordinator, tokenAddress) {
+    constructor(address _tokenAddress, address _devAddress, uint256 _minBet, uint256 _maxBet, uint8 _feePercent) VRFConsumerBase(vrfCoordinator, _tokenAddress) {
         //TODO: delete this after tests are over:
-        devAddress = 0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41;
-        token = ERC20(tokenAddress); // XUSD
-        minBet = 1000000000000000000; // 1 XUSD
-        maxBet = 100000000000000000000; // 100 XUSD
-        feePercent = 3;
+        devAddress = _devAddress;
+        token = IERC20(_tokenAddress); // XUSD
+        minBet = _minBet; // 1 XUSD
+        maxBet = _maxBet; // 100 XUSD
+        feePercent = _feePercent;
     }
 
     function rollDice(uint256 _bet, uint8 _guessNumber, uint256 _userProvidedSeed) public nonReentrant returns (bytes32 requestId) {
@@ -100,10 +99,6 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
         emit eventWithdraw(_amount);
     }
 
-    function getRealBalance() public view returns (uint256) {
-        return token.balanceOf(address(this));
-    }
-
     function devWithdraw(uint256 _amount) public onlyOwner {
         require(_amount <= devBalance, 'devWithdraw: You cannot withdraw more than devBalance');
         require(token.transfer(devAddress, _amount));
@@ -111,10 +106,8 @@ contract Dice is VRFConsumerBase, Ownable, ReentrancyGuard {
         emit eventDevWithdraw(_amount);
     }
 
-    function setTokenAddress(address _tokenAddress) public onlyOwner {
-        require(address(token) == zeroAddress, 'setTokenAddress: token can be set only once');
-        token = ERC20(_tokenAddress);
-        emit eventSetTokenAddress(_tokenAddress);
+    function getRealBalance() public view returns (uint256) {
+        return token.balanceOf(address(this));
     }
 
     function setDevAddress(address _devAddress) public onlyOwner {
