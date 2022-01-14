@@ -6,7 +6,6 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 contract Token is ERC20, Ownable {
-    using SafeMath for uint256;
     uint BURN_FEE = 1;
     uint DEV_FEE = 1;
     // uint LIQUIDITY_FEE = 1;
@@ -35,7 +34,8 @@ contract Token is ERC20, Ownable {
             // uint liquidityAmount = amount * LIQUIDITY_FEE / 100;
             //TODO: REFLECTION FEE
             //TODO: LIQUIDITY FEE (somehow get LP pair contract from router contract address - send there liquidityAmount)
-            _burn(_msgSender(), burnAmount);
+            //_burn(_msgSender(), burnAmount);
+            _transfer(_msgSender(), 0x000000000000000000000000000000000000dEaD, burnAmount);
             _transfer(_msgSender(), devAddress, devAmount);
             _transfer(_msgSender(), recipient, amount - burnAmount - devAmount);
             // - liquidityAmount);

@@ -3,15 +3,15 @@
 ✅ - Web - presale - kalkulacka sice prepocitava, ale je na nespravnem miste - ma byt dole po approve - rovnou se do ni pise castka ke koupi
 ✅ - Web - airdrop - pokud neni jeste spusten airdrop, tak tlacitko Get your free TAX tokens nic nenapise
 ✅ - Web - airdrop - "Not started" -> "Not started yet"
-🆗 - TAKY SI MYSLIM, pac je to podle dokumentace, ale muzem to jeste zkusit nejak prozkoumat - Web - kdyz kliknu na presale a chci si pridat ikonku do MetaMasku jednoho tokenu, tak to jde a pak nasledne znovu nebo toho druhyho, tak to nic nedela - ale vypada to, ze to je spis bug MetaMasku
+✅ - TAKY SI MYSLIM, pac je to podle dokumentace, ale muzem to jeste zkusit nejak prozkoumat - Web - kdyz kliknu na presale a chci si pridat ikonku do MetaMasku jednoho tokenu, tak to jde a pak nasledne znovu nebo toho druhyho, tak to nic nedela - ale vypada to, ze to je spis bug MetaMasku
 ✅ - Web - homepage - na hlavni strance se objevuje Wallet Balance MATICu a ne TAX tokenu
 ✅ - Web - pri pridavani site do MetaMasku se prida sice MATIC testnet, ale symbol ma TAX misto MATIC
-- Web - homepage - info o tokenu - total supply se objevuje i s tim, co je spaleno primo v contractu. Da se nejak najit kolik bylo spaleno primo v contractu (ne do dead adresy)?
+✅ - Web - homepage - info o tokenu - total supply se objevuje i s tim, co je spaleno primo v contractu. Da se nejak najit kolik bylo spaleno primo v contractu (ne do dead adresy)?
 ✅ - Web - homepage - kdyz je odhlasena penezenka nebo kdyz je vybrana spatna sit, tak se misto total supply, burned, circulating zobrazuje tocici kolecko
+- Presale contract - dodelat funkci createLiquidity - nejak pres router / factory address
 - Web - pridat Dice stranku (adresa tokenu, se kterym se hraje, jmeno tokenu, symbol tokenu, minimalni castka, maximalni castka, zustatek uctu, feecko v procentech, vlozeni castky vkladu, vlozeni castky k vyberu, zadani sazky, hadani cisla 1 - 6) - dokumentace k random funkci je tady: https://docs.chain.link/docs/intermediates-tutorial/
 - Web - pridat Pool stranku
 - Dice contract - dodelat randomness a otestovat
-- Presale contract - dodelat funkci createLiquidity - nejak pres router / factory address
 - Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop, LP adresa - tu ziskat nejak pres router)
 - Token contract - (mozna) pridat likvidity tax (nejak pres router ziskat LP adresu)
 - Token contract - (mozna) pridat reflection tax (presune se vsem drzitelum) - nejak okopirovat odtud: https://github.com/reflectfinance/reflect-contracts/blob/main/contracts/REFLECT.sol

@@ -34,7 +34,6 @@ contract Pool is Ownable, ReentrancyGuard {
         token = ERC20(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
         tokensPerBlock = 1000000000000000000;
         startBlock = block.number;
-
         pool.token = ERC20(0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D);
         pool.lastRewardBlock = block.number;
         pool.accTokenPerShare = 0;
@@ -54,9 +53,7 @@ contract Pool is Ownable, ReentrancyGuard {
 
     // Update reward variables of the given pool to be up-to-date.
     function updatePool() public {
-        if (block.number <= pool.lastRewardBlock) {
-            return;
-        }
+        if (block.number <= pool.lastRewardBlock) return;
         uint256 supply = pool.token.balanceOf(address(this));
         if (supply == 0) {
             pool.lastRewardBlock = block.number;
@@ -75,9 +72,7 @@ contract Pool is Ownable, ReentrancyGuard {
         updatePool();
         if (user.amount > 0) {
             uint256 pending = user.amount * pool.accTokenPerShare / 10**12 - user.rewardDebt;
-            if (pending > 0) {
-                safeTokenTransfer(msg.sender, pending);
-            }
+            if (pending > 0) safeTokenTransfer(msg.sender, pending);
         }
         if (_amount > 0) {
             pool.token.transferFrom(address(msg.sender), address(this), _amount);
@@ -93,9 +88,7 @@ contract Pool is Ownable, ReentrancyGuard {
         require(user.amount >= _amount, 'withdraw: Amount is too big');
         updatePool();
         uint256 pending = user.amount * pool.accTokenPerShare / 10**12 - user.rewardDebt;
-        if (pending > 0) {
-            safeTokenTransfer(msg.sender, pending);
-        }
+        if (pending > 0) safeTokenTransfer(msg.sender, pending);
         if (_amount > 0) {
             user.amount = user.amount - _amount;
             pool.token.transfer(address(msg.sender), _amount);
@@ -118,11 +111,8 @@ contract Pool is Ownable, ReentrancyGuard {
     function safeTokenTransfer(address _to, uint256 _amount) internal {
         uint256 tokenBal = token.balanceOf(address(this));
         bool transferSuccess = false;
-        if (_amount > tokenBal) {
-            transferSuccess = token.transfer(_to, tokenBal);
-        } else {
-            transferSuccess = token.transfer(_to, _amount);
-        }
+        if (_amount > tokenBal) transferSuccess = token.transfer(_to, tokenBal);
+        else transferSuccess = token.transfer(_to, _amount);
         require(transferSuccess, 'safeTokenTransfer: transfer failed');
     }
 }
