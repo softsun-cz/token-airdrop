@@ -1,19 +1,17 @@
-✅ - Web - presale - kdyz u claimed a claimable dam check a nenapisu adresu, tak se tam objevi tocici kolecko a nic to nedela
-✅ - Web - presale - u kalkulacky povolit carku i tecku na desetinny mista
-✅ - Web - presale - kalkulacka sice prepocitava, ale je na nespravnem miste - ma byt dole po approve - rovnou se do ni pise castka ke koupi
-✅ - Web - airdrop - pokud neni jeste spusten airdrop, tak tlacitko Get your free TAX tokens nic nenapise
-✅ - Web - airdrop - "Not started" -> "Not started yet"
-✅ - TAKY SI MYSLIM, pac je to podle dokumentace, ale muzem to jeste zkusit nejak prozkoumat - Web - kdyz kliknu na presale a chci si pridat ikonku do MetaMasku jednoho tokenu, tak to jde a pak nasledne znovu nebo toho druhyho, tak to nic nedela - ale vypada to, ze to je spis bug MetaMasku
-✅ - Web - homepage - na hlavni strance se objevuje Wallet Balance MATICu a ne TAX tokenu
-✅ - Web - pri pridavani site do MetaMasku se prida sice MATIC testnet, ale symbol ma TAX misto MATIC
-✅ - Web - homepage - info o tokenu - total supply se objevuje i s tim, co je spaleno primo v contractu. Da se nejak najit kolik bylo spaleno primo v contractu (ne do dead adresy)?
-✅ - Web - homepage - kdyz je odhlasena penezenka nebo kdyz je vybrana spatna sit, tak se misto total supply, burned, circulating zobrazuje tocici kolecko
-- Presale contract - dodelat funkci createLiquidity - nejak pres router / factory address
-- Web - pridat Dice stranku (adresa tokenu, se kterym se hraje, jmeno tokenu, symbol tokenu, minimalni castka, maximalni castka, zustatek uctu, feecko v procentech, vlozeni castky vkladu, vlozeni castky k vyberu, zadani sazky, hadani cisla 1 - 6) - dokumentace k random funkci je tady: https://docs.chain.link/docs/intermediates-tutorial/
-- Web - pridat Pool stranku
+- Web - presale - dole u kalkulacky je pred approvnutim label approve contract... lidi by nevedeli, proc by to meli approvovat - pls prepsat na "Buy token" (pred i po approve)
+- Web - presale - kdyz u claimed a claimable zadam spatnou adresu nebo nezadam zadnou, tak to hazi strasne divnej dlouhej error. Stacilo by tam dat "Error: Wrong wallet address"
+- Web - presale - u their token - deposited se jen toci kolecko, kdyz nezadam zadnou adresu nebo zadam spatnou adresu
+- Web - airdrop - pokud neni jeste spusten airdrop, tak tlacitko Get your free TAX tokens nic nenapise
+- Web - airdrop - udelat taky tak pekny pocitadlo, jako, jako je na presale (ted je tam jen text ve tvaru 02m44s)
+- Web - airdrop - kdyz po konci airdropu dam tlacitko Get your free TAX tokens, tak nenapise nic... asi skryt, kdyz airdrop skonci
+- Web - homepage - u tokenu pridat ikonu lisky - pridani ikony do MetaMasku
+- Web - pridat Pool stranku a otestovat (podobne, jako u rich piga, akorat je tam jen jeden pool a omezena emise - ta by se mela zobrazit taky)
+- Web - pridat Dice stranku a otestovat (adresa tokenu, se kterym se hraje, jmeno tokenu, symbol tokenu, minimalni castka, maximalni castka, zustatek uctu, feecko v procentech, vlozeni castky vkladu, vlozeni castky k vyberu, zadani sazky, hadani cisla 1 - 6) - dokumentace k random funkci je tady: https://docs.chain.link/docs/intermediates-tutorial/
+- Presale contract - otestovat funkci createLiquidity (zatim je public)
+- Presale contract - skryt ho jako private, spusti ho prvni claim - otestovat funkcnost
 - Dice contract - dodelat randomness a otestovat
 - Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop, LP adresa - tu ziskat nejak pres router)
 - Token contract - (mozna) pridat likvidity tax (nejak pres router ziskat LP adresu)
 - Token contract - (mozna) pridat reflection tax (presune se vsem drzitelum) - nejak okopirovat odtud: https://github.com/reflectfinance/reflect-contracts/blob/main/contracts/REFLECT.sol
-- Pool contract - dodelat a otestovat
+- Pool contract - otestovat
 - Airdrop Telegram bot (mozna)
