@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
-import '@uniswap/v2-periphery/contracts/UniswapV2Router02.sol';
+//import '@uniswap/v2-periphery/contracts/UniswapV2Router01.sol';
 
 contract Presale is Ownable, ReentrancyGuard {
     uint256 public devFeePercent = 50;
@@ -45,7 +45,7 @@ contract Presale is Ownable, ReentrancyGuard {
         // routerAddress = 0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff; // quickswap.exchange (Polygon Mainnet)
         routerAddress = 0x8954AfA98594b838bda56FE4C12a09D7739D179b; // quickswap.exchange (Polygon Testnet)
         startTime = block.timestamp;
-        depositTimeOut = startTime + 5 minutes;
+        depositTimeOut = startTime + 10 minutes;
         claimTimeOut = depositTimeOut + 14 days;
         devAddress = owner();
 
@@ -130,15 +130,17 @@ contract Presale is Ownable, ReentrancyGuard {
         require(!liquidityCreated, 'createLiquidity: Liquidity was created already before');
         address factory = IUniswapV2Router(routerAddress).factory();
         address pair = IUniswapV2Factory(factory).getPair(address(tokenOur), address(tokenTheir));
-        if (pair == zeroAddress) require(pair = IUniswapV2Factory(factory).createPair(address(tokenOur), address(tokenTheir)), 'createLiquidity: Cannot create token pair');
+        if (pair == zeroAddress) pair = IUniswapV2Factory(factory).createPair(address(tokenOur), address(tokenTheir));
+        require(pair != zeroAddress, 'createLiquidity: Cannot create token pair');
         uint256 allowanceOur = tokenOur.allowance(msg.sender, address(pair));
         if (allowanceOur < MAX_INT) tokenOur.approve(address(pair), MAX_INT);
         uint256 allowanceTheir = tokenTheir.allowance(msg.sender, address(pair));
         if (allowanceTheir < MAX_INT) tokenTheir.approve(address(pair), MAX_INT);
-        uint256 amountTheir = tokenTheir.balanceOf(address(this)) * (100 - devPercentFee) / 100;
+        uint256 amountTheir = tokenTheir.balanceOf(address(this)) * (100 - devFeePercent) / 100;
         uint256 amountOur = amountTheir * tokenPriceLiquidity / 10**tokenOur.decimals();
         uint256 amountOurMax = tokenTheir.balanceOf(address(this));
-        require(amountOur > amountOurMax, 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
+        require(amountOur > 0, 'createLiquidity: amountOur must be more than 0');
+        require(amountOur <= amountOurMax, 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
         IUniswapV2Router(routerAddress).addLiquidity(address(tokenOur), address(tokenTheir), amountOur, amountTheir, amountOur, amountTheir, burnAddress, block.timestamp + 1200);
         liquidityCreated = true;
     }
@@ -149,4 +151,25 @@ contract Presale is Ownable, ReentrancyGuard {
         require(tokenOur.transfer(burnAddress, remaining));
         emit eventBurnRemainingTokens(remaining);
     }
+}
+
+
+interface IUniswapV2Router {
+    function factory() external pure returns (address);
+    function addLiquidity(
+        address tokenA,
+        address tokenB,
+        uint amountADesired,
+        uint amountBDesired,
+        uint amountAMin,
+        uint amountBMin,
+        address to,
+        uint deadline
+    ) external returns (uint amountA, uint amountB, uint liquidity);
+}
+
+interface IUniswapV2Factory {
+    event PairCreated(address indexed token0, address indexed token1, address pair, uint);
+    function getPair(address tokenA, address tokenB) external view returns (address pair);
+    function createPair(address tokenA, address tokenB) external returns (address pair);
 }
