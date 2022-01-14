@@ -9,13 +9,20 @@ export class Config {
         // explorer: 'https://polygonscan.com/', // Polygon (MATIC) - Mainnet
         // chainID: '137',
         networkName: "Polygon (MATIC) - Testnet",
-        network: 'https://matic-mumbai.chainstacklabs.com', // Polygon (MATIC) - Testnet
+        network: 'https://matic-mumbai.chainstacklabs.com', // Polygon (MATIC) - Testnet,
+        nativeCurrency: {
+            name: "MATIC",
+            symbol: "MATIC",
+            decimals: 18
+        },
         explorer: 'https://mumbai.polygonscan.com/', // Polygon (MATIC) - Testnet
         chainID: 80001,
         getHexChainId() : string{
             return "0x" +Config.main.chainID.toString(16);
         },       
         addressAirdrop: '0xA36d81D829DFB0074c387E39B1e99A3E9892c2AE',
+        addressPresale: '0xaf945B5F836474009A08142120c8Bd3044Af1BCA',
+
         airdropContractInterface: [] = [
             "function claimCount () view returns (uint)",
             //"event Transfer(address indexed from, address indexed to, uint amount)",
@@ -27,16 +34,6 @@ export class Config {
             "function token () view returns (uint)",
             "function timeOut () view returns (uint)",
         ],
-        tokenContractInterface: [] = [
-            "function name () view returns (string)",
-            "function symbol () view returns (string)",
-            "function decimals () view returns (uint)",
-            "function allowance (address, address) view returns (uint)",
-            "function approve (address, uint)",
-            "function totalSupply () view returns (uint)",
-            "function balanceOf (address) view returns (uint)",            
-        ],
-        addressPresale: '0xaf945B5F836474009A08142120c8Bd3044Af1BCA',
         presaleContractInterface: [] = [
             "function tokenOur () view returns (uint)",
             "function tokenTheir () view returns (uint)",
@@ -56,6 +53,15 @@ export class Config {
             "function claim()",
             "function devFeePercent() view returns (uint)",
             "function devAddress() view returns (uint)",
+        ],
+        tokenContractInterface: [] = [
+            "function name () view returns (string)",
+            "function symbol () view returns (string)",
+            "function decimals () view returns (uint)",
+            "function allowance (address, address) view returns (uint)",
+            "function approve (address, uint)",
+            "function totalSupply () view returns (uint)",
+            "function balanceOf (address) view returns (uint)",            
         ],
     } 
 }

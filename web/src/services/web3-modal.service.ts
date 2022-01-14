@@ -105,9 +105,9 @@ export class Web3ModalService {
         blockExplorerUrls: [Config.main.explorer],
         chainName: Config.main.networkName,
         "nativeCurrency": {
-          "name": AppState.token.name,
-          "symbol": AppState.token.symbol,
-          "decimals": AppState.token.decimals
+          "name": Config.main.nativeCurrency.name,
+          "symbol": Config.main.nativeCurrency.symbol,
+          "decimals": Config.main.nativeCurrency.decimals
         },
       }]
     }).then((success: any) => {
@@ -269,11 +269,8 @@ export class Web3ModalService {
     });
    }
 
-   presaleClaimed(address: string) : Promise<number>{
-     return new Promise(async (resolve) => {
-        const ret: BigNumber = await this.presaleNotLoggedContract.claimed(address);
-        resolve(AppState.reduceOurDecimals(ret));
-     });
+   presaleClaimed(address: string) : Promise<BigNumber>{
+     return this.presaleNotLoggedContract.claimed(address);
    }
 
    presaleDevFeePercent(){
@@ -288,11 +285,8 @@ export class Web3ModalService {
     });
   }
 
-  presaleClaimeable(address: string): Promise<number>{
-    return new Promise(async (resolve) => {
-      const ret: BigNumber = await this.presaleNotLoggedContract.claimed(address);
-      resolve(ret.toNumber());
-   });
+  presaleClaimeable(address: string): Promise<BigNumber>{
+    return this.presaleNotLoggedContract.claimed(address);
   }
 
   airdropTimeout(){

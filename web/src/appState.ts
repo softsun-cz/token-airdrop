@@ -19,10 +19,15 @@ export class StateToken {
             this.icon  = location.protocol + "//" + location.host + icon;
     }
     private getContract(signed: boolean = true) : Contract | null{
-        if(Web3ModalService.instance == null || Web3ModalService.instance.signer == null || !AppState.walletSigned())
+        if(Web3ModalService.instance == null)
             return null;
-        if(signed)
+        if(signed){
+            if(Web3ModalService.instance.signer == null || !AppState.walletSigned())
+                return null;
             return new ethers.Contract(this.address, Config.main.tokenContractInterface, Web3ModalService.instance.signer);
+        }
+        if(Web3ModalService.instance.notLoggedProvider == null)
+            return null;
         return new ethers.Contract(this.address, Config.main.tokenContractInterface, Web3ModalService.instance.notLoggedProvider);
     }
     private approveKey(contractAddress : string): string{
@@ -40,27 +45,33 @@ export class StateToken {
             }, (reject: any) => {
                 that.totalSupply = -1;
             });
+        } else{
+            this.totalSupply = -1;
         }
     }
     updateBalance(){
-        if(!AppState.walletSigned() || this.balance == -2)
+        if(AppState.selectedAddress == null || this.balance == -2)
             return;
         if(Web3ModalService.instance && Web3ModalService.instance.signer){
             const that = this;
             that.balance = -2;
-            Web3ModalService.instance?.signer?.getBalance().then((value: BigNumber) => {
-                that.balance = that.reduceDecimals(value);
-            }, (reject: any) => {
-                console.log(reject);
+            const c= this.getContract(false);
+            if(c){
+                c.balanceOf(AppState.selectedAddress).then((value: BigNumber) => {
+                    that.balance = that.reduceDecimals(value);
+                }, (reject: any) => {
+                    that.balance = -1;
+                });
+            } else{
                 that.balance = -1;
-            });
+            }
         }
     }
 
     updateBurned(){
         if(this.burned == -2)
             return;
-        const c= this.getContract(false);
+        const c = this.getContract(false);
         if(c){
             const that = this;
             that.burned = -2;
@@ -69,6 +80,8 @@ export class StateToken {
             }, (reject: any) => {
                 that.burned = -1;
             });
+        }else{
+            this.burned = -1;
         }
     }    
 
@@ -110,7 +123,7 @@ export class StateToken {
         })
     };
     addToWallet(){
-        if(Web3ModalService.instance !== null && Web3ModalService.instance.walletProvider !== null)
+        if(Web3ModalService.instance !== null && Web3ModalService.instance.walletProvider !== null){
             Web3ModalService.instance.walletProvider.request({
                 method: 'wallet_watchAsset',
                 params: {
@@ -122,7 +135,13 @@ export class StateToken {
                         image: this.icon
                     }
                 }
+            }).then((value : any) => {
+                console.log(value);
+            }, (reject: any) => {
+                console.log(reject);
             });
+            
+        }
       }
 }
 

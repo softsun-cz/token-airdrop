@@ -30,7 +30,7 @@ export class PresaleComponent implements OnInit {
   }
 
   calcPrice(el: any, el2: any, coef: number){
-    let number = Number.parseFloat(el.value);
+    let number = Number.parseFloat(el.value.replace(",", "."));
     if(isNaN(number)){
       el2.value = "";
     } else {
@@ -65,26 +65,36 @@ export class PresaleComponent implements OnInit {
 
   checkClaimedResult: number = -1;
   checkClaimedLoading: boolean = false;
+  checkClaimedError: string | null = null;
   checkClaimed(address: string){
     if(this.checkClaimedLoading)
       return;
     this.checkClaimedResult = -1;
     this.checkClaimedLoading = true;
+    this.checkClaimedError = null;
     this.web3ModalSevice.presaleClaimed(address).then(value => {
-      this.checkClaimedResult = value;
+      this.checkClaimedResult = value.toNumber();
+      this.checkClaimedLoading = false;
+    }, reject => {
+      this.checkClaimedError = reject;
       this.checkClaimedLoading = false;
     });
   }
 
   checkClaimableResult: number = -1;
   checkClaimableLoading: boolean = false;
+  checkClaimableError: string | null = null;
   checkClaimable(address: string){
     if(this.checkClaimedLoading)
       return;
     this.checkClaimableResult = -1;
-    this.checkClaimableLoading = true;
+    this.checkClaimableLoading = true; 
+    this.checkClaimableError = null;
     this.web3ModalSevice.presaleClaimeable(address).then(value => {
-      this.checkClaimableResult = value;
+      this.checkClaimableResult = value.toNumber();
+      this.checkClaimableLoading = false;
+    }, reject => {
+      this.checkClaimableError = reject;
       this.checkClaimableLoading = false;
     });
   }
@@ -122,8 +132,9 @@ export class PresaleComponent implements OnInit {
       this.depositLoading = false;
       this.depositTransactionHash = tr.hash;
     }, (reject) => {
-      console.log(reject);
-      if(reject.message)
+      if(reject.data != null && reject.data.message != null)
+        this.depositError = reject.data.message;
+      else if(reject.message != null)
         this.depositError = reject.message;
       else
         this.depositError = reject;

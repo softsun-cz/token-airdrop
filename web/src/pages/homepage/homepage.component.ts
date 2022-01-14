@@ -43,7 +43,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
   token(): string{
     if(!AppState.token.isReady())
       return "";
-    if(AppState.token.totalSupply == -1)
+    if(AppState.token.totalSupply == -1 || (AppState.token.balance == -1 && this.walletConnected()))
       this.loadData();
     return AppState.token.name + " (" + AppState.token.symbol + ")"
   }

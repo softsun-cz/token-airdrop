@@ -72,17 +72,6 @@
             <span class="float">1 {{this.presale().tokenTheir.symbol}})</span>
           </span>
         </span>
-        <span class="calc"  *ngIf="presale().tokenPrice != -1 && this.presale().tokenTheir.symbol != '' && this.presale().tokenOur.symbol != ''">
-          <span class="inputWrap">
-            <input onlyNumbers [allowDecimals]="true" #tokenOurPrice (change)="calcPrice(tokenOurPrice, tokenTheirPrice,  presale().tokenPrice)" (keyup)="calcPrice(tokenOurPrice, tokenTheirPrice,  presale().tokenPrice)"  value="" /> 
-            <span>{{this.presale().tokenOur.symbol}}</span>
-          </span> 
-          <span class="delimiter">/</span> 
-          <span class="inputWrap">
-            <input #tokenTheirPrice (change)="calcPrice(tokenTheirPrice, tokenOurPrice, 1 / presale().tokenPrice)" (keyup)="calcPrice(tokenTheirPrice, tokenOurPrice, 1 / presale().tokenPrice)"  value="" /> 
-            <span>{{this.presale().tokenTheir.symbol}}</span>
-          </span>
-        </span>
     </td> 
   </tr>
   <tr>
@@ -183,6 +172,9 @@
         <div *ngIf="checkClaimedResult != -1" class="result">
             {{checkClaimedResult}} {{this.presale().tokenOur.symbol}}
         </div>
+        <div *ngIf="checkClaimedError != null" class="resultError">
+          {{checkClaimedError}}
+        </div>
     </td> 
   </tr>
   <tr *ngIf="presale().tokenOur.isReady()">
@@ -197,6 +189,9 @@
         </button>
         <div *ngIf="checkClaimableResult != -1" class="result">
             {{checkClaimableResult}} {{this.presale().tokenOur.symbol}}
+        </div>
+        <div *ngIf="checkClaimableError != null" class="resultError">
+          {{checkClaimableError}}
         </div>
     </td> 
   </tr>
@@ -257,12 +252,25 @@
     <th>
       Amount: 
     </th>
-    <td class="check">
-      <input #amount [attr.disabled]="depositLoading ? 'disabled' : null" placeholder="Amount ({{this.presale().tokenTheir.symbol}})" /> 
-      <button (click)="deposit(amount.value)">
-        <span *ngIf="!depositLoading">Deposit</span>
-        <app-loader *ngIf="depositLoading" class="center"></app-loader>
-      </button>
+    <td>
+      <span class="calc"  *ngIf="presale().tokenPrice != -1 && this.presale().tokenTheir.symbol != '' && this.presale().tokenOur.symbol != ''">
+        <span class="inputWrap">
+          <input onlyNumbers [allowDecimals]="true" #tokenOurPrice (change)="calcPrice(tokenOurPrice, tokenTheirPrice,  presale().tokenPrice)" (keyup)="calcPrice(tokenOurPrice, tokenTheirPrice,  presale().tokenPrice)"  value="" /> 
+          <span>{{this.presale().tokenOur.symbol}}</span>
+        </span> 
+        <span class="delimiter">/</span> 
+        <span class="inputWrap">
+          <input onlyNumbers [allowDecimals]="true"  #tokenTheirPrice (change)="calcPrice(tokenTheirPrice, tokenOurPrice, 1 / presale().tokenPrice)" (keyup)="calcPrice(tokenTheirPrice, tokenOurPrice, 1 / presale().tokenPrice)"  value="" /> 
+          <span>{{this.presale().tokenTheir.symbol}}</span>
+        </span>
+        <span class="buttonWrap">
+          <button (click)="deposit(tokenTheirPrice.value)">
+            <span *ngIf="!depositLoading">Deposit</span>
+            <app-loader *ngIf="depositLoading" class="center"></app-loader>
+          </button>
+        </span>
+      </span>
+
       <div *ngIf="depositTransactionHash" class="result">
         Transaction ID: <a href="{{depositTransactionHash | transactionLink}}" target="_blank">{{depositTransactionHash}}</a>
       </div>

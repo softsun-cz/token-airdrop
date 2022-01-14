@@ -5,7 +5,7 @@ export class OnlyNumbers {
 
     @Input() allowDecimals: boolean = true;
     @Input() allowSign: boolean = false;
-    @Input() decimalSeparator: string = '.';
+    private decimalSeparators = [",","."];
 
     previousValue: string = '';
 
@@ -53,7 +53,7 @@ export class OnlyNumbers {
         let key: string = this.getName(e);
         let controlOrCommand = (e.ctrlKey === true || e.metaKey === true);
         let signExists = originalValue.includes('-');
-        let separatorExists = originalValue.includes(this.decimalSeparator);
+        let separatorExists = originalValue.includes(".")  || originalValue.includes(",") ;
 
         // allowed keys apart from numeric characters
         let allowedKeys = [
@@ -65,10 +65,7 @@ export class OnlyNumbers {
         // its position is not close to the the sign (-. and .-)
         let separatorIsCloseToSign = (signExists && cursorPosition <= 1);
         if (this.allowDecimals && !separatorIsCloseToSign && !separatorExists) {
-
-            if (this.decimalSeparator == '.')
                 allowedKeys.push('.');
-            else
                 allowedKeys.push(',');
         }
 
@@ -77,7 +74,7 @@ export class OnlyNumbers {
         // cursor is in the first position, and
         // first character is different from
         // decimal separator
-        let firstCharacterIsSeparator = (originalValue.charAt(0) != this.decimalSeparator);
+        let firstCharacterIsSeparator = !(this.decimalSeparators.includes(originalValue.charAt(0)));
         if (this.allowSign && !signExists &&
             firstCharacterIsSeparator && cursorPosition == 0) {
 
@@ -120,13 +117,13 @@ export class OnlyNumbers {
         // when a numbers begins with a decimal separator,
         // fix it adding a zero in the beginning
         let firstCharacter = value.charAt(0);
-        if (firstCharacter == this.decimalSeparator)
+        if (this.decimalSeparators.includes(firstCharacter))
             value = 0 + value;
 
         // when a numbers ends with a decimal separator,
         // fix it adding a zero in the end
         let lastCharacter = value.charAt(value.length-1);
-        if (lastCharacter == this.decimalSeparator)
+        if (this.decimalSeparators.includes(lastCharacter))
             value = value + 0;
 
         // test number with regular expression, when
@@ -140,12 +137,8 @@ export class OnlyNumbers {
      * @param e
      */
     getName(e: any): string {
-
-      console.log(e.keyCode);
         if (e.key) {
-
             return e.key;
-
         } else {
 
             // for old browsers

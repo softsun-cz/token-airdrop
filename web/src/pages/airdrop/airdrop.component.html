@@ -6,7 +6,7 @@
     </th><td>
         <span *ngIf="airdropTimeout() == -1"><app-loader></app-loader></span>
         <span *ngIf="airdropTimeout() == 0">
-            <span>Not started</span>
+            <span>Not started Yet</span>
         </span>
         <span *ngIf="airdropTimeout() > 0">
           <span *ngIf="timestampToTimeout(airdropTimeout()) > 0"><countdown [config]="timeOutConfig(airdropTimeout())"></countdown> | </span>
@@ -72,7 +72,7 @@
   </tr>
 </table>
 
-<div *ngIf="airdropRecieved() != null" class="connectButton"> 
+<div *ngIf="airdropRecieved() != null &&  airdropTimeout() > 0" class="connectButton"> 
   <button *ngIf="isAirdropPossible()" (click)="airDropClick()">Get your free {{tokenSymbol()}} tokens</button>
   <span *ngIf="airdropRecieved()">
       You have already received your {{tokenSymbol()}} tokens
