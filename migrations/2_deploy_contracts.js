@@ -37,7 +37,6 @@ module.exports = async function(deployer) {
  // TODO: THE FOLLOWING TOKEN FUNCTIONS WORK ONLY IF A NEW TOKEN IS DEPLOYED, NOT WITH JUST ADDRESS
  token.setTaxExclusion(airdrop.address, true);
  token.setTaxExclusion(presale.address, true);
- token.setTaxExclusion(pool.address, true);
  token.transfer(presale.address, '98000000000000000000000000'); // 98 000 000
  token.transfer(airdrop.address, '1000000000000000000000000'); // 1 000 000
  token.transfer(pool.address, '1000000000000000000000000'); // 1 000 000

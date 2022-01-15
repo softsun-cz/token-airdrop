@@ -16,7 +16,6 @@ contract Token is ERC20, Ownable {
         burnFee = _burnFee;
         devFee = _devFee;
         devAddress = msg.sender;
-        setTaxExclusion(msg.sender, true);
     }
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {

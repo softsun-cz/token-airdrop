@@ -1,3 +1,4 @@
+TODO:
 - Web - presale - dole u kalkulacky je pred approvnutim label approve contract... lidi by nevedeli, proc by to meli approvovat - pls prepsat na "Buy token" (pred i po approve)
 - Web - presale - kdyz u claimed a claimable zadam spatnou adresu nebo nezadam zadnou, tak to hazi strasne divnej dlouhej error. Stacilo by tam dat "Error: Wrong wallet address"
 - Web - presale - u their token - deposited se jen toci kolecko, kdyz nezadam zadnou adresu nebo zadam spatnou adresu
@@ -9,8 +10,12 @@
 - Web - pridat Pool stranku a otestovat (podobne, jako u rich piga, akorat je tam jen jeden pool a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - skryt ho jako private, spusti ho prvni claim - otestovat funkcnost
-- Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Owner, Presale, Airdrop, LP adresa - tu ziskat nejak pres router)
-- Token contract - (mozna) pridat likvidity tax (nejak pres router ziskat LP adresu)
-- Token contract - (mozna) pridat reflection tax (presune se vsem drzitelum) - nejak okopirovat odtud: https://github.com/reflectfinance/reflect-contracts/blob/main/contracts/REFLECT.sol
+- Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Presale, Airdrop)
 - Pool contract - otestovat
+
+Napady:
+- Presale contract - Pridat max. castku, kterou je mozne vybrat (aby bylo dostatek penez pro vytvoreni likvidity) a tim padem nemusime emitovat moc velke mnozstvi tokenu
+- Pool contract - napsat tak, aby bylo mozne vytvorit vice poolu - kazdy pool bude mit vlastni pocet tokenu, ktere emituje v bloku
+- Token contract - pridat likvidity tax (nejak pres router ziskat LP adresu) - nevyhoda - snizuje hodnotu tokenu (je pred pridanim likvidity potreba koupit za polovinu druhy token)
+- Token contract - pridat reflection tax (presune se vsem drzitelum) - nejak okopirovat odtud: https://github.com/reflectfinance/reflect-contracts/blob/main/contracts/REFLECT.sol
 - Airdrop Telegram bot (mozna)
