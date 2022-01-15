@@ -1,8 +1,8 @@
-# Token, Airdrop and Presale Smart contract
+# Token, Presale, Airdrop and Pool Smart contract
 
 1. Edit .secret and put there a wallet mnemonic phrase (24 words) - you need to have some gas on it
 2. Register on polygonscan.com, bscscan.com and create a new API keys
-3. Edit .apikey_* files and add your api keys on the first line of each file
+3. Edit .apikey_* files and add your api keys on the first line of each file (* means block explorer name, e.g.: polygonscan, bscscan ...)
 4. > yarn install
 5. > edit ./migrations/2_deploy_contracts.js and set variables
 6. > ./deploy_[NETWORK NAME]_[NETWORK].sh
