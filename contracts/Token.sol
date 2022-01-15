@@ -6,20 +6,15 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 contract Token is ERC20, Ownable {
-    uint BURN_FEE = 1;
-    uint DEV_FEE = 1;
-    // uint LIQUIDITY_FEE = 1;
-    // uint REFLECTION_FEE = 1;
-    // address public router = 0x10ED43C718714eb63d5aA57B78B54704E256024E; // pancakeswap.finance (BSC Mainnet)
-    // address public router = 0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3; // pancake.kiemtienonline360.com (BSC Testnet)
-    // address public router = 0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff; // quickswap.exchange (Polygon Mainnet)
+    uint256 public burnFee = 1;
+    uint256 public devFee = 1;
     address public devAddress;
     mapping(address => bool) public excludedFromTax;
 
-    constructor() ERC20("Tax Token", "TAX") {
-        uint256 supply = 1000000000;
-        uint8 decimals = 18;
-        _mint(msg.sender, supply * 10**decimals);
+    constructor(uint256 _supply, uint256 _decimals, string _name, string _symbol, uint256 _devFee, uint256 _burnFee) ERC20(_name, _symbol) {
+        burnFee = _burnFee;
+        devFee = _devFee;
+        _mint(msg.sender, _supply * 10**_decimals);
         devAddress = msg.sender;
         setTaxExclusion(msg.sender, true);
     }
@@ -29,16 +24,11 @@ contract Token is ERC20, Ownable {
             // TODO: now it's excluded only when sending TO such address - also make it FROM such address
             _transfer(_msgSender(), recipient, amount);
         } else {
-            uint burnAmount = amount * BURN_FEE / 100;
-            uint devAmount = amount * DEV_FEE / 100;
-            // uint liquidityAmount = amount * LIQUIDITY_FEE / 100;
-            //TODO: REFLECTION FEE
-            //TODO: LIQUIDITY FEE (somehow get LP pair contract from router contract address - send there liquidityAmount)
-            //_burn(_msgSender(), burnAmount);
+            uint burnAmount = amount * burnFee / 100;
+            uint devAmount = amount * devFee / 100;
             _transfer(_msgSender(), 0x000000000000000000000000000000000000dEaD, burnAmount);
             _transfer(_msgSender(), devAddress, devAmount);
             _transfer(_msgSender(), recipient, amount - burnAmount - devAmount);
-            // - liquidityAmount);
         }
         return true;
     }
