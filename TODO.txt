@@ -9,7 +9,7 @@ TODO:
 - Web - homepage - do config.ts pridat adresu tokenu (nebrat z airdropu)
 - Web - pridat Pool stranku a otestovat (podobne, jako u rich piga, akorat je tam jen jeden pool a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
-- Presale contract - skryt ho jako private, spusti ho prvni claim - otestovat funkcnost
+- Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
 - Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Presale, Airdrop)
 - Pool contract - otestovat
 
