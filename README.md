@@ -1,4 +1,4 @@
-# Token, Presale, Airdrop and Pool Smart contract
+# Token, Presale, Airdrop and Pool - smart contracts and website
 
 1. Edit .secret and put there a wallet mnemonic phrase (24 words) - you need to have some gas on it
 2. Register on polygonscan.com, bscscan.com and create a new API keys
@@ -18,10 +18,7 @@
 - Yarn 1.22.17
 
 # Web page:
-1. edit ./web/src/config.ts and paste your contract addresses
-2. cd ./web
-3. ./build.sh
-
-Note: 
-
-edit ./build.sh if you'd like to move the build to different web root
+1. cd ./web
+2. edit ./src/config.ts and paste your contract addresses
+3. edit ./build.sh and set a different web root where you'd like to deploy your web page
+4. ./build.sh

@@ -5,6 +5,7 @@
 - Web - airdrop - udelat taky tak pekny pocitadlo, jako, jako je na presale (ted je tam jen text ve tvaru 02m44s)
 - Web - airdrop - kdyz po konci airdropu dam tlacitko Get your free TAX tokens, tak nenapise nic... asi skryt, kdyz airdrop skonci
 - Web - homepage - u tokenu pridat ikonu lisky - pridani ikony do MetaMasku
+- Web - homepage - do config.ts pridat adresu tokenu (nebrat z airdropu)
 - Web - pridat Pool stranku a otestovat (podobne, jako u rich piga, akorat je tam jen jeden pool a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - skryt ho jako private, spusti ho prvni claim - otestovat funkcnost
