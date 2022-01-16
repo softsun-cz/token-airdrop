@@ -4,7 +4,7 @@ const Airdrop = artifacts.require('Airdrop');
 const Pool = artifacts.require('Pool');
 
 module.exports = async function(deployer) {
- //const token = {address: '0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D'};
+ const token = {address: '0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D'};
  const tokenUSD = '0xF42a4429F107bD120C5E42E069FDad0AC625F615';
  // const router = '0x10ED43C718714eb63d5aA57B78B54704E256024E'; // pancakeswap.finance (BSC Mainnet)
  // const router = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3'; // pancake.kiemtienonline360.com (BSC Testnet)
@@ -24,20 +24,21 @@ module.exports = async function(deployer) {
  const tokenDecimals = 18;
  const tokenDevFee = 1;
  const tokenBurnFee = 2;
- await deployer.deploy(Token, tokenName, tokenSymbol, tokenSupply, tokenDecimals, tokenDevFee, tokenBurnFee);
- const token = await Token.deployed();
- await deployer.deploy(Presale, token.address, tokenUSD, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime);
- const presale = await Presale.deployed();
+
+ // await deployer.deploy(Token, tokenName, tokenSymbol, tokenSupply, tokenDecimals, tokenDevFee, tokenBurnFee);
+ // const token = await Token.deployed();
+ // await deployer.deploy(Presale, token.address, tokenUSD, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime);
+ // const presale = await Presale.deployed();
  await deployer.deploy(Airdrop, token.address, airdropAmount);
  const airdrop = await Airdrop.deployed();
- await deployer.deploy(Pool, token.address, poolTokensPerBlock);
- const pool = await Pool.deployed();
- airdrop.start(airdropTime);
+ // await deployer.deploy(Pool, token.address, poolTokensPerBlock);
+ // const pool = await Pool.deployed();
+ // airdrop.start(airdropTime);
 
  // TODO: THE FOLLOWING TOKEN FUNCTIONS WORK ONLY IF A NEW TOKEN IS DEPLOYED, NOT WITH JUST ADDRESS
- token.setTaxExclusion(airdrop.address, true);
- token.setTaxExclusion(presale.address, true);
- token.transfer(presale.address, '98000000000000000000000000'); // 98 000 000
- token.transfer(airdrop.address, '1000000000000000000000000'); // 1 000 000
- token.transfer(pool.address, '1000000000000000000000000'); // 1 000 000
+ // token.setTaxExclusion(airdrop.address, true);
+ // token.setTaxExclusion(presale.address, true);
+ // token.transfer(presale.address, '98000000000000000000000000'); // 98 000 000
+ // token.transfer(airdrop.address, '1000000000000000000000000'); // 1 000 000
+ // token.transfer(pool.address, '1000000000000000000000000'); // 1 000 000
 };

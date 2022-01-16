@@ -21,7 +21,6 @@ export class AirdropComponent implements OnInit, OnDestroy {
   airdropsCount: number = -1;
   totalClaimed: number = -1;
   constructor(private web3ModalService: Web3ModalService) { 
-
   }
 
   ngOnDestroy(): void {
@@ -44,13 +43,13 @@ export class AirdropComponent implements OnInit, OnDestroy {
   }
 
   token(): string{
-    if(!AppState.token.isReady())
+    if(!this.tokenInstance().isReady())
       return "";
-    return AppState.token.name + " (" + AppState.token.symbol + ")"
+    return this.tokenInstance().name + " (" + this.tokenInstance().symbol + ")"
   }
 
   tokenSymbol(): string{
-    return AppState.token.symbol;
+    return this.tokenInstance().symbol;
   }
 
   airdropTokenAddress() : string{
@@ -62,7 +61,7 @@ export class AirdropComponent implements OnInit, OnDestroy {
   }
 
   tokenAddress(): string{
-    return AppState.token.address;
+    return this.tokenInstance().address;
   }
 
   airdropTimeout(): number{
@@ -83,17 +82,35 @@ export class AirdropComponent implements OnInit, OnDestroy {
   }
 
   isAirdropPossible(): boolean{
-    if(this.airdropRecieved() || this.airdropsTotal() == null || this.remainingTokens < this.amountOfTokens)
+    if(this.airdropRecieved() || 
+      this.airdropsTotal() == null || 
+      this.remainingTokens < this.amountOfTokens || 
+      this.timestampToTimeout(this.airdropTimeout()) <= 0 ||
+      this.airdropTimeout() == 0
+    )
       return false;
     return true;
   }
-  
+  airdropError : string | null = null;
+  airdropLoading: boolean = false;
   airDropClick(){
+    if(this.airdropLoading)
+      return;
+    this.airdropError = null;
+    this.airdropLoading = true;
     this.web3ModalService.airdrop().then((transaction: ethers.Transaction) => {
       this.airdropTransctionHash = transaction.hash;
       AppState.airdropRecieved = true;
     }, (error: any) => {
+      if(error.data != null && error.data.message != null)
+        this.airdropError = error.data.message;
+      else if(error.message != null)
+        this.airdropError = error.message;
+      else
+        this.airdropError = error;
       //console.log(error);
+    }).finally(() => {
+      this.airdropLoading = false;
     });
   }
 

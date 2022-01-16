@@ -15,10 +15,6 @@
             margin: 0 auto;
             width: 400px;
             max-width: 100%;
-            height: 3em;
-            app-loader{
-                font-size: 0.08em;
-            }
         }
     }
     td {
@@ -30,22 +26,9 @@
         }
     }
     .error{
-        margin-top: 10px;
         background: #FF7979;
     }
     table{
         background: transparent;
-    }
-    countdown ::ng-deep .item{
-        background-color: #1095C1;
-        text-align: center;
-        width: 2.65em;
-        display:inline-block;
-        margin-right: 4px;
-        border-radius: 5px;
-        font-size: 0.9em;
-        color: #fff;
-        height: 1.8em;
-        line-height: 1.8em;
     }
 }

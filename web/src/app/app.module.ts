@@ -6,6 +6,7 @@ import { LoaderComponent } from 'src/component/loader/loader.component';
 import { OnlyNumbers } from 'src/directive/only-numbers.directive';
 import { AirdropComponent } from 'src/pages/airdrop/airdrop.component';
 import { HomepageComponent } from 'src/pages/homepage/homepage.component';
+import { PoolComponent } from 'src/pages/pool/pool.component';
 import { PresaleComponent } from 'src/pages/presale/presale.component';
 import { WhitepaperComponent } from 'src/pages/whitepaper/whitepaper.component';
 import { AddressLinkPipe } from 'src/pipe/addressLink.pipe';
@@ -22,6 +23,7 @@ import { AppComponent } from './app.component';
     HomepageComponent,
     AirdropComponent,
     PresaleComponent,
+    PoolComponent,
     WhitepaperComponent,
     LoaderComponent,
     AddTokenToWalletComponent,

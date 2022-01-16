@@ -14,18 +14,20 @@ import { ethers } from 'ethers';
 export class HomepageComponent implements OnInit, OnDestroy {
   initialized: boolean = false;
   subscription: Subscription | null = null;
+  stateToken : StateToken;
 
-  constructor(private web3ModalService: Web3ModalService) { 
-
+  constructor() { 
+    this.stateToken = new StateToken("/assets/token.png", Config.main.tokenAddress);
   }
 
   ngOnInit(): void {
-    this.loadData();
+    /*
     this.subscription = interval(Config.main.updateInterval * 1000)
     .pipe(takeWhile(() => this.initialized))
     .subscribe(() => {
       this.loadData();
     });
+    */
   }
 
   ngOnDestroy(): void {
@@ -37,26 +39,22 @@ export class HomepageComponent implements OnInit, OnDestroy {
   }
 
   tokenInstance(): StateToken{
-    return AppState.token;
+    return this.stateToken;
   }
 
   token(): string{
-    if(!AppState.token.isReady())
+    if(!this.tokenInstance().isReady())
       return "";
-    if(AppState.token.totalSupply == -1 || (AppState.token.balance == -1 && this.walletConnected()))
+    if(this.tokenInstance().totalSupply == -1 || (this.tokenInstance().balance == -1 && this.walletConnected()))
       this.loadData();
-    return AppState.token.name + " (" + AppState.token.symbol + ")"
+    return this.tokenInstance().name + " (" + this.tokenInstance().symbol + ")"
   }
 
   private loadData(){
-    if(AppState.token.totalSupply == -1)
-      AppState.token.updateTotalSupply();
-    AppState.token.updateBalance();
-    AppState.token.updateBurned();
-  }
-
-  presale() : IPresale{
-    return AppState.getPresale();
+    if(this.tokenInstance().totalSupply == -1)
+      this.tokenInstance().updateTotalSupply();
+    this.tokenInstance().updateBalance();
+    this.tokenInstance().updateBurned();
   }
 }
 

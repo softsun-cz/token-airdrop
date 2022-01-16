@@ -164,7 +164,7 @@
         Claimed: 
     </th>
     <td class="check">
-        <input #tokenOurAddress (keyup)="checkClaimedResult = -1" (change)="checkClaimedResult = -1" [attr.disabled]="checkClaimedLoading ? 'disabled' : null" placeholder="Wallet address" value="{{walletAddress()}}" /> 
+        <input #tokenOurAddress (keyup)="checkClaimedResult = -1; checkClaimedError = null" (change)="checkClaimedResult = -1; checkClaimedError = null" [attr.disabled]="checkClaimedLoading ? 'disabled' : null" placeholder="Wallet address" value="{{walletAddress()}}" /> 
         <button (click)="checkClaimed(tokenOurAddress.value)">
           <span *ngIf="!checkClaimedLoading">Check</span>
           <app-loader *ngIf="checkClaimedLoading" class="center"></app-loader>
@@ -182,7 +182,7 @@
         Claimable: 
     </th>
     <td class="check">
-        <input #tokenOurAddress (keyup)="checkClaimableResult = -1" (change)="checkClaimableResult = -1" [attr.disabled]="checkClaimableLoading ? 'disabled' : null" placeholder="Wallet address" value="{{walletAddress()}}" /> 
+        <input #tokenOurAddress (keyup)="checkClaimableResult = -1; checkClaimableError = null" (change)="checkClaimableResult = -1; checkClaimableError = null" [attr.disabled]="checkClaimableLoading ? 'disabled' : null" placeholder="Wallet address" value="{{walletAddress()}}" /> 
         <button (click)="checkClaimable(tokenOurAddress.value)">
           <span *ngIf="!checkClaimableLoading">Check</span>
           <app-loader *ngIf="checkClaimableLoading" class="center"></app-loader>
@@ -238,13 +238,16 @@
       Deposited: 
     </th>
     <td class="check">
-      <input #tokenTheirAddress (keyup)="checkDepositedResult = -1" (change)="checkDepositedResult = -1" [attr.disabled]="checkDepositedLoading ? 'disabled' : null" placeholder="Wallet address" value="{{walletAddress()}}" /> 
+      <input #tokenTheirAddress (keyup)="checkDepositedResult = -1; checkDepositedError = null" (change)="checkDepositedResult = -1; checkDepositedError = null" [attr.disabled]="checkDepositedLoading ? 'disabled' : null" placeholder="Wallet address" value="{{walletAddress()}}" /> 
       <button (click)="checkDeposited(tokenTheirAddress.value)">
         <span *ngIf="!checkDepositedLoading">Check</span>
         <app-loader *ngIf="checkDepositedLoading" class="center"></app-loader>
       </button>
       <div *ngIf="checkDepositedResult != -1" class="result">
           {{checkDepositedResult}} {{this.presale().tokenTheir.symbol}}
+      </div>
+      <div *ngIf="checkDepositedError != null" class="resultError">
+        {{checkDepositedError}}
       </div>
     </td> 
   </tr>
@@ -281,7 +284,7 @@
   </tr>
   <tr *ngIf="presale().tokenTheir.isReady() && walletSigned() && ispresaleApproved() == false">
     <th>
-      Approve Presale Contract: 
+      Buy token: 
     </th>
     <td>
       <button (click)="presaleApprove()">

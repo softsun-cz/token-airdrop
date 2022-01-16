@@ -1,13 +1,8 @@
 TODO:
-- Web - presale - dole u kalkulacky je pred approvnutim label approve contract... lidi by nevedeli, proc by to meli approvovat - pls prepsat na "Buy token" (pred i po approve)
-- Web - presale - kdyz u claimed a claimable zadam spatnou adresu nebo nezadam zadnou, tak to hazi strasne divnej dlouhej error. Stacilo by tam dat "Error: Wrong wallet address"
-- Web - presale - u their token - deposited se jen toci kolecko, kdyz nezadam zadnou adresu nebo zadam spatnou adresu
-- Web - airdrop - pokud neni jeste spusten airdrop, tak tlacitko Get your free TAX tokens nic nenapise
-- Web - airdrop - udelat taky tak pekny pocitadlo, jako, jako je na presale (ted je tam jen text ve tvaru 02m44s)
-- Web - airdrop - kdyz po konci airdropu dam tlacitko Get your free TAX tokens, tak nenapise nic... asi skryt, kdyz airdrop skonci
-- Web - homepage - u tokenu pridat ikonu lisky - pridani ikony do MetaMasku
-- Web - homepage - do config.ts pridat adresu tokenu (nebrat z airdropu)
-- Web - pridat Pool stranku a otestovat (podobne, jako u rich piga, akorat je tam jen jeden pool a omezena emise - ta by se mela zobrazit taky)
+- Web - config.ts - zmenit tokenAddress za addressToken (at je to jednotny, kvuli skriptu, kterym to menim)
+- Web - presale - Their token - "Buy token" se zobrazuje jen kdyz neni approvenuto, jinak je tam "Amount" - na tom radku ma byt vzdy "Buy token:"
+- Web - presale - Nechat radek "Buy token" i kdyz neni connectnuta penezenka, jen tam dat napis vedle toho "Wallet not connected"
+- Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga, akorat je tam jen jeden pool a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
 - Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Presale, Airdrop)

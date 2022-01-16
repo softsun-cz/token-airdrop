@@ -14,10 +14,24 @@ export class StateToken {
     burned: number = -1;
 
     private approvedAddreses: Array<string> = new Array<string>();
-    constructor(icon: string = ""){
+    constructor(icon: string = "", address: string = ""){
         if(icon != "")
             this.icon  = location.protocol + "//" + location.host + icon;
+        if(address != "")
+            this.initialize(address);
     }
+
+    public initialize(address: string ){
+        this.address = address;
+        const contract = this.getContract(false);
+        if(contract) {
+            const that = this
+            contract.name().then((value: string) => { that.name = value; });
+            contract.symbol().then((value: string) => { that.symbol = value; });
+            contract.decimals().then((value: BigNumber) => { that.decimals = value.toNumber(); });
+        }
+    }
+
     private getContract(signed: boolean = true) : Contract | null{
         if(Web3ModalService.instance == null)
             return null;

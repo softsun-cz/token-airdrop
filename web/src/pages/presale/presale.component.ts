@@ -70,6 +70,10 @@ export class PresaleComponent implements OnInit {
     if(this.checkClaimedLoading)
       return;
     this.checkClaimedResult = -1;
+    if(!ethers.utils.isAddress(address)){
+      this.checkClaimedError = "Error: Wrong wallet address";
+      return;
+    }
     this.checkClaimedLoading = true;
     this.checkClaimedError = null;
     this.web3ModalSevice.presaleClaimed(address).then(value => {
@@ -88,6 +92,10 @@ export class PresaleComponent implements OnInit {
     if(this.checkClaimedLoading)
       return;
     this.checkClaimableResult = -1;
+    if(!ethers.utils.isAddress(address)){
+      this.checkClaimableError = "Error: Wrong wallet address";
+      return;
+    }
     this.checkClaimableLoading = true; 
     this.checkClaimableError = null;
     this.web3ModalSevice.presaleClaimeable(address).then(value => {
@@ -101,13 +109,22 @@ export class PresaleComponent implements OnInit {
 
   checkDepositedResult: number = -1;
   checkDepositedLoading: boolean = false;
+  checkDepositedError: string | null = null;
   checkDeposited(address: string){
     if(this.checkDepositedLoading)
       return;
     this.checkDepositedResult = -1;
+    if(!ethers.utils.isAddress(address)){
+      this.checkDepositedError = "Error: Wrong wallet address";
+      return;
+    }
     this.checkDepositedLoading = true;
+    this.checkDepositedError = null;
     this.web3ModalSevice.presaleDeposited(address).then(value => {
       this.checkDepositedResult = value;
+    }).catch(reson => {
+      this.checkDepositedError = reson;
+    }).finally(() => {
       this.checkDepositedLoading = false;
     });
   }

@@ -49,7 +49,6 @@ export class Web3ModalService {
 
     this.presaleNotLoggedContract = new ethers.Contract(Config.main.addressPresale, Config.main.presaleContractInterface, this.notLoggedProvider);
     this.initializePresale();
-    
     this.tryConnect();
   }
 
@@ -302,9 +301,13 @@ export class Web3ModalService {
   }
 
    presaleDeposited(address: string) : Promise<number>{
-    return new Promise(async (resolve) => {
-       const ret: BigNumber = await this.presaleNotLoggedContract.deposited(address);
-       resolve(AppState.reduceTheirDecimals(ret));
+    return new Promise(async (resolve, reject) => {
+      try{
+        const ret: BigNumber = await this.presaleNotLoggedContract.deposited(address);
+        resolve(AppState.reduceTheirDecimals(ret));
+      } catch(e){
+        reject(e);
+      }
     });
   }
 

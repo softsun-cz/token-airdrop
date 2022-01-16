@@ -20,9 +20,10 @@ export class Config {
         getHexChainId() : string{
             return "0x" +Config.main.chainID.toString(16);
         },       
-        addressAirdrop: '0xA36d81D829DFB0074c387E39B1e99A3E9892c2AE',
+        tokenAddress: "0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D",
+        addressAirdrop: '0x0f74d838E9d2543735CB10eEbDE1f9ec43C049ce',
         addressPresale: '0xaf945B5F836474009A08142120c8Bd3044Af1BCA',
-
+        addressPool: '0xF8D6aB0Ccc2459AaeA156ec7818DF2c61e0d3a83',
         airdropContractInterface: [] = [
             "function claimCount () view returns (uint)",
             //"event Transfer(address indexed from, address indexed to, uint amount)",
