@@ -13,4 +13,4 @@ if [ "$#" -eq 0 ]; then
   echo ""
   exit 1
 fi
-truffle run verify $@ --network polygonTestnet
+truffle run verify $@ --network polygonTestnet | tee -a ./log_polygon_testnet.txt

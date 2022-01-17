@@ -13,4 +13,4 @@ if [ "$#" -eq 0 ]; then
   echo ""
   exit 1
 fi
-truffle run verify $@ --network bscTestnet
+truffle run verify $@ --network bscTestnet | tee -a ./log_bsc_testnet.txt

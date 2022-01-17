@@ -6,10 +6,19 @@ const api_key_polygonscan = fs.readFileSync(".apikey_polygonscan").toString().tr
 
 module.exports = {
   networks: {
-    development: {
-      host: "127.0.0.1",     // Localhost (default: none)
-      port: 8545,            // Standard BSC port (default: none)
-      network_id: "*",       // Any network (default: none)
+    polygonTestnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://matic-mumbai.chainstacklabs.com`),
+      network_id: 80001,
+      confirmations: 1,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    polygonMainnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.quiknode.pro`),
+      network_id: 137,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
     },
     bscTestnet: {
       provider: () => new HDWalletProvider(mnemonic, `https://data-seed-prebsc-1-s1.binance.org:8545`),
@@ -25,29 +34,18 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true
     },
-    polygonTestnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://matic-mumbai.chainstacklabs.com`),
-      network_id: 80001,
-      confirmations: 1,
-      timeoutBlocks: 200,
-      skipDryRun: true
-    },
-    polygonMainnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.quiknode.pro`),
-      network_id: 137,
-      confirmations: 10,
-      timeoutBlocks: 200,
-      skipDryRun: true
+    development: {
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 8545,            // Standard BSC port (default: none)
+      network_id: "*",       // Any network (default: none)
     },
   },
 
-  // Set default mocha options here, use special reporters etc.
   mocha: {
-    // timeout: 100000
   },
   compilers: {
     solc: {
-      version: "^0.8.11", // A version or constraint - Ex. "^0.5.0"
+      version: "^0.8.11",
     }
   },
   plugins: [

@@ -1,3 +1,5 @@
+#!/bin/sh
+
 LOG=log_polygon_mainnet.txt
 BUILD=build/
 NETWORK=polygonMainnet
