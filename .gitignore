@@ -7,7 +7,6 @@
 /test/
 /bin/*
 /accounts.json
-log_*.txt
 *.log
 .secret
 .apikey_*
