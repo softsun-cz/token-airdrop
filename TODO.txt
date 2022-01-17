@@ -12,6 +12,5 @@ TODO:
 
 - Predelat build script - nacist pres shell, co se deploynulo, pak dat dotaz, pak automaticky verify, pak se zeptat na update build webu
 
-
 Napady:
 - Airdrop Telegram bot (mozna)
