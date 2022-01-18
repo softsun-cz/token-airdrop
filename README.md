@@ -5,8 +5,7 @@
 3. Edit .apikey_* files and add your api keys on the first line of each file (* means block explorer name, e.g.: polygonscan, bscscan ...)
 4. > yarn install
 5. > edit ./migrations/2_deploy_contracts.js and set variables
-6. > ./deploy_[NETWORK NAME]_[NETWORK].sh
-7. > ./verify_[NETWORK NAME]_[NETWORK].sh [CONTRACT NAME 1] [CONTRACT NAME 2] ...
+6. > ./deploy.sh
 
 # Used dependencies
 
@@ -19,6 +18,5 @@
 
 # Web page:
 1. cd ./web
-2. edit ./src/config.ts and paste your contract addresses
-3. edit ./build.sh and set a different web root where you'd like to deploy your web page
-4. ./build.sh
+2. edit ./build.sh and set a different web root where you'd like to deploy your web page
+3. ./build.sh

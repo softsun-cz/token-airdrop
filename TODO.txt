@@ -1,5 +1,5 @@
 TODO:
-- Web - config.ts - zmenit tokenAddress za addressToken (at je to jednotny, kvuli skriptu, kterym to menim)
+- Web - config.ts - zmenit tokenAddress za addressToken (at je to jednotny, kvuli deploy skriptu)
 - Web - presale - Their token - "Buy token" se zobrazuje jen kdyz neni approvenuto, jinak je tam "Amount" - na tom radku ma byt vzdy "Buy token:"
 - Web - presale - Nechat radek "Buy token" i kdyz neni connectnuta penezenka, jen tam dat napis vedle toho "Wallet not connected"
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga, akorat je tam jen jeden pool a omezena emise - ta by se mela zobrazit taky)
