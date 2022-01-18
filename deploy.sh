@@ -3,7 +3,6 @@
 BUILD=build/
 LOG=deploy.log
 NETWORKS=`node deploy-networks.js`
-CONTRACTS=`node deploy-contracts.js`
 echo ''
 echo '---------------------------'
 echo 'List of available networks:'
@@ -35,6 +34,7 @@ if [ -d "$BUILD" ]; then
 fi
 truffle deploy --network $NETWORK 2>&1 | tee $LOG
 
+CONTRACTS=`node deploy-contracts.js`
 ARRAY=($CONTRACTS)
 sw=false
 for i in "${!ARRAY[@]}"
