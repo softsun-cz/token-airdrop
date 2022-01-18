@@ -10,7 +10,5 @@ TODO:
 - Token contract - pridat likvidity tax (nejak pres router ziskat LP adresu) - nevyhoda - snizuje hodnotu tokenu (je pred pridanim likvidity potreba koupit za polovinu druhy token)
 - Pool contract - napsat tak, aby bylo mozne vytvorit vice poolu - kazdy pool bude mit vlastni pocet tokenu, ktere emituje v bloku
 
-- Predelat build script - nacist pres shell, co se deploynulo, pak dat dotaz, pak automaticky verify, pak se zeptat na update build webu
-
 Napady:
 - Airdrop Telegram bot (mozna)
