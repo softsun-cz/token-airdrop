@@ -20,6 +20,7 @@ contract Presale is Ownable, ReentrancyGuard {
     uint256 public totalDeposited;
     uint256 public totalClaimed;
     uint256 public totalClaimable;
+    uint256 public tokenTheirMax;
     ERC20 public tokenOur;
     ERC20 public tokenTheir;
     address public devAddress;
@@ -40,9 +41,10 @@ contract Presale is Ownable, ReentrancyGuard {
     uint256 MAX_INT = 2**256 - 1;
     bool liquidityCreated = false;
 
-    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, uint256 _tokenPricePresale, uint256 _tokenPriceLiquidity, uint256 _depositTime, uint256 _claimTime) {
+    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, uint256 _tokenPricePresale, uint256 _tokenPriceLiquidity, uint256 _depositTime, uint256 _claimTime, uint256 _tokenTheirMax) {
         tokenOur = ERC20(_tokenOurAddress);
         tokenTheir = ERC20(_tokenTheirAddress);
+        tokenTheirMax = _tokenTheirMax;
         routerAddress = _routerAddress;
         tokenPricePresale = _tokenPricePresale;
         tokenPriceLiquidity = _tokenPriceLiquidity;
@@ -56,6 +58,7 @@ contract Presale is Ownable, ReentrancyGuard {
         uint256 allowance = tokenTheir.allowance(msg.sender, address(this));
         require(allowance >= _amount, 'deposit: Allowance is too low');
         require(block.timestamp <= depositTimeOut, 'deposit: Deposit period already timed out');
+        require(totalDeposited + _amount > tokenTheirMax, 'deposit: Maximum deposit amount exceeded.');
         uint256 toClaim = (_amount * 10**tokenTheir.decimals()) / tokenPricePresale;
         require(totalClaimable + toClaim <= getRemainableTokens(), 'deposit: Not enough tokens in this contract');
         require(tokenTheir.transferFrom(msg.sender, address(this), _amount));

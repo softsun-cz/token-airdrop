@@ -17,6 +17,7 @@ module.exports = async function(deployer) {
  const presalePriceLiquidity = '2000000000000000000'; // 2 USD
  const presaleDepositTime = '600'; // 10 minutes
  const presaleClaimTime = '900'; // 15 minutes
+ const presaleTokenTheirMax = '500000000000000000000000'; // 500 000 USD
  const poolTokensPerBlock = '100000000000000000'; // 0.1 tokens / block
  const tokenName = 'Test token';
  const tokenSymbol = 'TEST';
@@ -27,10 +28,10 @@ module.exports = async function(deployer) {
 
  // await deployer.deploy(Token, tokenName, tokenSymbol, tokenSupply, tokenDecimals, tokenDevFee, tokenBurnFee);
  // const token = await Token.deployed();
- // await deployer.deploy(Presale, token.address, tokenUSD, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime);
- // const presale = await Presale.deployed();
- await deployer.deploy(Airdrop, token.address, airdropAmount);
- const airdrop = await Airdrop.deployed();
+ await deployer.deploy(Presale, token.address, tokenUSD, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
+ const presale = await Presale.deployed();
+ // await deployer.deploy(Airdrop, token.address, airdropAmount);
+ // const airdrop = await Airdrop.deployed();
  // await deployer.deploy(Pool, token.address, poolTokensPerBlock);
  // const pool = await Pool.deployed();
  // airdrop.start(airdropTime);

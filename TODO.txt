@@ -2,13 +2,13 @@ TODO:
 - Web - config.ts - zmenit tokenAddress za addressToken (at je to jednotny, kvuli deploy skriptu)
 - Web - presale - Their token - "Buy token" se zobrazuje jen kdyz neni approvenuto, jinak je tam "Amount" - na tom radku ma byt vzdy "Buy token:"
 - Web - presale - Nechat radek "Buy token" i kdyz neni connectnuta penezenka, jen tam dat napis vedle toho "Wallet not connected"
-- Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga, akorat je tam jen jeden pool a omezena emise - ta by se mela zobrazit taky)
+- Web - presale - pridat tokenTheirMax (Maximalni castka, kterou lze vybrat (v tokenTheir mene) + tam pridat progressbar ukazujici, kolik jsme uz vybrali
+- Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
-- Presale contract - Pridat max. castku, kterou je mozne vybrat (aby bylo dostatek penez pro vytvoreni likvidity) a tim padem nemusime emitovat moc velke mnozstvi tokenu
 - Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Presale, Airdrop)
-- Token contract - pridat likvidity tax (nejak pres router ziskat LP adresu) - nevyhoda - snizuje hodnotu tokenu (je pred pridanim likvidity potreba koupit za polovinu druhy token)
-- Pool contract - napsat tak, aby bylo mozne vytvorit vice poolu - kazdy pool bude mit vlastni pocet tokenu, ktere emituje v bloku
+- Token contract - pridat likvidity tax (nejak pres router ziskat LP adresu)
+- Pool contract - napsat tak, aby bylo mozne vytvorit vice poolu - kazdy pool bude mit vlastni pocet tokenu, ktere emituje v bloku (bude u nej uvedeno), vsechny pooly budou mit spolecne maximum (balanceOf)
 
 Napady:
 - Airdrop Telegram bot (mozna)
