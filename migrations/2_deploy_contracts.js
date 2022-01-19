@@ -17,11 +17,11 @@ module.exports = async function(deployer) {
  const presalePriceLiquidity = '2000000000000000000'; // 2 USD
  const presaleDepositTime = '600'; // 10 minutes
  const presaleClaimTime = '900'; // 15 minutes
- const presaleTokenTheirMax = '500000000000000000000000'; // 500 000 USD
+ const presaleTokenTheirMax = '5000000000000000000000000'; // 5 000 000 USD
  const poolTokensPerBlock = '100000000000000000'; // 0.1 tokens / block
  const tokenName = 'Test token';
  const tokenSymbol = 'TEST';
- const tokenSupply = 100000000; // 100 M
+ const tokenSupply = 10000000; // 10 000 000 tokens
  const tokenDecimals = 18;
  const tokenDevFee = 1;
  const tokenBurnFee = 2;
@@ -39,7 +39,7 @@ module.exports = async function(deployer) {
  // TODO: THE FOLLOWING TOKEN FUNCTIONS WORK ONLY IF A NEW TOKEN IS DEPLOYED, NOT WITH JUST ADDRESS
  // token.setTaxExclusion(airdrop.address, true);
  // token.setTaxExclusion(presale.address, true);
- // token.transfer(presale.address, '98000000000000000000000000'); // 98 000 000
- // token.transfer(airdrop.address, '1000000000000000000000000'); // 1 000 000
- // token.transfer(pool.address, '1000000000000000000000000'); // 1 000 000
+ // token.transfer(presale.address, '7500000000000000000000000'); // 7 500 000
+ // token.transfer(airdrop.address, '500000000000000000000000'); // 500 000
+ // token.transfer(pool.address, '2000000000000000000000000'); // 2 000 000
 };
