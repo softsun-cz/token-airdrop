@@ -1,5 +1,6 @@
 TODO:
 - Web - config.ts - zmenit tokenAddress za addressToken (at je to jednotny, kvuli deploy skriptu)
+- Web - presale - Their token - po approve, kdyz nerefreshnu, tak se sice objevi transaction ID, ale uz ne ta kalkulacka s tlacitkem pro koupeni
 - Web - presale - Their token - "Buy token" se zobrazuje jen kdyz neni approvenuto, jinak je tam "Amount" - na tom radku ma byt vzdy "Buy token:"
 - Web - presale - Nechat radek "Buy token" i kdyz neni connectnuta penezenka, jen tam dat napis vedle toho "Wallet not connected"
 - Web - presale - pridat tokenTheirMax (Maximalni castka, kterou lze vybrat (v tokenTheir mene) + tam pridat progressbar ukazujici, kolik jsme uz vybrali
