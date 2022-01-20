@@ -12,7 +12,7 @@ TODO:
 - Presale contract - spalit LP tokeny v createLiquidity
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
-- Token contract - pridat likvidity tax (sample je primo v Token.sol dole)
+- Token contract - pridat likvidity tax (example je primo v Token.sol dole)
 - Pool contract - napsat tak, aby bylo mozne vytvorit vice poolu - kazdy pool bude mit vlastni pocet tokenu, ktere emituje v bloku (bude u nej uvedeno), vsechny pooly budou mit spolecne maximum (balanceOf)
 
 Napady:

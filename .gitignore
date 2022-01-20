@@ -9,6 +9,7 @@
 /accounts.json
 *.log
 .secret
+.secret_git
 .apikey_*
 yarn.lock
 package-lock.json

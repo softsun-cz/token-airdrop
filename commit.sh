@@ -1,5 +1,9 @@
 #!/bin/sh
 
+REPO=token-airdrop.git
+USER=softsun-cz
+PASS=`cat ./.secret_git`
+
 if [ "$#" -eq 0 ]; then
  echo ""
  echo "------------------------"
@@ -18,5 +22,5 @@ git status
 git add *
 git status
 git commit -m "$1"
-git push
+git push https://$PASS@github.com/$USER/$REPO
 git status
