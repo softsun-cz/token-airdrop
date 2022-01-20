@@ -9,6 +9,7 @@ contract Token is ERC20, Ownable {
     uint256 public burnFee = 1;
     uint256 public devFee = 1;
     address public devAddress;
+    address public burnAddress = 0x000000000000000000000000000000000000dEaD;
     mapping(address => bool) public excludedFromTax;
 
     constructor(string memory _name, string memory _symbol, uint256 _supply, uint256 _decimals, uint256 _devFee, uint256 _burnFee) ERC20(_name, _symbol) {
@@ -16,15 +17,16 @@ contract Token is ERC20, Ownable {
         burnFee = _burnFee;
         devFee = _devFee;
         devAddress = msg.sender;
+        excludedFromTax[msg.sender] = true;
     }
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {
-        if (excludedFromTax[msg.sender] || excludedFromTax[recipient]) {
+        if (excludedFromTax[msg.sender] || excludedFromTax[recipient] || recipient == burnAddress) {
             _transfer(_msgSender(), recipient, amount);
         } else {
             uint burnAmount = amount * burnFee / 100;
             uint devAmount = amount * devFee / 100;
-            _transfer(_msgSender(), 0x000000000000000000000000000000000000dEaD, burnAmount);
+            _transfer(_msgSender(), burnAddress, burnAmount);
             _transfer(_msgSender(), devAddress, devAmount);
             _transfer(_msgSender(), recipient, amount - burnAmount - devAmount);
         }

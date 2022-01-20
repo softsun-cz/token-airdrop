@@ -11,7 +11,6 @@ TODO:
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
-- Token contract - otestovat, jestli jde pridavat a odebirat adresy vyjmuty z dane a jestli fungujou (Presale, Airdrop)
 - Token contract - pridat likvidity tax (nejak pres router ziskat LP adresu)
 - Pool contract - napsat tak, aby bylo mozne vytvorit vice poolu - kazdy pool bude mit vlastni pocet tokenu, ktere emituje v bloku (bude u nej uvedeno), vsechny pooly budou mit spolecne maximum (balanceOf)
 

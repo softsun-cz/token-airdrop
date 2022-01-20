@@ -4,7 +4,7 @@ export class Config {
         project: 'Test Token Airdrop',
         description: 'Claim your Test tokens!',
         updateInterval: 30,
-       
+
         // network: 'https://rpc-mainnet.matic.quiknode.pro', // Polygon (MATIC) - Mainnet
         // explorer: 'https://polygonscan.com/', // Polygon (MATIC) - Mainnet
         // chainID: '137',
@@ -19,11 +19,11 @@ export class Config {
         chainID: 80001,
         getHexChainId() : string{
             return "0x" +Config.main.chainID.toString(16);
-        },       
-        tokenAddress: "0xAD531A13b61E6Caf50caCdcEebEbFA8E6F5Cbc4D",
-        addressAirdrop: '0x0f74d838E9d2543735CB10eEbDE1f9ec43C049ce',
-        addressPresale: '0x25C09269511043bdAD578242245B87E30aF5603F',
-        addressPool: '0xF8D6aB0Ccc2459AaeA156ec7818DF2c61e0d3a83',
+        },
+        tokenAddress: "0x9b6452d8EE8B79605F3F73d04F5f43D7A9Df59A3",
+        addressAirdrop: '0x86541beBa4888f306fb47bc7064314d638Cb4B14',
+        addressPresale: '0x4bF75Ae2C99754AA783e39363e2Db201956809AE',
+        addressPool: '0x64Ad4bd154b405D312FF302c5814517405DF58c3',
         airdropContractInterface: [] = [
             "function claimCount () view returns (uint)",
             //"event Transfer(address indexed from, address indexed to, uint amount)",
@@ -62,7 +62,7 @@ export class Config {
             "function allowance (address, address) view returns (uint)",
             "function approve (address, uint)",
             "function totalSupply () view returns (uint)",
-            "function balanceOf (address) view returns (uint)",            
+            "function balanceOf (address) view returns (uint)",
         ],
     } 
 }
