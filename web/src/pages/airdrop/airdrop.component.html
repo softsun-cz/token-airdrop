@@ -60,7 +60,10 @@
           Airdrops count: 
       </th><td>
           <span *ngIf="airdropsTotal() == null"><app-loader></app-loader></span>
-          <span *ngIf="airdropsTotal() != null">{{this.airdropsCount | numberLocale}} / {{airdropsTotal() | numberLocale}}</span>
+          <div class="center" *ngIf="airdropsTotal() != null">
+              {{this.airdropsCount | numberLocale}} / {{airdropsTotal() | numberLocale}}
+              <app-progress [percent]="airdropsCountPercent()" ></app-progress>
+          </div>
       </td> 
   </tr><tr>
       <th>

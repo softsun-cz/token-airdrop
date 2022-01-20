@@ -74,6 +74,14 @@ export class AirdropComponent implements OnInit, OnDestroy {
     return ((this.remainingTokens  / this.amountOfTokens) + this.airdropsCount);
   }
 
+  airdropsCountPercent() : number{
+    if(this.airdropsTotal() !== null){
+      const t: number = this.airdropsTotal() as number;
+      return Math.floor(this.airdropsCount / (t / 100));
+    }
+    return -1;
+  }
+
   airdropTransctionHash: string | undefined;
   airdropRecieved(): boolean | null{
     if(AppState.badChainId() || this.tokenSymbol() == '')
