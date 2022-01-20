@@ -25,6 +25,14 @@ export class PresaleComponent implements OnInit {
     return AppState.getPresale();
   }
 
+  claimablePercent() : number{
+    if(this.presale().totalClaimable == -1 || this.presale().totalClaimed || !this.presale().tokenOur.isReady())
+      return -1;
+    if(this.presale().totalClaimable == 0)
+      return 100;
+    return Math.floor(this.presale().totalClaimed / (this.presale().totalClaimable / 100));
+  }
+
   progressPercent() : number{
     if(this.presale().tokenTheirMax == -1 || this.presale().totalDeposited || !this.presale().tokenTheir.isReady())
       return -1;

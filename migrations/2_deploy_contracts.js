@@ -29,10 +29,10 @@ module.exports = async function(deployer) {
 
  // await deployer.deploy(Token, tokenName, tokenSymbol, tokenSupply, tokenDecimals, tokenDevFee, tokenBurnFee);
  // const token = await Token.deployed();
- // await deployer.deploy(Presale, token.address, tokenUSD, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
- // const presale = await Presale.deployed();
- await deployer.deploy(Airdrop, token.address, airdropAmount);
- const airdrop = await Airdrop.deployed();
+ await deployer.deploy(Presale, token.address, tokenUSD, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
+ const presale = await Presale.deployed();
+ // await deployer.deploy(Airdrop, token.address, airdropAmount);
+ // const airdrop = await Airdrop.deployed();
  // await deployer.deploy(Pool, token.address, poolTokensPerBlock);
  // const pool = await Pool.deployed();
  airdrop.start(airdropTime);
