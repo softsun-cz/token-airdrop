@@ -59,10 +59,15 @@ export class Web3ModalService {
       contract.name().then((value: string) => { AppState.presale.tokenTheir.name = value; });
       contract.symbol().then((value: string) => { AppState.presale.tokenTheir.symbol = value; });
       const decimalsPromise =contract.decimals().then((value: BigNumber) => { AppState.presale.tokenTheir.decimals = value.toNumber(); });
-      this.presaleNotLoggedContract.tokenPrice().then(async (value: BigNumber) => { 
+      this.presaleNotLoggedContract.tokenPricePresale().then(async (value: BigNumber) => { 
         await decimalsPromise;
         AppState.presale.tokenPrice = AppState.reduceTheirDecimals(value); 
       });
+      this.presaleNotLoggedContract.tokenPriceLiquidity().then(async (value: BigNumber) => { 
+        await decimalsPromise;
+        AppState.presale.tokenPriceLiquidity = AppState.reduceTheirDecimals(value); 
+      });
+
       this.presaleNotLoggedContract.totalDeposited().then(async (value: BigNumber) => { 
         await decimalsPromise;
         AppState.presale.totalDeposited = AppState.reduceTheirDecimals(value); 
