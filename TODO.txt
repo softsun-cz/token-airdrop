@@ -1,12 +1,5 @@
 TODO:
-- Web - config.ts - zmenit tokenAddress za addressToken (at je to jednotny, kvuli deploy skriptu)
-- Web - vsude v tabulkach dat labely jen prvni pismeno velkym (napr. Dev Address: -> Dev address:)
-- Web - presale - nenacita se token price, kvuli prejmenovani tokenPrice -> tokenPricePresale
-- Web - presale - prejmenovat label "Token Price:" na "Presale token price:"
-- Web - presale - pridat tokenPriceLiquidity (Label: Initial exchange token price:)
-- Web - presale - Their token - po approve, kdyz nerefreshnu, tak se sice objevi transaction ID, ale uz ne ta kalkulacka s tlacitkem pro koupeni - mozna to je tou predchozi chybou (jak se nenacita token price)
-- Web - presale - Their token - "Buy token" se zobrazuje jen kdyz neni approvenuto, jinak je tam "Amount" - na tom radku ma byt vzdy "Buy token:"
-- Web - presale - Nechat radek "Buy token" i kdyz neni connectnuta penezenka, jen tam dat napis vedle toho "Wallet not connected"
+- Web - presale - Initial exchange token price - pridat tam taky prepocet do zavorky, stejne jako u Presale token price
 - Web - presale - pridat tokenTheirMax (Maximalni castka, kterou lze vybrat (v tokenTheir mene) + tam pridat progressbar ukazujici, kolik jsme uz vybrali (deposited / tokenTheirMax)
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
