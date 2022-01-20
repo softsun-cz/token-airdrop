@@ -9,6 +9,7 @@ TODO:
 - Web - presale - Nechat radek "Buy token" i kdyz neni connectnuta penezenka, jen tam dat napis vedle toho "Wallet not connected"
 - Web - presale - pridat tokenTheirMax (Maximalni castka, kterou lze vybrat (v tokenTheir mene) + tam pridat progressbar ukazujici, kolik jsme uz vybrali (deposited / tokenTheirMax)
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
+- Presale contract - spalit LP tokeny v createLiquidity
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
 - Token contract - pridat likvidity tax (sample je primo v Token.sol dole)
