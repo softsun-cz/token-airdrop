@@ -1,6 +1,6 @@
 TODO:
-- Web - presale - pridat taky progressbar mezi total claimable a total claimed
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
+- Presale contract - pri claimu (v claim period) to hlasi error (asi kvuli createLiquidity?) - https://mumbai.polygonscan.com/tx/0x83a8d3106740dc1ff03316a985e1451df76702c5ca436917db32850d755a23c9
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
 - Token contract - pridat likvidity tax (example je primo v Token.sol dole)

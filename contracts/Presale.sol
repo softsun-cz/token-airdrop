@@ -60,7 +60,7 @@ contract Presale is Ownable, ReentrancyGuard {
         require(block.timestamp <= depositTimeOut, 'deposit: Deposit period already timed out');
         require(totalDeposited + _amount <= tokenTheirMax, 'deposit: Maximum deposit amount exceeded.');
         uint256 toClaim = (_amount * 10**tokenTheir.decimals()) / tokenPricePresale;
-        require(totalClaimable + toClaim <= getRemainableTokens(), 'deposit: Not enough tokens in this contract');
+        require(totalClaimable + toClaim <= getRemainingTokens(), 'deposit: Not enough tokens in this contract');
         require(tokenTheir.transferFrom(msg.sender, address(this), _amount));
         require(tokenTheir.transfer(address(devAddress), _amount * devFeePercent / 100)); // devFeePercent% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
         deposited[msg.sender] += _amount;
@@ -85,10 +85,6 @@ contract Presale is Ownable, ReentrancyGuard {
 
     function getRemainingTokens() public view returns (uint256) {
         return tokenOur.balanceOf(address(this));
-    }
-
-    function getRemainableTokens() public view returns (uint256) {
-        return getRemainingTokens() - totalClaimable;
     }
 
     function setDevAddress(address _devAddress) public onlyOwner {
