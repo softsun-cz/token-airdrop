@@ -288,12 +288,14 @@ export class Web3ModalService {
 
   presaleTotalClaimable(){
     this.presaleNotLoggedContract.totalClaimable().then((ret: BigNumber) => {
-      AppState.presale.totalClaimable = ret.toNumber();
+      this.reduceNumberDecimals(ret).then(value =>{
+        AppState.presale.totalClaimable = value;
+      })
     });
   }
 
   presaleClaimeable(address: string): Promise<BigNumber>{
-    return this.presaleNotLoggedContract.claimed(address);
+    return this.presaleNotLoggedContract.claimable(address);
   }
 
   airdropTimeout(){

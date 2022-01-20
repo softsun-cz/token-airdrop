@@ -34,7 +34,7 @@ export class PresaleComponent implements OnInit {
   }
 
   progressPercent() : number{
-    if(this.presale().tokenTheirMax == -1 || this.presale().totalDeposited || !this.presale().tokenTheir.isReady())
+    if(this.presale().tokenTheirMax == -1 || this.presale().totalDeposited == -1 || !this.presale().tokenTheir.isReady())
       return -1;
     return Math.floor(this.presale().totalDeposited / (this.presale().tokenTheirMax / 100));
   }
@@ -91,7 +91,7 @@ export class PresaleComponent implements OnInit {
     this.checkClaimedLoading = true;
     this.checkClaimedError = null;
     this.web3ModalSevice.presaleClaimed(address).then(value => {
-      this.checkClaimedResult = value.toNumber();
+      this.checkClaimedResult = AppState.presale.tokenOur.reduceDecimals(value);;
       this.checkClaimedLoading = false;
     }, reject => {
       this.checkClaimedError = reject;
@@ -113,7 +113,7 @@ export class PresaleComponent implements OnInit {
     this.checkClaimableLoading = true; 
     this.checkClaimableError = null;
     this.web3ModalSevice.presaleClaimeable(address).then(value => {
-      this.checkClaimableResult = value.toNumber();
+      this.checkClaimableResult = AppState.presale.tokenOur.reduceDecimals(value);
       this.checkClaimableLoading = false;
     }, reject => {
       this.checkClaimableError = reject;
@@ -184,8 +184,9 @@ export class PresaleComponent implements OnInit {
       this.claimLoading = false;
       this.claimTransactionHash = tr.hash;
     }, (reject) => {
-      console.log(reject);
-      if(reject.message)
+      if(reject.data != null && reject.data.message != null)
+        this.claimError = reject.data.message;
+      else if(reject.message)
         this.claimError = reject.message;
       else
         this.claimError = reject;
