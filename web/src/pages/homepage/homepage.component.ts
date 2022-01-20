@@ -17,7 +17,7 @@ export class HomepageComponent implements OnInit, OnDestroy {
   stateToken : StateToken;
 
   constructor() { 
-    this.stateToken = new StateToken("/assets/token.png", Config.main.tokenAddress);
+    this.stateToken = new StateToken("/assets/token.png", Config.main.addressToken);
   }
 
   ngOnInit(): void {

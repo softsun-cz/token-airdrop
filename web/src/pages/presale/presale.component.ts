@@ -182,6 +182,8 @@ export class PresaleComponent implements OnInit {
   presaleApprovedWaiting: boolean = false;
   presaleApproved: boolean | null = null;
   ispresaleApproved() : boolean | null{
+    if(!this.walletSigned())
+      return false;
     if(this.presaleApproved == null && !this.presaleApprovedWaiting){
       this.presaleApprovedWaiting = true;
       AppState.presale.tokenTheir.isApproved(Config.main.addressPresale).then(value => {

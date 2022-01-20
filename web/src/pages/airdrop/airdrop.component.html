@@ -2,11 +2,11 @@
   <tr><td colspan="2"><h1>Airdrop</h1></td></tr>
   <tr>
     <th>
-      End Time: 
+      End time: 
     </th><td>
         <span *ngIf="airdropTimeout() == -1"><app-loader></app-loader></span>
         <span *ngIf="airdropTimeout() == 0">
-            <span>Not started Yet</span>
+            <span>Not started yet</span>
         </span>
         <span *ngIf="airdropTimeout() > 0">
           <span *ngIf="timestampToTimeout(airdropTimeout()) > 0"><countdown [config]="timeOutConfig(airdropTimeout())"></countdown> | </span>
@@ -27,7 +27,7 @@
   </tr>
   <tr>
       <th>
-          Token Address: 
+          Token address: 
       </th><td>
           <span *ngIf="tokenAddress() == ''"><app-loader></app-loader></span>
           <span *ngIf="tokenAddress() != ''"><a href="{{tokenAddress() | addressLink}}" target="_blank">{{tokenAddress()}}</a></span>
@@ -35,21 +35,21 @@
   </tr>
   <tr>
       <th>
-          Airdrop Contract Address:
+          Airdrop contract address:
       </th><td>
           <span><a href="{{airdropTokenAddress() | addressLink}}" target="_blank">{{airdropTokenAddress()}}</a></span>
       </td> 
   </tr>
   <tr>
       <th>
-          Tokens In Each Airdrop: 
+          Tokens in each airdrop: 
       </th><td>
           <span *ngIf="amountOfTokens == -1"><app-loader></app-loader></span>
           <span *ngIf="amountOfTokens != -1">{{amountOfTokens | numberLocale}} {{tokenSymbol()}}</span>
       </td>
   </tr><tr>
       <th>
-          Remaining Tokens: 
+          Remaining tokens: 
       </th><td>
           <span *ngIf="remainingTokens == -1"><app-loader></app-loader></span>
           <span *ngIf="remainingTokens != -1">{{remainingTokens | numberLocale}} {{tokenSymbol()}}</span>
@@ -57,14 +57,14 @@
   </tr>
   <tr>
       <th>
-          Airdrops Count: 
+          Airdrops count: 
       </th><td>
           <span *ngIf="airdropsTotal() == null"><app-loader></app-loader></span>
           <span *ngIf="airdropsTotal() != null">{{this.airdropsCount | numberLocale}} / {{airdropsTotal() | numberLocale}}</span>
       </td> 
   </tr><tr>
       <th>
-          Total Claimed: 
+          Total claimed: 
       </th><td>
           <span *ngIf="totalClaimed == -1"><app-loader></app-loader></span>
           <span *ngIf="totalClaimed != -1">{{totalClaimed | numberLocale}} {{tokenSymbol()}}</span>

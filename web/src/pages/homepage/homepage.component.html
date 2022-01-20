@@ -13,7 +13,7 @@
     </tr>
     <tr>
         <th>
-              Token Address: 
+              Token address: 
         </th><td>
                 <span *ngIf="token()  == ''"><app-loader></app-loader></span>
                 <span *ngIf="token()  != ''">
@@ -23,7 +23,7 @@
       </tr>
     <tr>
         <th>
-            Total Supply: 
+            Total supply: 
         </th><td>
             <span *ngIf="tokenInstance().totalSupply < 0 || token() == ''"><app-loader></app-loader></span>
             <span *ngIf="tokenInstance().totalSupply >= 0 &&  token() != ''">{{tokenInstance().totalSupply | numberLocale}} {{tokenInstance().symbol}}</span>
@@ -39,7 +39,7 @@
     </tr>
     <tr>
         <th>
-            Circulating Supply: 
+            Circulating supply: 
         </th><td>
             <span *ngIf="tokenInstance().burned < 0 || tokenInstance().totalSupply < 0 || token() == ''"><app-loader></app-loader></span>
             <span *ngIf="tokenInstance().burned >= 0 && tokenInstance().totalSupply >= 0 &&  token() != ''">{{(tokenInstance().totalSupply - tokenInstance().burned) | numberLocale}} {{tokenInstance().symbol}}</span>
@@ -47,9 +47,9 @@
     </tr>
     <tr>
         <th>
-            Your Wallet Balance: 
+            Your wallet balance: 
         </th><td>
-            <span *ngIf="!walletConnected()">Wallet Not Connected</span>
+            <span *ngIf="!walletConnected()">Wallet not connected</span>
             <span *ngIf="walletConnected() && tokenInstance().balance < 0"><app-loader></app-loader></span>
             <span *ngIf="walletConnected() && tokenInstance().balance >= 0">{{tokenInstance().balance | numberLocale}} {{tokenInstance().symbol}}</span>
         </td> 

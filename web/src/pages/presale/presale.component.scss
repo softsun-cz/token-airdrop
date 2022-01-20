@@ -62,6 +62,9 @@
                             font-weight: bold;
                         }
                     }
+                    ~ .result{
+                        margin-top: 10px;
+                    }
                 }
             }
             &.check{

@@ -173,7 +173,8 @@ export interface IPresale {
     remainingTokens: number,
     totalClaimable: number,
     devFeePercent: number;
-    devAddress: string
+    devAddress: string,
+    tokenPriceLiquidity: number
 }
 
 export class AppState {
@@ -246,7 +247,8 @@ export class AppState {
         remainingTokens: -1,
         devFeePercent: -1,
         totalClaimable: -1,
-        devAddress: ""
+        devAddress: "",
+        tokenPriceLiquidity: -1
     }
 }
 
