@@ -67,7 +67,10 @@ export class Web3ModalService {
         await decimalsPromise;
         AppState.presale.tokenPriceLiquidity = AppState.reduceTheirDecimals(value); 
       });
-
+      this.presaleNotLoggedContract.tokenTheirMax().then(async (value: BigNumber) => { 
+        await decimalsPromise;
+        AppState.presale.tokenTheirMax = AppState.reduceTheirDecimals(value); 
+      });
       this.presaleNotLoggedContract.totalDeposited().then(async (value: BigNumber) => { 
         await decimalsPromise;
         AppState.presale.totalDeposited = AppState.reduceTheirDecimals(value); 

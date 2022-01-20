@@ -25,6 +25,12 @@ export class PresaleComponent implements OnInit {
     return AppState.getPresale();
   }
 
+  progressPercent() : number{
+    if(this.presale().tokenTheirMax == -1 || this.presale().totalDeposited || !this.presale().tokenTheir.isReady())
+      return -1;
+    return Math.floor(this.presale().totalDeposited / (this.presale().tokenTheirMax / 100));
+  }
+
   presaleContractAddress(): string{
     return Config.main.addressPresale;
   }

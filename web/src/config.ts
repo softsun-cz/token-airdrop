@@ -42,6 +42,7 @@ export class Config {
             "function depositedCount () view returns (uint)",
             "function tokenPricePresale () view returns (uint)",
             "function tokenPriceLiquidity () view returns (uint)",
+            "function tokenTheirMax () view returns (uint)",
             "function totalDeposited () view returns (uint)",
             "function totalClaimed () view returns (uint)",
             "function totalClaimable () view returns (uint)",
