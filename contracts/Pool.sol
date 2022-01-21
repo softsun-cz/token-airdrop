@@ -63,10 +63,6 @@ contract Pool is Ownable, ReentrancyGuard {
             return;
         }
         uint256 multiplier = block.number - pools[_poolID].lastRewardBlock;
-        // TODO: Prepay this contract with some tokens and add lines checking that there still enough tokens in contract instead of minting.
-
-        // uint256 tokenReward = multiplier * tokenPerBlock;
-        // token.mint(address(this), tokenReward);
         pool.accTokenPerShare += (multiplier * pool.tokensEarnPerBlock) * 10**12 / supply;
         pool.lastRewardBlock = block.number;
     }
