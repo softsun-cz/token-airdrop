@@ -4,7 +4,10 @@ TODO:
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
 - Token contract - pridat likvidity tax (example je primo v Token.sol dole)
-- Pool contract - napsat tak, aby bylo mozne vytvorit vice poolu - kazdy pool bude mit vlastni pocet tokenu, ktere emituje v bloku (bude u nej uvedeno), vsechny pooly budou mit spolecne maximum (balanceOf)
+- Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
+- Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
+- Pool contract - zkontrolovat, jestli je vsechna matematika spravne (kvuli zmene ze safemath) - celkove otestovat
+- Pool contract - pri deployi to hlasi: "Pool" -- Invalid number of parameters for "undefined". Got 0 expected 1!.
 
 Napady:
 - Airdrop Telegram bot (mozna)
