@@ -6,8 +6,9 @@ TODO:
 - Token contract - pridat likvidity tax (example je primo v Token.sol dole)
 - Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
 - Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
-- Pool contract - zkontrolovat, jestli je vsechna matematika spravne (kvuli zmene ze safemath) - celkove otestovat
+- Pool contract - zkontrolovat, jestli je vsechna matematika spravne (kvuli zmene ze safemath) - celkove otestovat, pripadne tam dat zpet SafeMath - https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol
 - Pool contract - pri deployi to hlasi: "Pool" -- Invalid number of parameters for "undefined". Got 0 expected 1!.
+- Pool contract - celkove porovnat s https://github.com/RichPigToken/richpig-contracts/blob/master/contracts/MasterChef.sol
 
 Napady:
 - Airdrop Telegram bot (mozna)
