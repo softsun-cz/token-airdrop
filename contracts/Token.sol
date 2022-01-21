@@ -44,7 +44,7 @@ contract Token is ERC20, Ownable {
 
 /* Liquidity tax example - line 1495 - https://testnet.bscscan.com/address/0x7ba7eed2c4426831d669586d3d611df6fe9d96bc#code
 
- function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {
+    function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {
         // split the contract balance into halves
         uint256 half = contractTokenBalance.div(2);
         uint256 otherHalf = contractTokenBalance.sub(half);

@@ -29,13 +29,14 @@ module.exports = async function(deployer) {
 
  // await deployer.deploy(Token, tokenName, tokenSymbol, tokenSupply, tokenDecimals, tokenDevFee, tokenBurnFee);
  // const token = await Token.deployed();
- await deployer.deploy(Presale, token.address, tokenUSD, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
- const presale = await Presale.deployed();
+ // await deployer.deploy(Presale, token.address, tokenUSD, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
+ // const presale = await Presale.deployed();
  // await deployer.deploy(Airdrop, token.address, airdropAmount);
  // const airdrop = await Airdrop.deployed();
- // await deployer.deploy(Pool, token.address, poolTokensPerBlock);
- // const pool = await Pool.deployed();
- airdrop.start(airdropTime);
+ await deployer.deploy(Pool, token.address, poolTokensPerBlock);
+ const pool = await Pool.deployed();
+ // airdrop.start(airdropTime);
+ // pool.createPool(tokenUSD, token.address, );
 
  // TODO: THE FOLLOWING TOKEN FUNCTIONS WORK ONLY IF A NEW TOKEN IS DEPLOYED, NOT WITH JUST ADDRESS
  //token.setTaxExclusion(airdrop.address, true);
