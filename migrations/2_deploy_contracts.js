@@ -32,6 +32,7 @@ module.exports = async function(deployer) {
  await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, tokenOurLiquidityFee, router, tokenUSD.address);
  const tokenOur = await Token.deployed();
  const pair = await tokenOur.createLiquidity.call();
+ //const pair = pairInstance.call();
  console.log('');
  console.log('-------------------------------------------------');
  console.log('Token: ' + tokenOur.address);
