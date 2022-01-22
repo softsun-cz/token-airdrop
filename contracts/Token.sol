@@ -8,10 +8,8 @@ import './libs/IUniswapV2Router.sol';
 import './libs/IUniswapV2Factory.sol';
 
 contract Token is ERC20, Ownable {
-    bool public liquidityCreated;
     uint256 public burnFee;
     uint256 public devFee;
-    // uint256 public liquidityFee;
     address public devAddress;
     address public routerAddress;
     address public usdAddress;
@@ -23,11 +21,12 @@ contract Token is ERC20, Ownable {
         _mint(msg.sender, _supply * 10**_decimals);
         burnFee = _burnFee;
         devFee = _devFee;
-        // liquidityFee = _liquidityFee;
         routerAddress = _routerAddress;
         usdAddress = _usdAddress;
         devAddress = msg.sender;
         excludedFromTax[msg.sender] = true;
+        address factory = IUniswapV2Router(routerAddress).factory();
+        IUniswapV2Factory(factory).createPair(address(this), address(usdAddress));
     }
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {
@@ -35,11 +34,9 @@ contract Token is ERC20, Ownable {
         else {
             uint burnAmount = amount * burnFee / 100;
             uint devAmount = amount * devFee / 100;
-            // uint liquidityAmount =  amount * liquidityFee / 100;
-            // _transfer(_msgSender(), liquidityAddress, liquidityAmount);
             _transfer(_msgSender(), burnAddress, burnAmount);
             _transfer(_msgSender(), devAddress, devAmount);
-            _transfer(_msgSender(), recipient, amount - burnAmount - devAmount); // - liquidityAmount
+            _transfer(_msgSender(), recipient, amount - burnAmount - devAmount);
         }
         return true;
     }
@@ -52,76 +49,8 @@ contract Token is ERC20, Ownable {
         excludedFromTax[_excludedAddress] = _excluded;
     }
 
-    function createLiquidity() public onlyOwner {
-        require(!liquidityCreated, 'createLiquidity: Liquidity was created already before');
-        address factory = IUniswapV2Router(routerAddress).factory();
-        address pair = IUniswapV2Factory(factory).createPair(address(this), address(usdAddress));
-        require(pair != zeroAddress, 'createLiquidity: Cannot create token pair');
-        liquidityCreated = true;
-    }
-
     function getPairAddress() public view returns (address) {
         address factory = IUniswapV2Router(routerAddress).factory();
         return IUniswapV2Factory(factory).getPair(address(this), address(usdAddress));
     }
 }
-
-/* Liquidity tax example - line 1495 - https://testnet.bscscan.com/address/0x7ba7eed2c4426831d669586d3d611df6fe9d96bc#code
-
-    function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {
-        // split the contract balance into halves
-        uint256 half = contractTokenBalance / 2;
-        uint256 otherHalf = contractTokenBalance.sub(half);
-
-        // capture the contract's current ETH balance.
-        // this is so that we can capture exactly the amount of ETH that the
-        // swap creates, and not make the liquidity event include any ETH that
-        // has been manually sent to the contract
-        uint256 initialBalance = address(this).balance;
-
-        // swap tokens for ETH
-        swapTokensForEth(half); // <- this breaks the ETH -> HATE swap when swap+liquify is triggered
-
-        // how much ETH did we just swap into?
-        uint256 newBalance = address(this).balance - initialBalance;
-
-        // add liquidity to uniswap
-        addLiquidity(otherHalf, newBalance);
-
-        emit SwapAndLiquify(half, newBalance, otherHalf);
-    }
-
-    function swapTokensForEth(uint256 tokenAmount) private {
-        // generate the uniswap pair path of token -> weth
-        address[] memory path = new address[](2);
-        path[0] = address(this);
-        path[1] = uniswapV2Router.WETH();
-
-        _approve(address(this), address(uniswapV2Router), tokenAmount);
-
-        // make the swap
-        uniswapV2Router.swapExactTokensForETHSupportingFeeOnTransferTokens(
-            tokenAmount,
-            0, // accept any amount of ETH
-            path,
-            address(this),
-            block.timestamp
-        );
-    }
-
-    function addLiquidity(uint256 tokenAmount, uint256 ethAmount) private {
-        // approve token transfer to cover all possible scenarios
-        _approve(address(this), address(uniswapV2Router), tokenAmount);
-
-        // add the liquidity
-        uniswapV2Router.addLiquidityETH{value: ethAmount}(
-            address(this),
-            tokenAmount,
-            0, // slippage is unavoidable
-            0, // slippage is unavoidable
-            owner(),
-            block.timestamp
-        );
-    }
-
-    */

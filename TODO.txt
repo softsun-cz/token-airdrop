@@ -3,8 +3,6 @@ TODO:
 - Presale contract - pri claimu (v claim period) to hlasi error (asi kvuli createLiquidity?) - https://mumbai.polygonscan.com/tx/0x83a8d3106740dc1ff03316a985e1451df76702c5ca436917db32850d755a23c9
 - Presale contract - otestovat funkci createLiquidity (zatim je public)
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
-- Token contract - vytvoreni likvidity - kdyz v migration scriptu dam tokenOur.createLiquidity, tak to vrati objekt a nedostanu adresu toho LP paru, kdyz dam tokenOur.createLiquidity.call(), tak to vrati jakousi adresu, ale createLiquidity to nezavola - vice o .call() je tady: https://trufflesuite.com/docs/truffle/getting-started/interacting-with-your-contracts.html
-- Token contract - pridat likvidity tax (example je primo v Token.sol dole) a taky tady: od radku 732 https://github.com/safemoonprotocol/Safemoon.sol/blob/main/Safemoon.sol
 - Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
 - Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
 - Pool contract - zkontrolovat, jestli je vsechna matematika spravne (kvuli zmene ze safemath) - celkove otestovat, pripadne tam dat zpet SafeMath - https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol

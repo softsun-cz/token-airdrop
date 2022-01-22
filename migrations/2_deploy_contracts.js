@@ -5,6 +5,7 @@ const Pool = artifacts.require('Pool');
 
 module.exports = async function(deployer) {
  // const tokenOur = {address: '0x9b6452d8EE8B79605F3F73d04F5f43D7A9Df59A3'};
+ // tokenOurLPAddress = '0xA4A52Ef4f83bfb5fC9661d6B558e144CAC0f1242';
  const tokenUSD = {address: '0xF42a4429F107bD120C5E42E069FDad0AC625F615'};
  // const routerAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'; // pancakeswap.finance (BSC Mainnet)
  // const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3'; // pancake.kiemtienonline360.com (BSC Testnet)
@@ -27,18 +28,10 @@ module.exports = async function(deployer) {
  const tokenOurDecimals = 18;
  const tokenOurBurnFee = 2;
  const tokenOurDevFee = 3;
- // const tokenOurLiquidityFee = 3; // TODO: not used yet
 
  await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, routerAddress, tokenUSD.address);
  const tokenOur = await Token.deployed();
- await tokenOur.createLiquidity();
- const pair = await tokenOur.getPairAddress();
- console.log('');
- console.log('-------------------------------------------------');
- console.log('Token: ' + tokenOur.address);
- console.log('Par: ' + pair);
- console.log('-------------------------------------------------');
-
+ const tokenOurLPAddress = await tokenOur.getPairAddress();
  // await deployer.deploy(Presale, tokenOur.address, tokenUSD.address, routerAddress, devAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
  // const presale = await Presale.deployed();
  // await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
