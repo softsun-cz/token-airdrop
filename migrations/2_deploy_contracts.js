@@ -4,7 +4,7 @@ const Airdrop = artifacts.require('Airdrop');
 const Pool = artifacts.require('Pool');
 
 module.exports = async function(deployer) {
- const tokenOur = {address: '0x9b6452d8EE8B79605F3F73d04F5f43D7A9Df59A3'};
+ // const tokenOur = {address: '0x9b6452d8EE8B79605F3F73d04F5f43D7A9Df59A3'};
  const tokenUSD = {address: '0xF42a4429F107bD120C5E42E069FDad0AC625F615'};
  // const router = '0x10ED43C718714eb63d5aA57B78B54704E256024E'; // pancakeswap.finance (BSC Mainnet)
  // const router = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3'; // pancake.kiemtienonline360.com (BSC Testnet)
@@ -31,6 +31,10 @@ module.exports = async function(deployer) {
 
  await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, router, tokenUSD.address);
  const tokenOur = await Token.deployed();
+ //const pair = await tokenOur.createLiquidity();
+ console.log('Token: ' + tokenOur.address);
+ //console.log('Par: ' + pair.logs);
+
  // await deployer.deploy(Presale, tokenOur.address, tokenUSD.address, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
  // const presale = await Presale.deployed();
  // await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
