@@ -5,6 +5,8 @@ const api_key_bscscan = fs.readFileSync(".apikey_bscscan").toString().trim();
 const api_key_polygonscan = fs.readFileSync(".apikey_polygonscan").toString().trim();
 const api_key_avax = fs.readFileSync(".apikey_avax").toString().trim();
 const api_key_optimism = fs.readFileSync(".apikey_optimism").toString().trim();
+const api_key_fantom = fs.readFileSync(".apikey_ftmscan").toString().trim();
+const api_key_hecoinfo = fs.readFileSync(".apikey_hecoinfo").toString().trim();
 
 module.exports = {
   networks: {
@@ -64,6 +66,34 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true
     },
+    fantomTestnet: {
+        provider: () => new HDWalletProvider(mnemonic, `https://rpc.testnet.fantom.network/`),
+        network_id: 4002,
+        confirmations: 1,
+        timeoutBlocks: 200,
+        skipDryRun: true
+      },
+    fantomMainnet: {
+        provider: () => new HDWalletProvider(mnemonic, `https://rpc.ftm.tools/`),
+        network_id: 250,
+        confirmations: 10,
+        timeoutBlocks: 200,
+        skipDryRun: true
+      },
+    hecoTestnet: {
+        provider: () => new HDWalletProvider(mnemonic, `https://http-testnet.hecochain.com/`),
+        network_id: 256,
+        confirmations: 1,
+        timeoutBlocks: 200,
+        skipDryRun: true
+      },
+    hecoMainnet: {
+        provider: () => new HDWalletProvider(mnemonic, `https://http-mainnet.hecochain.com/`),
+        network_id: 128,
+        confirmations: 10,
+        timeoutBlocks: 200,
+        skipDryRun: true
+      },
     development: {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8545,            // Standard BSC port (default: none)
@@ -85,6 +115,8 @@ module.exports = {
     bscscan: api_key_bscscan,
     polygonscan: api_key_polygonscan,
     snowtrace: api_key_avax,
-    optimistic_etherscan: api_key_optimism
+    optimistic_etherscan: api_key_optimism,
+    ftmscan: api_key_fantom,
+    hecoinfo: api_key_hecoinfo
   }
 }
