@@ -11,7 +11,7 @@ contract Token is ERC20, Ownable {
     bool public liquidityCreated;
     uint256 public burnFee;
     uint256 public devFee;
-    uint256 public liquidityFee;
+    // uint256 public liquidityFee;
     address public devAddress;
     address public routerAddress;
     address public usdAddress;
@@ -19,11 +19,11 @@ contract Token is ERC20, Ownable {
     address public zeroAddress = 0x0000000000000000000000000000000000000000;
     mapping(address => bool) public excludedFromTax;
 
-    constructor(string memory _name, string memory _symbol, uint256 _supply, uint256 _decimals, uint256 _devFee, uint256 _burnFee, uint256 _liquidityFee, address _routerAddress, address _usdAddress) ERC20(_name, _symbol) {
+    constructor(string memory _name, string memory _symbol, uint256 _supply, uint256 _decimals, uint256 _devFee, uint256 _burnFee, address _routerAddress, address _usdAddress) ERC20(_name, _symbol) {
         _mint(msg.sender, _supply * 10**_decimals);
         burnFee = _burnFee;
         devFee = _devFee;
-        liquidityFee = _liquidityFee;
+        // liquidityFee = _liquidityFee;
         routerAddress = _routerAddress;
         usdAddress = _usdAddress;
         devAddress = msg.sender;
@@ -31,14 +31,15 @@ contract Token is ERC20, Ownable {
     }
 
     function transfer(address recipient, uint256 amount) public override returns (bool) {
-        if (excludedFromTax[msg.sender] || excludedFromTax[recipient] || recipient == burnAddress) {
-            _transfer(_msgSender(), recipient, amount);
-        } else {
+        if (excludedFromTax[msg.sender] || excludedFromTax[recipient] || recipient == burnAddress) _transfer(_msgSender(), recipient, amount);
+        else {
             uint burnAmount = amount * burnFee / 100;
             uint devAmount = amount * devFee / 100;
+            // uint liquidityAmount =  amount * liquidityFee / 100;
+            // _transfer(_msgSender(), liquidityAddress, liquidityAmount);
             _transfer(_msgSender(), burnAddress, burnAmount);
             _transfer(_msgSender(), devAddress, devAmount);
-            _transfer(_msgSender(), recipient, amount - burnAmount - devAmount);
+            _transfer(_msgSender(), recipient, amount - burnAmount - devAmount); // - liquidityAmount
         }
         return true;
     }
@@ -51,13 +52,17 @@ contract Token is ERC20, Ownable {
         excludedFromTax[_excludedAddress] = _excluded;
     }
 
-    function createLiquidity() public onlyOwner returns (address) {
+    function createLiquidity() public onlyOwner {
         require(!liquidityCreated, 'createLiquidity: Liquidity was created already before');
         address factory = IUniswapV2Router(routerAddress).factory();
         address pair = IUniswapV2Factory(factory).createPair(address(this), address(usdAddress));
         require(pair != zeroAddress, 'createLiquidity: Cannot create token pair');
         liquidityCreated = true;
-        return pair;
+    }
+
+    function getPairAddress() public view returns (address) {
+        address factory = IUniswapV2Router(routerAddress).factory();
+        return IUniswapV2Factory(factory).getPair(address(this), address(usdAddress));
     }
 }
 
@@ -65,7 +70,7 @@ contract Token is ERC20, Ownable {
 
     function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {
         // split the contract balance into halves
-        uint256 half = contractTokenBalance.div(2);
+        uint256 half = contractTokenBalance / 2;
         uint256 otherHalf = contractTokenBalance.sub(half);
 
         // capture the contract's current ETH balance.
@@ -78,7 +83,7 @@ contract Token is ERC20, Ownable {
         swapTokensForEth(half); // <- this breaks the ETH -> HATE swap when swap+liquify is triggered
 
         // how much ETH did we just swap into?
-        uint256 newBalance = address(this).balance.sub(initialBalance);
+        uint256 newBalance = address(this).balance - initialBalance;
 
         // add liquidity to uniswap
         addLiquidity(otherHalf, newBalance);

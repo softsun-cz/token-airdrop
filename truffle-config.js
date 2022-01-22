@@ -3,6 +3,7 @@ const fs = require('fs');
 const mnemonic = fs.readFileSync(".secret").toString().trim();
 const api_key_bscscan = fs.readFileSync(".apikey_bscscan").toString().trim();
 const api_key_polygonscan = fs.readFileSync(".apikey_polygonscan").toString().trim();
+const api_key_avax = fs.readFileSync(".apikey_avax").toString().trim();
 
 module.exports = {
   networks: {
@@ -34,6 +35,22 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true
     },
+    avaxMainnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed2.binance.org`),
+      network_id: 43114,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+
+    avaxTestnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://api.avax-test.network/ext/bc/C/rpc`),
+      network_id: 43113,
+      confirmations: 1,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+
     development: {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8545,            // Standard BSC port (default: none)

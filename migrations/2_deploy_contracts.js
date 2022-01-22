@@ -6,11 +6,11 @@ const Pool = artifacts.require('Pool');
 module.exports = async function(deployer) {
  // const tokenOur = {address: '0x9b6452d8EE8B79605F3F73d04F5f43D7A9Df59A3'};
  const tokenUSD = {address: '0xF42a4429F107bD120C5E42E069FDad0AC625F615'};
- // const router = '0x10ED43C718714eb63d5aA57B78B54704E256024E'; // pancakeswap.finance (BSC Mainnet)
- // const router = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3'; // pancake.kiemtienonline360.com (BSC Testnet)
- // const router = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff'; // quickswap.exchange (Polygon Mainnet)
- const router = '0x8954AfA98594b838bda56FE4C12a09D7739D179b'; // quickswap.exchange (Polygon Testnet)
- const dev = '0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41';
+ // const routerAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'; // pancakeswap.finance (BSC Mainnet)
+ // const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3'; // pancake.kiemtienonline360.com (BSC Testnet)
+ // const routerAddress = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff'; // quickswap.exchange (Polygon Mainnet)
+ const routerAddress = '0x8954AfA98594b838bda56FE4C12a09D7739D179b'; // quickswap.exchange (Polygon Testnet)
+ const devAddress = '0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41';
  const airdropAmount = '1000000000000000000'; // 1
  const airdropTime = 900; // 15 minutes
  const presalePricePresale = '1000000000000000000'; // 1 USD
@@ -27,23 +27,23 @@ module.exports = async function(deployer) {
  const tokenOurDecimals = 18;
  const tokenOurBurnFee = 2;
  const tokenOurDevFee = 3;
- const tokenOurLiquidityFee = 3; // TODO: not used yet
+ // const tokenOurLiquidityFee = 3; // TODO: not used yet
 
- await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, tokenOurLiquidityFee, router, tokenUSD.address);
+ await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, routerAddress, tokenUSD.address);
  const tokenOur = await Token.deployed();
- const pair = await tokenOur.createLiquidity.call();
- //const pair = pairInstance.call();
+ await tokenOur.createLiquidity();
+ const pair = await tokenOur.getPairAddress();
  console.log('');
  console.log('-------------------------------------------------');
  console.log('Token: ' + tokenOur.address);
  console.log('Par: ' + pair);
  console.log('-------------------------------------------------');
 
- // await deployer.deploy(Presale, tokenOur.address, tokenUSD.address, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
+ // await deployer.deploy(Presale, tokenOur.address, tokenUSD.address, routerAddress, devAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
  // const presale = await Presale.deployed();
  // await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  // const airdrop = await Airdrop.deployed();
- //await deployer.deploy(Pool, dev);
+ //await deployer.deploy(Pool, devAddress);
  //const pool = await Pool.deployed();
  // airdrop.start(airdropTime);
  //pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
