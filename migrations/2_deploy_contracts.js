@@ -27,13 +27,16 @@ module.exports = async function(deployer) {
  const tokenOurDecimals = 18;
  const tokenOurBurnFee = 2;
  const tokenOurDevFee = 3;
- // const tokenLiquidityFee = 3; // TODO: not used yet
+ const tokenOurLiquidityFee = 3; // TODO: not used yet
 
- await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, router, tokenUSD.address);
+ await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, tokenOurLiquidityFee, router, tokenUSD.address);
  const tokenOur = await Token.deployed();
- //const pair = await tokenOur.createLiquidity();
+ const pair = await tokenOur.createLiquidity.call();
+ console.log('');
+ console.log('-------------------------------------------------');
  console.log('Token: ' + tokenOur.address);
- //console.log('Par: ' + pair.logs);
+ console.log('Par: ' + pair);
+ console.log('-------------------------------------------------');
 
  // await deployer.deploy(Presale, tokenOur.address, tokenUSD.address, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
  // const presale = await Presale.deployed();

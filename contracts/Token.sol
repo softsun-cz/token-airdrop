@@ -9,8 +9,9 @@ import './libs/IUniswapV2Factory.sol';
 
 contract Token is ERC20, Ownable {
     bool public liquidityCreated;
-    uint256 public burnFee = 1;
-    uint256 public devFee = 1;
+    uint256 public burnFee;
+    uint256 public devFee;
+    uint256 public liquidityFee;
     address public devAddress;
     address public routerAddress;
     address public usdAddress;
@@ -18,10 +19,11 @@ contract Token is ERC20, Ownable {
     address public zeroAddress = 0x0000000000000000000000000000000000000000;
     mapping(address => bool) public excludedFromTax;
 
-    constructor(string memory _name, string memory _symbol, uint256 _supply, uint256 _decimals, uint256 _devFee, uint256 _burnFee, address _routerAddress, address _usdAddress) ERC20(_name, _symbol) {
+    constructor(string memory _name, string memory _symbol, uint256 _supply, uint256 _decimals, uint256 _devFee, uint256 _burnFee, uint256 _liquidityFee, address _routerAddress, address _usdAddress) ERC20(_name, _symbol) {
         _mint(msg.sender, _supply * 10**_decimals);
         burnFee = _burnFee;
         devFee = _devFee;
+        liquidityFee = _liquidityFee;
         routerAddress = _routerAddress;
         usdAddress = _usdAddress;
         devAddress = msg.sender;
