@@ -29,17 +29,17 @@ module.exports = async function(deployer) {
  const tokenOurDevFee = 3;
  // const tokenLiquidityFee = 3; // TODO: not used yet
 
- // await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee);
- // const tokenOur = await Token.deployed();
+ await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, router, tokenUSD.address);
+ const tokenOur = await Token.deployed();
  // await deployer.deploy(Presale, tokenOur.address, tokenUSD.address, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
  // const presale = await Presale.deployed();
  // await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  // const airdrop = await Airdrop.deployed();
- await deployer.deploy(Pool, dev);
- const pool = await Pool.deployed();
+ //await deployer.deploy(Pool, dev);
+ //const pool = await Pool.deployed();
  // airdrop.start(airdropTime);
- pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
- pool.createPool(tokenUSD.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
+ //pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
+ //pool.createPool(tokenUSD.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
  // TODO: get LP address from token
  //pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
 
