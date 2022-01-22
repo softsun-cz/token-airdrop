@@ -4,6 +4,7 @@ const mnemonic = fs.readFileSync(".secret").toString().trim();
 const api_key_bscscan = fs.readFileSync(".apikey_bscscan").toString().trim();
 const api_key_polygonscan = fs.readFileSync(".apikey_polygonscan").toString().trim();
 const api_key_avax = fs.readFileSync(".apikey_avax").toString().trim();
+const api_key_optimism = fs.readFileSync(".apikey_optimism").toString().trim();
 
 module.exports = {
   networks: {
@@ -35,14 +36,6 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true
     },
-    avaxMainnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed2.binance.org`),
-      network_id: 43114,
-      confirmations: 10,
-      timeoutBlocks: 200,
-      skipDryRun: true
-    },
-
     avaxTestnet: {
       provider: () => new HDWalletProvider(mnemonic, `https://api.avax-test.network/ext/bc/C/rpc`),
       network_id: 43113,
@@ -50,7 +43,27 @@ module.exports = {
       timeoutBlocks: 200,
       skipDryRun: true
     },
-
+    avaxMainnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed2.binance.org`),
+      network_id: 43114,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    optimismTestnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://kovan.optimism.io/`),
+      network_id: 69,
+      confirmations: 1,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
+    optimismMainnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://mainnet.optimism.io`),
+      network_id: 10,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
     development: {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8545,            // Standard BSC port (default: none)
@@ -70,6 +83,8 @@ module.exports = {
   ],
   api_keys: {
     bscscan: api_key_bscscan,
-    polygonscan: api_key_polygonscan
+    polygonscan: api_key_polygonscan,
+    snowtrace: api_key_avax
+    optimism: api_key_optimism
   }
 }
