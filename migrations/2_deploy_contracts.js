@@ -31,7 +31,7 @@ module.exports = async function(deployer) {
 
  // await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee);
  // const tokenOur = await Token.deployed();
- // await deployer.deploy(Presale, tokenOur.address, tokenUSD, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
+ // await deployer.deploy(Presale, tokenOur.address, tokenUSD.address, router, dev, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
  // const presale = await Presale.deployed();
  // await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  // const airdrop = await Airdrop.deployed();
