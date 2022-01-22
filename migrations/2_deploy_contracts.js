@@ -27,7 +27,7 @@ module.exports = async function(deployer) {
  const tokenOurDecimals = 18;
  const tokenOurBurnFee = 2;
  const tokenOurDevFee = 3;
- // const tokenLiquidityFee = 3; // not used yet
+ // const tokenLiquidityFee = 3; // TODO: not used yet
 
  // await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee);
  // const tokenOur = await Token.deployed();
@@ -35,12 +35,13 @@ module.exports = async function(deployer) {
  // const presale = await Presale.deployed();
  // await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  // const airdrop = await Airdrop.deployed();
- await deployer.deploy(Pool);
+ await deployer.deploy(Pool, dev);
  const pool = await Pool.deployed();
  // airdrop.start(airdropTime);
  pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
- pool.createPool(tokenUSD.address, tokenOur.address, poolTokensUSDPerBlock, 4); // BUSD -> Our
- pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
+ pool.createPool(tokenUSD.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
+ // TODO: get LP address from token
+ //pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
 
  // TODO: THE FOLLOWING TOKEN FUNCTIONS WORK ONLY IF A NEW TOKEN IS DEPLOYED, NOT WITH JUST ADDRESS
  //tokenOur.setTaxExclusion(airdrop.address, true);
