@@ -84,7 +84,7 @@ module.exports = {
   api_keys: {
     bscscan: api_key_bscscan,
     polygonscan: api_key_polygonscan,
-    snowtrace: api_key_avax
-    optimism: api_key_optimism
+    snowtrace: api_key_avax,
+    optimistic_etherscan: api_key_optimism
   }
 }
