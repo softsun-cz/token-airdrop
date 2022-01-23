@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import './IUniswapV2Router.sol';
-import './IUniswapV2Factory.sol';
+import './libs/IUniswapV2Router.sol';
+import './libs/IUniswapV2Factory.sol';
 
 contract LiquidityManager {
     address public burnAddress = 0x000000000000000000000000000000000000dEaD;
