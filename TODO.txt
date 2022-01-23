@@ -1,12 +1,11 @@
 TODO:
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
-+ Presale contract - pri claimu (v claim period) to hlasi error (asi kvuli createLiquidity?) - https://mumbai.polygonscan.com/tx/0x83a8d3106740dc1ff03316a985e1451df76702c5ca436917db32850d755a23c9
-- Presale contract - otestovat funkci createLiquidity (zatim je public)
+- Presale contract - pri claimu (v claim period) to hlasi error (asi kvuli createLiquidity?) - https://mumbai.polygonscan.com/tx/0x83a8d3106740dc1ff03316a985e1451df76702c5ca436917db32850d755a23c9
+- Presale contract - otestovat funkci createLiquidit
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
 - Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
 - Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
 - Pool contract - zkontrolovat, jestli je vsechna matematika spravne (kvuli zmene ze safemath) - celkove otestovat, pripadne tam dat zpet SafeMath - https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol
-- Pool contract - pri deployi to hlasi: "Pool" -- Invalid number of parameters for "undefined". Got 0 expected 1!.
 - Pool contract - celkove porovnat s https://github.com/RichPigToken/richpig-contracts/blob/master/contracts/MasterChef.sol
 
 Napady:

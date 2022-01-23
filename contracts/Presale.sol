@@ -5,10 +5,12 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
-import './libs/IUniswapV2Router.sol';
-import './libs/IUniswapV2Factory.sol';
+import './libs/LiquidityManager.sol';
 
 contract Presale is Ownable, ReentrancyGuard {
+    ERC20 public tokenOur;
+    ERC20 public tokenTheir;
+    LiquidityManager private liquidityManager;
     uint256 public devFeePercent = 50;
     uint256 public startTime;
     uint256 public depositTimeOut;
@@ -21,12 +23,9 @@ contract Presale is Ownable, ReentrancyGuard {
     uint256 public totalClaimed;
     uint256 public totalClaimable;
     uint256 public tokenTheirMax;
-    ERC20 public tokenOur;
-    ERC20 public tokenTheir;
     address public devAddress;
     address public routerAddress;
     address burnAddress = 0x000000000000000000000000000000000000dEaD;
-    address zeroAddress = 0x0000000000000000000000000000000000000000;
     mapping (address => uint256) public deposited;
     mapping (address => uint256) public claimed;
     mapping (address => uint256) public claimable;
@@ -98,10 +97,9 @@ contract Presale is Ownable, ReentrancyGuard {
     function createLiquidity() public { // the first person who runs claim() after depositTimeOut also creates liquidity
         require(block.timestamp > depositTimeOut, 'createLiquidity: Deposit period did not timed out yet');
         require(!liquidityCreated, 'createLiquidity: Liquidity was created already before');
-        address factory = IUniswapV2Router(routerAddress).factory();
-        address pair = IUniswapV2Factory(factory).getPair(address(tokenOur), address(tokenTheir));
-        if (pair == zeroAddress) pair = IUniswapV2Factory(factory).createPair(address(tokenOur), address(tokenTheir));
-        require(pair != zeroAddress, 'createLiquidity: Cannot create token pair');
+        address pair = liquidityManager.getPairAddress(routerAddress, address(tokenOur), address(tokenTheir));
+        if (pair == address(0)) pair = liquidityManager.createPair(routerAddress, address(tokenOur), address(tokenTheir));
+        require(pair != address(0), 'createLiquidity: Cannot create token pair');
         uint256 allowanceOur = tokenOur.allowance(msg.sender, address(pair));
         if (allowanceOur < MAX_INT) tokenOur.approve(address(pair), MAX_INT);
         uint256 allowanceTheir = tokenTheir.allowance(msg.sender, address(pair));
@@ -111,7 +109,7 @@ contract Presale is Ownable, ReentrancyGuard {
         uint256 amountOurMax = tokenTheir.balanceOf(address(this));
         require(amountOur > 0, 'createLiquidity: amountOur must be more than 0');
         require(amountOur <= amountOurMax, 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
-        IUniswapV2Router(routerAddress).addLiquidity(address(tokenOur), address(tokenTheir), amountOur, amountTheir, amountOur, amountTheir, burnAddress, block.timestamp + 1200);
+        liquidityManager.addLiquidity(routerAddress, address(tokenOur), address(tokenTheir), amountOur, amountTheir);
         liquidityCreated = true;
     }
 
