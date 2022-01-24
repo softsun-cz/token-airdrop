@@ -72,7 +72,7 @@ contract Presale is Ownable, ReentrancyGuard {
     function claim() public nonReentrant {
         require(block.timestamp > depositTimeOut, 'claim: Deposit period did not timed out yet');
         require(block.timestamp <= claimTimeOut, 'claim: Claim period already timed out');
-        if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
+        //if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
         uint256 amount = claimable[msg.sender];
         require(tokenOur.transfer(msg.sender, amount));
         claimed[msg.sender] += amount;
