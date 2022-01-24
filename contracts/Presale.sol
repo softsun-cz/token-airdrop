@@ -22,7 +22,6 @@ contract Presale is Ownable, ReentrancyGuard {
     uint256 public totalDeposited;
     uint256 public totalClaimed;
     uint256 public totalClaimable;
-    uint256 public tokenTheirMax;
     address public devAddress;
     address public routerAddress;
     address burnAddress = 0x000000000000000000000000000000000000dEaD;
@@ -40,10 +39,9 @@ contract Presale is Ownable, ReentrancyGuard {
     uint256 MAX_INT = 2**256 - 1;
     bool liquidityCreated = false;
 
-    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, uint256 _tokenPricePresale, uint256 _tokenPriceLiquidity, uint256 _depositTime, uint256 _claimTime, uint256 _tokenTheirMax) {
+    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, uint256 _tokenPricePresale, uint256 _tokenPriceLiquidity, uint256 _depositTime, uint256 _claimTime) {
         tokenOur = ERC20(_tokenOurAddress);
         tokenTheir = ERC20(_tokenTheirAddress);
-        tokenTheirMax = _tokenTheirMax;
         routerAddress = _routerAddress;
         tokenPricePresale = _tokenPricePresale;
         tokenPriceLiquidity = _tokenPriceLiquidity;
@@ -57,7 +55,7 @@ contract Presale is Ownable, ReentrancyGuard {
         uint256 allowance = tokenTheir.allowance(msg.sender, address(this));
         require(allowance >= _amount, 'deposit: Allowance is too low');
         require(block.timestamp <= depositTimeOut, 'deposit: Deposit period already timed out');
-        require(totalDeposited + _amount <= tokenTheirMax, 'deposit: Maximum deposit amount exceeded.');
+        require(totalDeposited + _amount <= getPresaleTokenTheirMax(), 'deposit: Maximum deposit amount exceeded.');
         uint256 toClaim = (_amount * 10**tokenTheir.decimals()) / tokenPricePresale;
         require(totalClaimable + toClaim <= getRemainingTokens(), 'deposit: Not enough tokens in this contract');
         require(tokenTheir.transferFrom(msg.sender, address(this), _amount));
@@ -69,10 +67,19 @@ contract Presale is Ownable, ReentrancyGuard {
         emit eventDeposited(msg.sender, _amount);
     }
 
+    function getPresaleTokenTheirMax() public view returns (uint256) {
+        // x = (total * c2 / (c1 + c2)) * c1?
+        // x = (1000 * 20 / (10 + 20)) * 10
+        // x = 6 666,66
+        // x = (10 * 2 / (1 + 2)) * 10
+        //return (tokenOur.balanceOf(address(this)) * tokenPriceLiquidity / (tokenPricePresale + tokenPriceLiquidity)) * tokenPricePresale / tokenOur.decimals();
+        return (tokenOur.balanceOf(address(this)) * tokenPriceLiquidity / (tokenPricePresale + tokenPriceLiquidity)) * tokenPricePresale / tokenOur.decimals();
+    }
+
     function claim() public nonReentrant {
         require(block.timestamp > depositTimeOut, 'claim: Deposit period did not timed out yet');
         require(block.timestamp <= claimTimeOut, 'claim: Claim period already timed out');
-        //if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
+        if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
         uint256 amount = claimable[msg.sender];
         require(tokenOur.transfer(msg.sender, amount));
         claimed[msg.sender] += amount;

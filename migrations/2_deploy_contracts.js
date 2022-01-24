@@ -18,7 +18,7 @@ module.exports = async function(deployer) {
  const presalePricePresale = '1000000000000000000'; // 1 USD
  const presalePriceLiquidity = '2000000000000000000'; // 2 USD
  const presaleDepositTime = '300'; // 5 minutes
- const presaleClaimTime = '3000'; // 50 minutes
+ const presaleClaimTime = '300'; // 50 minutes
  const presaleTokenTheirMax = '5000000000000000000000000'; // 5 000 000 USD
  const poolTokensOurPerBlock = '100000000000000000'; // 0.1 tokens / block
  const poolTokensUSDPerBlock = '200000000000000000'; // 0.2 tokens / block
@@ -36,14 +36,10 @@ module.exports = async function(deployer) {
  //const liquidityManager = await LiquidityManager.deployed();
  //liquidityManager.createPair(routerAddress, tokenOur.address, tokenUSDAddress);
  //var tokenOurLPAddress = await liquidityManager.getPairAddress(routerAddress, tokenOur.address, tokenUSDAddress);
- await deployer.deploy(Presale, tokenOur.address, tokenUSDAddress, routerAddress, devAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, presaleTokenTheirMax);
+ await deployer.deploy(Presale, tokenOur.address, tokenUSDAddress, routerAddress, devAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime);
  const presale = await Presale.deployed();
-  
  var tokenOur = await Token.at(tokenOur.address);
  tokenOur.transfer(presale.address, '10000000000000000000'); // 10 tokens
-
- 
- 
  //await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  //const airdrop = await Airdrop.deployed();
  //airdrop.start(airdropTime);

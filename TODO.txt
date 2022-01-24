@@ -1,10 +1,11 @@
 TODO:
 - Web - presale - graf Claimable / claimed nefunguje, pokud je uz neco vybrano (je tam loading)
+- Web - presale - misto presaleTokenTheirMax dat getPresaleTokenTheirMax
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
-- Presale contract - pri claimu (v claim period) to hlasi error (asi kvuli createLiquidity?) - https://mumbai.polygonscan.com/tx/0x83a8d3106740dc1ff03316a985e1451df76702c5ca436917db32850d755a23c9
+- Presale contract - pri claimu (v claim period) to hlasi error (kvuli createLiquidity) - https://mumbai.polygonscan.com/tx/0x83a8d3106740dc1ff03316a985e1451df76702c5ca436917db32850d755a23c9
 - Presale contract - otestovat funkci createLiquidity
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim - otestovat funkcnost
-- Presale contract - aktualne mame natvrdo tokenTheirMax (napr. 5M XUSD), aby bylo dostatek coinu na claim + likviditu, tohle cislo tam ale nemusime zadavat, da se to spocitat: (x * 1) + (y * 2) = 1000 ... x = ?, y = ?
+- Presale contract - getTokenTheirMax to pocita spatne, puvodne spocitano jako x = (total * c2 / (c1 + c2)) * c1 ... toto ale resi jen max. pocet USD za total tokenu, ale pak chybi tokeny na prodej - dodelat
 - Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
 - Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
 - Pool contract - zkontrolovat, jestli je vsechna matematika spravne (kvuli zmene ze safemath) - celkove otestovat, pripadne tam dat zpet SafeMath - https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol
