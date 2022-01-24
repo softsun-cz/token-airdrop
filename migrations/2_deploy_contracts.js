@@ -1,5 +1,5 @@
 const Token = artifacts.require('Token');
-const LiquidityManager = artifacts.require('libs/LiquidityManager');
+const LiquidityManager = artifacts.require('LiquidityManager');
 const Presale = artifacts.require('Presale');
 const Airdrop = artifacts.require('Airdrop');
 const Pool = artifacts.require('Pool');
