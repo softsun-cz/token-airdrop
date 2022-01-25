@@ -114,11 +114,11 @@ contract Presale is Ownable, ReentrancyGuard {
         uint256 amountOurMax = tokenTheir.balanceOf(address(this));
         require(amountOur > 0, 'createLiquidity: amountOur must be more than 0');
         require(amountOur <= amountOurMax, 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
-        console.log('router: ', routerAddress);
-        console.log('our: ', address(tokenOur));
-        console.log('their: ', address(tokenTheir));
-        console.log('amount our: ', amountOur);
-        console.log('amount their: ', amountTheir);
+        assert('router: ', routerAddress);
+        //console.log('our: ', address(tokenOur));
+        //console.log('their: ', address(tokenTheir));
+        //console.log('amount our: ', amountOur);
+        //console.log('amount their: ', amountTheir);
         liquidityManager.addLiquidity(routerAddress, address(tokenOur), address(tokenTheir), amountOur, amountTheir);
         liquidityCreated = true;
     }
