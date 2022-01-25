@@ -18,7 +18,7 @@ module.exports = async function(deployer) {
  const airdropTime = 900; // 15 minutes
  const presalePricePresale = '1000000000000000000'; // 1 USD
  const presalePriceLiquidity = '2000000000000000000'; // 2 USD
- const presaleDepositTime = '10'; // 10 seconds
+ const presaleDepositTime = '60'; // 1 minute
  const presaleClaimTime = '3000'; // 50 minutes
  const presaleTokenTheirMax = '5000000000000000000000000'; // 5 000 000 USD
  const poolTokensOurPerBlock = '100000000000000000'; // 0.1 tokens / block
@@ -45,7 +45,7 @@ module.exports = async function(deployer) {
  await tokenOur.transfer(presale.address, '10000000000000000000'); // 10 tokens
  await tokenTheir.approve(presale.address, '115792089237316195423570985008687907853269984665640564039457584007913129639935');
  await presale.deposit('2000000000000000000');
-
+ 
  //await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  //const airdrop = await Airdrop.deployed();
  //airdrop.start(airdropTime);

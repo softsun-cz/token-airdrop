@@ -6,7 +6,6 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import './LiquidityManager.sol';
-import 'truffle/Console.sol';
 
 contract Presale is Ownable, ReentrancyGuard {
     ERC20 public tokenOur;
@@ -114,11 +113,11 @@ contract Presale is Ownable, ReentrancyGuard {
         uint256 amountOurMax = tokenTheir.balanceOf(address(this));
         require(amountOur > 0, 'createLiquidity: amountOur must be more than 0');
         require(amountOur <= amountOurMax, 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
-        assert('router: ', routerAddress);
-        //console.log('our: ', address(tokenOur));
-        //console.log('their: ', address(tokenTheir));
-        //console.log('amount our: ', amountOur);
-        //console.log('amount their: ', amountTheir);
+        
+        // TODO: nejak tohle nejde (vypis logu v erroru) - neni nutne, pokud to nize opravime (addLiquidity):
+        //revert(string(abi.encodePacked('router: ', routerAddress, ', our: ', address(tokenOur), ', their: ', address(tokenTheir), ', amount our: ', amountOur, ', amount their: ', amountTheir)));
+        
+        // TODO: tohle hazi error:
         liquidityManager.addLiquidity(routerAddress, address(tokenOur), address(tokenTheir), amountOur, amountTheir);
         liquidityCreated = true;
     }
