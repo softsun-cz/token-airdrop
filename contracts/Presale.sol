@@ -6,11 +6,12 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import './LiquidityManager.sol';
+import 'truffle/Console.sol';
 
 contract Presale is Ownable, ReentrancyGuard {
     ERC20 public tokenOur;
     ERC20 public tokenTheir;
-    LiquidityManager private liquidityManager;
+    LiquidityManager public liquidityManager;
     uint256 public devFeePercent = 50;
     uint256 public startTime;
     uint256 public depositTimeOut;
@@ -39,7 +40,7 @@ contract Presale is Ownable, ReentrancyGuard {
     uint256 MAX_INT = 2**256 - 1;
     bool liquidityCreated = false;
 
-    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, uint256 _tokenPricePresale, uint256 _tokenPriceLiquidity, uint256 _depositTime, uint256 _claimTime) {
+    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, uint256 _tokenPricePresale, uint256 _tokenPriceLiquidity, uint256 _depositTime, uint256 _claimTime, LiquidityManager _liquidityManager) {
         tokenOur = ERC20(_tokenOurAddress);
         tokenTheir = ERC20(_tokenTheirAddress);
         routerAddress = _routerAddress;
@@ -49,6 +50,7 @@ contract Presale is Ownable, ReentrancyGuard {
         startTime = block.timestamp;
         depositTimeOut = startTime + _depositTime;
         claimTimeOut = depositTimeOut + _claimTime;
+        liquidityManager = _liquidityManager;
     }
 
     function deposit(uint256 _amount) public nonReentrant {
@@ -68,12 +70,8 @@ contract Presale is Ownable, ReentrancyGuard {
     }
 
     function getPresaleTokenTheirMax() public view returns (uint256) {
-        // x = (total * c2 / (c1 + c2)) * c1?
-        // x = (1000 * 20 / (10 + 20)) * 10
-        // x = 6 666,66
-        // x = (10 * 2 / (1 + 2)) * 10
-        //return (tokenOur.balanceOf(address(this)) * tokenPriceLiquidity / (tokenPricePresale + tokenPriceLiquidity)) * tokenPricePresale / tokenOur.decimals();
-        return (tokenOur.balanceOf(address(this)) * tokenPriceLiquidity / (tokenPricePresale + tokenPriceLiquidity)) * tokenPricePresale / tokenOur.decimals();
+        // TODO: dopsat
+        return 4000 * 10**tokenOur.decimals();
     }
 
     function claim() public nonReentrant {
@@ -98,9 +96,9 @@ contract Presale is Ownable, ReentrancyGuard {
         emit eventSetDevAddress(_devAddress);
     }
 
-    // TODO createLiquidity:
-    // - should we approve pair or router?
-    // - make it private after tests are over
+    // TODO:
+    // - mame approvenout parovej contract nebo router?
+    // - dat to private, jakmile se to dodela
     function createLiquidity() public { // the first person who runs claim() after depositTimeOut also creates liquidity
         require(block.timestamp > depositTimeOut, 'createLiquidity: Deposit period did not timed out yet');
         require(!liquidityCreated, 'createLiquidity: Liquidity was created already before');
@@ -116,6 +114,11 @@ contract Presale is Ownable, ReentrancyGuard {
         uint256 amountOurMax = tokenTheir.balanceOf(address(this));
         require(amountOur > 0, 'createLiquidity: amountOur must be more than 0');
         require(amountOur <= amountOurMax, 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
+        console.log('router: ', routerAddress);
+        console.log('our: ', address(tokenOur));
+        console.log('their: ', address(tokenTheir));
+        console.log('amount our: ', amountOur);
+        console.log('amount their: ', amountTheir);
         liquidityManager.addLiquidity(routerAddress, address(tokenOur), address(tokenTheir), amountOur, amountTheir);
         liquidityCreated = true;
     }

@@ -9,16 +9,17 @@ module.exports = async function(deployer) {
  // const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3'; // pancake.kiemtienonline360.com (BSC Testnet)
  // const routerAddress = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff'; // quickswap.exchange (Polygon Mainnet)
  const routerAddress = '0x8954AfA98594b838bda56FE4C12a09D7739D179b'; // quickswap.exchange (Polygon Testnet)
+ var liquidityManager = await LiquidityManager.at('0xabA98D09f37Dc48fC852657bDaf55F2D9D41fa10');
  var tokenOur = await Token.at('0x9b6452d8EE8B79605F3F73d04F5f43D7A9Df59A3');
+ var tokenTheir = await Token.at('0xF42a4429F107bD120C5E42E069FDad0AC625F615');
  var tokenOurLPAddress = '0xA4A52Ef4f83bfb5fC9661d6B558e144CAC0f1242';
- const tokenUSDAddress = '0xF42a4429F107bD120C5E42E069FDad0AC625F615';
  const devAddress = '0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41';
  const airdropAmount = '1000000000000000000'; // 1
  const airdropTime = 900; // 15 minutes
  const presalePricePresale = '1000000000000000000'; // 1 USD
  const presalePriceLiquidity = '2000000000000000000'; // 2 USD
- const presaleDepositTime = '300'; // 5 minutes
- const presaleClaimTime = '300'; // 50 minutes
+ const presaleDepositTime = '10'; // 1 minute
+ const presaleClaimTime = '3000'; // 50 minutes
  const presaleTokenTheirMax = '5000000000000000000000000'; // 5 000 000 USD
  const poolTokensOurPerBlock = '100000000000000000'; // 0.1 tokens / block
  const poolTokensUSDPerBlock = '200000000000000000'; // 0.2 tokens / block
@@ -34,19 +35,24 @@ module.exports = async function(deployer) {
  //var tokenOur = await Token.deployed();
  //await deployer.deploy(LiquidityManager);
  //const liquidityManager = await LiquidityManager.deployed();
- //liquidityManager.createPair(routerAddress, tokenOur.address, tokenUSDAddress);
- //var tokenOurLPAddress = await liquidityManager.getPairAddress(routerAddress, tokenOur.address, tokenUSDAddress);
- await deployer.deploy(Presale, tokenOur.address, tokenUSDAddress, routerAddress, devAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime);
+ //liquidityManager.createPair(routerAddress, tokenOur.address, tokenTheir.address);
+ //var tokenOurLPAddress = await liquidityManager.getPairAddress(routerAddress, tokenOur.address, tokenTheir.address);
+ await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
  const presale = await Presale.deployed();
  var tokenOur = await Token.at(tokenOur.address);
- tokenOur.transfer(presale.address, '10000000000000000000'); // 10 tokens
+ 
+ // for test only:
+ await tokenOur.transfer(presale.address, '10000000000000000000'); // 10 tokens
+ await tokenTheir.approve(presale.address, '115792089237316195423570985008687907853269984665640564039457584007913129639935');
+ await presale.deposit('2000000000000000000');
+
  //await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  //const airdrop = await Airdrop.deployed();
  //airdrop.start(airdropTime);
  //await deployer.deploy(Pool, devAddress);
  //const pool = await Pool.deployed();
  //pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
- //pool.createPool(tokenUSDAddress, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
+ //pool.createPool(tokenTheir.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
  //pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
 
  // TODO: THE FOLLOWING TOKEN FUNCTIONS WORK ONLY IF A NEW TOKEN IS DEPLOYED, NOT WITH JUST ADDRESS
