@@ -13,10 +13,6 @@ contract LiquidityManager {
         return IUniswapV2Factory(factory).createPair(address(_tokenA), address(_tokenB));
     }
 
-    function addLiquidity(address _routerAddress, address _tokenA, address _tokenB, uint _amountA, uint _amountB) public {
-        IUniswapV2Router(_routerAddress).addLiquidity(address(_tokenA), address(_tokenB), _amountA, _amountB, _amountA, _amountB, burnAddress, block.timestamp + 1200);
-    }
-
     function getLiquidityCreated(address _routerAddress, address _tokenA, address _tokenB) public view returns (bool) {
         address factory = IUniswapV2Router(_routerAddress).factory();
         return (IUniswapV2Factory(factory).getPair(address(_tokenA), address(_tokenB)) == address(0) ? false : true);
