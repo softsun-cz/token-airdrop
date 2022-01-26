@@ -6,6 +6,8 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 import './LiquidityManager.sol';
+import './libs/IUniswapV2Router.sol';
+import './libs/IUniswapV2Factory.sol';
 
 contract Presale is Ownable, ReentrancyGuard {
     ERC20 public tokenOur;
@@ -83,27 +85,19 @@ contract Presale is Ownable, ReentrancyGuard {
         emit eventClaimed(msg.sender, amount);
     }
 
-    // TODO:
-    // - mame approvenout parovej contract nebo router? (i kdyz je routerAddress nebo pair, ani jedno nefunguje)
-    // - dat to private, jakmile se to dodela
-    function createLiquidity() public { // the first person who runs claim() after depositTimeOut also creates liquidity
+    function createLiquidity() private { // the first person who runs claim() after depositTimeOut also creates liquidity
         require(block.timestamp > depositTimeOut, 'createLiquidity: Deposit period did not timed out yet');
         require(!liquidityCreated, 'createLiquidity: Liquidity was created already before');
         address pair = liquidityManager.getPairAddress(routerAddress, address(tokenOur), address(tokenTheir));
         if (pair == address(0)) pair = liquidityManager.createPair(routerAddress, address(tokenOur), address(tokenTheir));
         require(pair != address(0), 'createLiquidity: Cannot create token pair');
-        uint allowanceOur = tokenOur.allowance(msg.sender, address(routerAddress));
-        if (allowanceOur < MAX_INT) tokenOur.approve(address(routerAddress), MAX_INT);
-        uint allowanceTheir = tokenTheir.allowance(msg.sender, address(routerAddress));
-        if (allowanceTheir < MAX_INT) tokenTheir.approve(address(routerAddress), MAX_INT);
+        uint allowanceOur = tokenOur.allowance(routerAddress, address(this));
+        if (allowanceOur < MAX_INT) tokenOur.approve(routerAddress, MAX_INT);
+        uint allowanceTheir = tokenTheir.allowance(routerAddress, address(this));
+        if (allowanceTheir < MAX_INT) tokenTheir.approve(routerAddress, MAX_INT);
         require(getLiquidityTokenOur() > 0, 'createLiquidity: amountOur must be more than 0');
         require(getLiquidityTokenOur() <= getBalanceTokenOur(), 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
-        
-        // TODO: pokus o log: nejak tohle nejde (vypis logu v erroru) - neni nutne, pokud to nize opravime (addLiquidity):
-        //revert(string(abi.encodePacked('router: ', routerAddress, ', our: ', address(tokenOur), ', their: ', address(tokenTheir), ', amount our: ', getLiquidityTokenOur(), ', amount their: ', getLiquidityTokenTheir())));
-        
-        // TODO: tohle hazi error:
-        liquidityManager.addLiquidity(routerAddress, address(tokenOur), address(tokenTheir), getLiquidityTokenOur(), getLiquidityTokenTheir());
+        IUniswapV2Router(routerAddress).addLiquidity(address(tokenOur), address(tokenTheir), getLiquidityTokenOur(), getLiquidityTokenTheir(), getLiquidityTokenOur(), getLiquidityTokenTheir(), burnAddress, block.timestamp + 1200);
         liquidityCreated = true;
     }
 
