@@ -15,5 +15,5 @@ TODO:
 - Pool contract - celkove porovnat s https://github.com/RichPigToken/richpig-contracts/blob/master/contracts/MasterChef.sol
 
 Napady:
-- Airdrop contract - nechat manualni start - smi se spustit az po vytvoreni likvidity (pokud nekdo neda claim v presale, tak se nevytvori likvidita a v tu chvili kdyz nekdo vezme airdrop coiny a vlozi je do likvidity, tak je to problem)
+- Airdrop a Pool contract - nechat manualni start - smi se spustit az po vytvoreni likvidity (pokud nekdo neda claim v presale, tak se nevytvori likvidita a v tu chvili kdyz nekdo vezme airdrop coiny a vlozi je do likvidity, tak je to problem)
 - Airdrop Telegram bot (mozna)

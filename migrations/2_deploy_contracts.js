@@ -45,7 +45,7 @@ module.exports = async function(deployer) {
  await tokenOur.transfer(presale.address, '10000000000000000000'); // 10 tokens
  await tokenTheir.approve(presale.address, '115792089237316195423570985008687907853269984665640564039457584007913129639935');
  await presale.deposit('2000000000000000000');
- 
+
  //await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  //const airdrop = await Airdrop.deployed();
  //airdrop.start(airdropTime);
