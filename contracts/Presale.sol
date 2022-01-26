@@ -84,7 +84,7 @@ contract Presale is Ownable, ReentrancyGuard {
     }
 
     // TODO:
-    // - mame approvenout parovej contract nebo router?
+    // - mame approvenout parovej contract nebo router? (i kdyz je routerAddress nebo pair, ani jedno nefunguje)
     // - dat to private, jakmile se to dodela
     function createLiquidity() public { // the first person who runs claim() after depositTimeOut also creates liquidity
         require(block.timestamp > depositTimeOut, 'createLiquidity: Deposit period did not timed out yet');
@@ -92,10 +92,10 @@ contract Presale is Ownable, ReentrancyGuard {
         address pair = liquidityManager.getPairAddress(routerAddress, address(tokenOur), address(tokenTheir));
         if (pair == address(0)) pair = liquidityManager.createPair(routerAddress, address(tokenOur), address(tokenTheir));
         require(pair != address(0), 'createLiquidity: Cannot create token pair');
-        uint allowanceOur = tokenOur.allowance(msg.sender, address(pair));
-        if (allowanceOur < MAX_INT) tokenOur.approve(address(pair), MAX_INT);
-        uint allowanceTheir = tokenTheir.allowance(msg.sender, address(pair));
-        if (allowanceTheir < MAX_INT) tokenTheir.approve(address(pair), MAX_INT);
+        uint allowanceOur = tokenOur.allowance(msg.sender, address(routerAddress));
+        if (allowanceOur < MAX_INT) tokenOur.approve(address(routerAddress), MAX_INT);
+        uint allowanceTheir = tokenTheir.allowance(msg.sender, address(routerAddress));
+        if (allowanceTheir < MAX_INT) tokenTheir.approve(address(routerAddress), MAX_INT);
         require(getLiquidityTokenOur() > 0, 'createLiquidity: amountOur must be more than 0');
         require(getLiquidityTokenOur() <= getBalanceTokenOur(), 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
         
