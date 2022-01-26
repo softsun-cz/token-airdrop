@@ -69,12 +69,10 @@ contract Presale is Ownable, ReentrancyGuard {
     }
 
     function getPresaleTokenTheirMax() public view returns (uint) {
-        // x = total * c2 / (c2 + c1 * f / 100 - F) //F = 0,5 v pripade 50%
-        // y = x * c1
+        // TODO: this works only for both tokens have 18 decimals
         uint totalOur = tokenOur.balanceOf(address(this));
         uint totalToLiquidity = totalOur * tokenPriceLiquidity / (tokenPriceLiquidity + tokenPricePresale * devFeePercent / 100);
         return totalToLiquidity * tokenPricePresale;
-        //return 4000 * 10**tokenOur.decimals(); // TODO: potom smazat
     }
 
     function claim() public nonReentrant {
