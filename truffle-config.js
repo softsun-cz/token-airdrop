@@ -11,14 +11,21 @@ const api_key_hecoinfo = fs.readFileSync(".apikey_hecoinfo").toString().trim();
 module.exports = {
   networks: {
     polygonTestnet: {
+      //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.matic.today`),
       provider: () => new HDWalletProvider(mnemonic, `https://matic-mumbai.chainstacklabs.com`),
+      //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mumbai.maticvigil.com`),
+      //provider: () => new HDWalletProvider(mnemonic, `https://matic-testnet-archive-rpc.bwarelabs.com`),
       network_id: 80001,
       confirmations: 1,
       timeoutBlocks: 200,
       skipDryRun: true
     },
     polygonMainnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.quiknode.pro`),
+      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.network`),
+      //provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet.chainstacklabs.com`),
+      //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.maticvigil.com`),
+      //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.quiknode.pro`),
+      //provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet-full-rpc.bwarelabs.com`),
       network_id: 137,
       confirmations: 10,
       timeoutBlocks: 200,
