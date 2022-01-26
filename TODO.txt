@@ -9,8 +9,8 @@ TODO:
   x = 1000 * 20 / (20 + 10 * (1 - 0.5))
   x = 20000 / (20 * 5)
   x = 2000
-  y = total * c1 - x
-  y = 1000 * 10 - 2000
+  y = total * c1
+  y = 1000 * 10
   y = 8000
 - Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
 - Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
