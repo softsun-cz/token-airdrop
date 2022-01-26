@@ -4,7 +4,7 @@ TODO:
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - createLiquidity - predposledni radek hazi chybu - liquidityManager.addLiquidity
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim
-- Presale contract - getTokenTheirMax to pocita spatne, puvodne spocitano jako x = (total * c2 / (c1 + c2)) * c1 ... toto ale resi jen max. pocet USD za total tokenu, ale pak chybi tokeny na prodej - dodelat
+- Presale contract - getTokenTheirMax to pocita spatne, puvodne spocitano jako x = total * c2/(c2+c1*(1-F)), kde x je počet tokenu v předprodeji a F je fee v rozsahu 0-1 (1 = 100%), výsledná cena je pak x * c1
 - Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
 - Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
 - Pool contract - zkontrolovat, jestli je vsechna matematika spravne (kvuli zmene ze safemath) - celkove otestovat, pripadne tam dat zpet SafeMath - https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol
