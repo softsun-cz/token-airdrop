@@ -2,6 +2,7 @@
 
 BUILD=build/
 LOG=deploy.log
+WEBPATH=/data/www/airdrop.piginu.com/
 NETWORKS=`node deploy-networks.js`
 echo ''
 echo '---------------------------'
@@ -70,6 +71,6 @@ echo 'Run web build script? (Y/N, default: N):'
 read BUILD
 if [ "$BUILD" = 'Y' ] || [ "$BUILD" = 'y'  ]; then
  cd web
- ./build.sh
+ ./build.sh $WEBPATH
  cd ..
 fi
