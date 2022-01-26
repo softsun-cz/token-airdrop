@@ -22,6 +22,7 @@ contract Presale is Ownable, ReentrancyGuard {
     uint public totalDeposited;
     uint public totalClaimed;
     uint public totalClaimable;
+    uint public totalClaimableNotDeducted;
     address public devAddress;
     address public routerAddress;
     address burnAddress = 0x000000000000000000000000000000000000dEaD;
@@ -58,21 +59,15 @@ contract Presale is Ownable, ReentrancyGuard {
         require(block.timestamp <= depositTimeOut, 'deposit: Deposit period already timed out');
         require(totalDeposited + _amount <= getPresaleTokenTheirMax(), 'deposit: Maximum deposit amount exceeded.');
         uint toClaim = (_amount * 10**tokenTheir.decimals()) / tokenPricePresale;
-        require(totalClaimable + toClaim <= getRemainingTokens(), 'deposit: Not enough tokens in this contract');
+        require(totalClaimable + toClaim <= getBalanceTokenOur(), 'deposit: Not enough tokens in this contract');
         require(tokenTheir.transferFrom(msg.sender, address(this), _amount));
         require(tokenTheir.transfer(address(devAddress), _amount * devFeePercent / 100)); // devFeePercent% of tokenTheir deposited here goes to devAddress, the rest stays in this contract
         deposited[msg.sender] += _amount;
         claimable[msg.sender] += toClaim;
         totalDeposited += _amount;
         totalClaimable += toClaim;
+        totalClaimableNotDeducted += toClaim;
         emit eventDeposited(msg.sender, _amount);
-    }
-
-    function getPresaleTokenTheirMax() public view returns (uint) {
-        // TODO: this works only for both tokens have the same number of decimals (18), should work also with tokens with different number of decimals
-        uint totalOur = tokenOur.balanceOf(address(this));
-        uint totalToLiquidity = totalOur * tokenPriceLiquidity / (tokenPriceLiquidity + tokenPricePresale * devFeePercent / 100);
-        return totalToLiquidity * tokenPricePresale / 10**tokenOur.decimals();
     }
 
     function claim() public nonReentrant {
@@ -88,15 +83,6 @@ contract Presale is Ownable, ReentrancyGuard {
         emit eventClaimed(msg.sender, amount);
     }
 
-    function getRemainingTokens() public view returns (uint) {
-        return tokenOur.balanceOf(address(this));
-    }
-
-    function setDevAddress(address _devAddress) public onlyOwner {
-        devAddress = _devAddress;
-        emit eventSetDevAddress(_devAddress);
-    }
-
     // TODO:
     // - mame approvenout parovej contract nebo router?
     // - dat to private, jakmile se to dodela
@@ -110,24 +96,52 @@ contract Presale is Ownable, ReentrancyGuard {
         if (allowanceOur < MAX_INT) tokenOur.approve(address(pair), MAX_INT);
         uint allowanceTheir = tokenTheir.allowance(msg.sender, address(pair));
         if (allowanceTheir < MAX_INT) tokenTheir.approve(address(pair), MAX_INT);
-        uint amountTheir = tokenTheir.balanceOf(address(this)) * (100 - devFeePercent) / 100;
-        uint amountOur = amountTheir * tokenPriceLiquidity / 10**tokenOur.decimals();
-        uint amountOurMax = tokenTheir.balanceOf(address(this));
-        require(amountOur > 0, 'createLiquidity: amountOur must be more than 0');
-        require(amountOur <= amountOurMax, 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
+        require(getLiquidityTokenOur() > 0, 'createLiquidity: amountOur must be more than 0');
+        require(getLiquidityTokenOur() <= getBalanceTokenOur(), 'createLiquidity: Not enough balance of tokenOur to create a Liquidity');
         
-        // TODO: nejak tohle nejde (vypis logu v erroru) - neni nutne, pokud to nize opravime (addLiquidity):
-        //revert(string(abi.encodePacked('router: ', routerAddress, ', our: ', address(tokenOur), ', their: ', address(tokenTheir), ', amount our: ', amountOur, ', amount their: ', amountTheir)));
+        // TODO: pokus o log: nejak tohle nejde (vypis logu v erroru) - neni nutne, pokud to nize opravime (addLiquidity):
+        //revert(string(abi.encodePacked('router: ', routerAddress, ', our: ', address(tokenOur), ', their: ', address(tokenTheir), ', amount our: ', getLiquidityTokenOur(), ', amount their: ', getLiquidityTokenTheir())));
         
         // TODO: tohle hazi error:
-        liquidityManager.addLiquidity(routerAddress, address(tokenOur), address(tokenTheir), amountOur, amountTheir);
+        liquidityManager.addLiquidity(routerAddress, address(tokenOur), address(tokenTheir), getLiquidityTokenOur(), getLiquidityTokenTheir());
         liquidityCreated = true;
     }
 
     function burnRemainingTokens() public { // to be fair anyone can start it after claimTimeout
         require(block.timestamp > claimTimeOut, 'burnRemainingTokens: Claim period did not timed out yet');
-        uint remaining = getRemainingTokens();
+        uint remaining = getBalanceTokenOur();
         require(tokenOur.transfer(burnAddress, remaining));
         emit eventBurnRemainingTokens(remaining);
+    }
+
+    function getPresaleTokenTheirMax() public view returns (uint) {
+        // TODO: this works only for both tokens have the same number of decimals (18), should work also with tokens with different number of decimals
+        uint totalOur = tokenOur.balanceOf(address(this));
+        uint totalToPresaleOur = totalOur * tokenPriceLiquidity / (tokenPriceLiquidity + tokenPricePresale * devFeePercent / 100);
+        return totalToPresaleOur * tokenPricePresale / 10**tokenOur.decimals();
+    }
+
+    function getLiquidityTokenOur() public view returns (uint) {
+        // TODO: this works only for both tokens have the same number of decimals (18), should work also with tokens with different number of decimals
+        uint totalToLiquidity = totalClaimableNotDeducted * tokenPriceLiquidity / (tokenPriceLiquidity + tokenPricePresale * devFeePercent / 100);
+        return totalClaimableNotDeducted - (totalToLiquidity * tokenPricePresale / 10**tokenOur.decimals());
+    }
+
+    function getLiquidityTokenTheir() public view returns (uint) {
+        // TODO: this works only for both tokens have the same number of decimals (18), should work also with tokens with different number of decimals
+        return getLiquidityTokenOur() * tokenPriceLiquidity / 10**tokenOur.decimals();
+    }
+
+    function getBalanceTokenOur() public view returns (uint) {
+        return tokenOur.balanceOf(address(this));
+    }
+
+    function getBalanceTokenTheir() public view returns (uint) {
+        return tokenTheir.balanceOf(address(this));
+    }
+
+    function setDevAddress(address _devAddress) public onlyOwner {
+        devAddress = _devAddress;
+        emit eventSetDevAddress(_devAddress);
     }
 }
