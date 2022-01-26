@@ -100,7 +100,7 @@ contract Presale is Ownable, ReentrancyGuard {
     // TODO:
     // - mame approvenout parovej contract nebo router?
     // - dat to private, jakmile se to dodela
-    function createLiquidity() public nonReentrant { // the first person who runs claim() after depositTimeOut also creates liquidity
+    function createLiquidity() public { // the first person who runs claim() after depositTimeOut also creates liquidity
         require(block.timestamp > depositTimeOut, 'createLiquidity: Deposit period did not timed out yet');
         require(!liquidityCreated, 'createLiquidity: Liquidity was created already before');
         address pair = liquidityManager.getPairAddress(routerAddress, address(tokenOur), address(tokenTheir));
