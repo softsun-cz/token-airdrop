@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ethers } from 'ethers';
 import { CountdownConfig } from 'ngx-countdown';
+import { interval } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 import { AppState, IPresale } from 'src/appState';
 import { Config } from 'src/config';
 import { Web3ModalService } from 'src/services/web3-modal.service';
@@ -11,14 +13,25 @@ import { isNumber } from 'util';
   templateUrl: './presale.component.html',
   styleUrls: ['./presale.component.scss']
 })
-export class PresaleComponent implements OnInit {
+export class PresaleComponent implements OnInit, OnDestroy  {
+  initialized: boolean = false;
+  subscription: any;
 
   constructor(private web3ModalSevice: Web3ModalService) { }
+  ngOnDestroy(): void {
+    this.initialized = false;
+  }
 
   ngOnInit() {
+    this.initialized = true;
     this.web3ModalSevice.presaleDevAddress();
     this.web3ModalSevice.presaleTotalClaimable();
     this.web3ModalSevice.presaleDevFeePercent();
+    this.subscription = interval(Config.main.updateInterval * 1000)
+    .pipe(takeWhile(() => this.initialized))
+    .subscribe(() => {
+      this.web3ModalSevice.loadPresaleData();
+    });
   }
 
   presale() : IPresale{
@@ -26,7 +39,7 @@ export class PresaleComponent implements OnInit {
   }
 
   claimablePercent() : number{
-    if(this.presale().totalClaimable == -1 || this.presale().totalClaimed || !this.presale().tokenOur.isReady())
+    if(this.presale().totalClaimable == -1 || this.presale().totalClaimed == -1 || !this.presale().tokenOur.isReady())
       return -1;
     if(this.presale().totalClaimable == 0)
       return 100;

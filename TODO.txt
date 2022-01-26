@@ -1,12 +1,12 @@
 TODO:
-- Web - presale - pridat totalClaimableNotDeducted (Label: "Total claimable before first claim: CASTKA SYMBOL", to same, jako totalClaimable, ale neodecita se po vytvoreni likvidity)
-- Web - presale - pridat getLiquidityTokenOur (Label: "Our tokens to liquidity: CASTKA SYMBOL")
-- Web - presale - pridat getLiquidityTokenTheir (Label: "Their tokens to liquidity: CASTKA SYMBOL")
-- Web - presale - pridat getBalanceTokenOur (Label: "Our tokens in this contract: CASTKA SYMBOL")
-- Web - presale - pridat getBalanceTokenTheir (Label: "Their tokens in this contract: CASTKA SYMBOL")
-- Web - presale - odstranit getRemainingTokens()
-- Web - presale - graf Claimable / claimed nefunguje, pokud je uz neco vybrano (je tam loading)
-- Web - presale - misto presaleTokenTheirMax dat getPresaleTokenTheirMax() - funkce, co vypocitava, kolik smime vybrat
+✅ - Web - presale - pridat totalClaimableNotDeducted (Label: "Total claimable before first claim: CASTKA SYMBOL", to same, jako totalClaimable, ale neodecita se po vytvoreni likvidity)
+✅ - Web - presale - pridat getLiquidityTokenOur (Label: "Our tokens to liquidity: CASTKA SYMBOL")
+✅ - Web - presale - pridat getLiquidityTokenTheir (Label: "Their tokens to liquidity: CASTKA SYMBOL")
+✅ - Web - presale - pridat getBalanceTokenOur (Label: "Our tokens in this contract: CASTKA SYMBOL")
+✅ - Web - presale - pridat getBalanceTokenTheir (Label: "Their tokens in this contract: CASTKA SYMBOL")
+✅ - Web - presale - odstranit getRemainingTokens()
+✅ - Web - presale - graf Claimable / claimed nefunguje, pokud je uz neco vybrano (je tam loading)
+✅ - Web - presale - misto presaleTokenTheirMax dat getPresaleTokenTheirMax() - funkce, co vypocitava, kolik smime vybrat
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - createLiquidity - predposledni radek hazi chybu - liquidityManager.addLiquidity - hlasi: "execution reverted: TransferHelper: TRANSFER_FROM_FAILED"
 - Presale contract - getTokenTheirMax, getLiquidityTokenOur a getLiquidityTokenTheir - funguje ted pro tokeny se stejnym poctem desetinnych mist (napr. 18), mel by fungovat i pro ty, co maji ruzny pocet desetinnych mist
