@@ -1,7 +1,7 @@
 TODO:
-- Web - getPresaleTokenTheirMax() se meni po prvnim claimu (funkce, co vypocitava, kolik smime vybrat)
 - Web - Claimable / claimed je obracene
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
+- Presale contract - getPresaleTokenTheirMax() se meni po prvnim claimu (funkce, co vypocitava, kolik smime vybrat)
 - Presale contract - getTokenTheirMax, getLiquidityTokenOur a getLiquidityTokenTheir - funguje ted pro tokeny se stejnym poctem desetinnych mist (napr. 18), mel by fungovat i pro ty, co maji ruzny pocet desetinnych mist
 - Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
 - Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
