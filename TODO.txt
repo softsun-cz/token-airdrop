@@ -5,6 +5,7 @@ TODO:
 - Presale contract - createLiquidity - predposledni radek hazi chybu - liquidityManager.addLiquidity
 - Presale contract - createLiquidity skryt jako private, spusti ho prvni claim
 - Presale contract - getTokenTheirMax to pocita spatne - u 10 tokenu vlozenych to dava 8 a 37 nul za tim, ma byt 8 a 18 nul za tim
+- Presale contract - getTokenTheirMax - funguje ted pro tokeny se stejnym poctem desetinnych mist (napr. 18), mel by fungovat i pro ty, co maji ruzny pocet desetinnych mist
 - Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
 - Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
 - Pool contract - zkontrolovat, jestli je vsechna matematika spravne (kvuli zmene ze safemath) - celkove otestovat, pripadne tam dat zpet SafeMath - https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol
