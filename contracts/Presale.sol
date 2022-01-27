@@ -126,14 +126,11 @@ contract Presale is Ownable, ReentrancyGuard {
     }
 
     function getLiquidityTokenOur() public view returns (uint) {
-        // TODO: this works only for both tokens have the same number of decimals (18), should work also with tokens with different number of decimals
-        uint totalToLiquidity = totalClaimableNotDeducted * tokenPriceLiquidity / (tokenPriceLiquidity + tokenPricePresale * devFeePercent / 100);
-        return totalClaimableNotDeducted - (totalToLiquidity * tokenPricePresale / 10**tokenOur.decimals());
+        return getLiquidityTokenTheir() * 10**tokenOur.decimals() / tokenPriceLiquidity;
     }
 
     function getLiquidityTokenTheir() public view returns (uint) {
-        // TODO: this works only for both tokens have the same number of decimals (18), should work also with tokens with different number of decimals
-        return getLiquidityTokenOur() * tokenPriceLiquidity / 10**tokenOur.decimals();
+        return totalClaimableNotDeducted * (100 - devFeePercent) / 100;
     }
 
     function getBalanceTokenOur() public view returns (uint) {

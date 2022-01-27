@@ -48,9 +48,9 @@ module.exports = async function(deployer) {
  await tokenOur.setTaxExclusion(presale.address, true);
 
  // PRESALE - TEST:
- await presale.depositOwn('10000000000000000000'); // 10 tokens
+ await presale.depositOwn('20000000000000000000'); // 20 tokens
  await tokenTheir.approve(presale.address, maxuint);
- await presale.deposit('2000000000000000000'); // 2 USD
+ await presale.deposit('10000000000000000000'); // 10 USD
  
  // PRESALE - RELEASE:
  //presale.depositOwn('7500000000000000000000000'); // 7 500 000 tokens

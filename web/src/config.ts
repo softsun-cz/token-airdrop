@@ -22,7 +22,7 @@ export class Config {
         },       
         addressToken: '0x6411f12168f6ed7375dDD38Dd68A9130a9De7f91',
         addressAirdrop: '0x86541beBa4888f306fb47bc7064314d638Cb4B14',
-        addressPresale: '0x59dDbd1Ca51a544f081631f495B87DA0a94E195B',
+        addressPresale: '0x409f4779c09a76d23c63d2F6aBd819EACA8D801C',
         addressPool: '0xC63F6dA6DF86984e308080c593F94dC5Ad8aD1dd',
         airdropContractInterface: [] = [
             "function claimCount () view returns (uint)",
