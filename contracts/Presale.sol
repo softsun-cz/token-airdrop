@@ -28,7 +28,7 @@ contract Presale is Ownable, ReentrancyGuard {
     uint public totalClaimableNotDeducted;
     address public devAddress;
     address public routerAddress;
-    address burnAddress = 0x000000000000000000000000000000000000dEaD;
+    address burnAddress;
     mapping (address => uint) public deposited;
     mapping (address => uint) public claimed;
     mapping (address => uint) public claimable;
@@ -43,13 +43,14 @@ contract Presale is Ownable, ReentrancyGuard {
     uint MAX_INT = 2**256 - 1;
     bool liquidityCreated = false;
 
-    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, uint _tokenPricePresale, uint _tokenPriceLiquidity, uint _depositTime, uint _claimTime, LiquidityManager _liquidityManager) {
+    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, address _burnAddress uint _tokenPricePresale, uint _tokenPriceLiquidity, uint _depositTime, uint _claimTime, LiquidityManager _liquidityManager) {
         tokenOur = ERC20(_tokenOurAddress);
         tokenTheir = ERC20(_tokenTheirAddress);
         routerAddress = _routerAddress;
         tokenPricePresale = _tokenPricePresale;
         tokenPriceLiquidity = _tokenPriceLiquidity;
         devAddress = _devAddress;
+        burnAddress = _burnAddress;
         startTime = block.timestamp;
         depositTimeOut = startTime + _depositTime;
         claimTimeOut = depositTimeOut + _claimTime;

@@ -11,7 +11,7 @@ contract Airdrop is Ownable, ReentrancyGuard {
     uint public amountToClaim;
     uint public claimCount;
     uint public timeOut;
-    address burnAddress = 0x000000000000000000000000000000000000dEaD;
+    address burnAddress;
     mapping (address => bool) public addressReceived;
     IERC20 public token;
     event eventClaimed(address sender, uint amount);
@@ -19,8 +19,9 @@ contract Airdrop is Ownable, ReentrancyGuard {
     event eventSetAmountToClaim(uint amount);
     event eventSetTokenAddress(address amount);
 
-    constructor(address _token, uint _amountToClaim) {
-        token = IERC20(_token);
+    constructor(address _tokenAddress, address _burnAddress, uint _amountToClaim) {
+        token = IERC20(_tokenAddress);
+        burnAddress = _burnAddress;
         amountToClaim = _amountToClaim;
     }
 

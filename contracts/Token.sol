@@ -9,14 +9,15 @@ contract Token is ERC20, Ownable {
     uint public burnFee;
     uint public devFee;
     address public devAddress;
-    address public burnAddress = 0x000000000000000000000000000000000000dEaD;
+    address public burnAddress;
     mapping(address => bool) public excludedFromTax;
 
-    constructor(string memory _name, string memory _symbol, uint _supply, uint _decimals, uint _devFee, uint _burnFee) ERC20(_name, _symbol) {
+    constructor(string memory _name, string memory _symbol, uint _supply, uint _decimals, uint _devFee, uint _burnFee, address _burnAddress) ERC20(_name, _symbol) {
         _mint(msg.sender, _supply * 10**_decimals);
         burnFee = _burnFee;
         devFee = _devFee;
         devAddress = msg.sender;
+        burnAddress = _burnAddress;
         excludedFromTax[msg.sender] = true;
     }
 

@@ -6,6 +6,7 @@ const Pool = artifacts.require('Pool');
 
 module.exports = async function(deployer) {
  const maxuint = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
+ const burnAddress = '0x000000000000000000000000000000000000dEaD';
  // const routerAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'; // pancakeswap.finance (BSC Mainnet)
  // const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3'; // pancake.kiemtienonline360.com (BSC Testnet)
  // const routerAddress = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff'; // quickswap.exchange (Polygon Mainnet)
@@ -31,13 +32,13 @@ module.exports = async function(deployer) {
  const tokenOurBurnFee = 2;
  const tokenOurDevFee = 3;
 
- //await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee);
+ //await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, burnAddress);
  //var tokenOur = await Token.deployed();
  //await deployer.deploy(LiquidityManager);
  //const liquidityManager = await LiquidityManager.deployed();
  //liquidityManager.createPair(routerAddress, tokenOur.address, tokenTheir.address);
  //var tokenOurLPAddress = await liquidityManager.getPairAddress(routerAddress, tokenOur.address, tokenTheir.address);
- //await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
+ //await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, burnAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
  //const presale = await Presale.deployed();
  //var tokenOur = await Token.at(tokenOur.address);
  
@@ -50,7 +51,7 @@ module.exports = async function(deployer) {
  await presale.deposit('2000000000000000000'); // 2 USD
  */
 
- //await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
+ //await deployer.deploy(Airdrop, tokenOur.address, burnAddress, airdropAmount);
  //const airdrop = await Airdrop.deployed();
  //airdrop.start(airdropTime);
  await deployer.deploy(Pool, devAddress);
