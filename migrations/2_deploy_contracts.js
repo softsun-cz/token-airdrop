@@ -42,7 +42,7 @@ module.exports = async function(deployer) {
  var tokenOur = await Token.at(tokenOur.address);
  
  // for test only:
- await tokenOur.transfer(presale.address, '10000000000000000000'); // 10 tokens
+ await presale.depositTokenOwn(presale.address, '10000000000000000000'); // 10 tokens
  await tokenTheir.approve(presale.address, '115792089237316195423570985008687907853269984665640564039457584007913129639935');
  await presale.deposit('2000000000000000000');
 
@@ -58,7 +58,7 @@ module.exports = async function(deployer) {
  // TODO: THE FOLLOWING TOKEN FUNCTIONS WORK ONLY IF A NEW TOKEN IS DEPLOYED, NOT WITH JUST ADDRESS
  //tokenOur.setTaxExclusion(airdrop.address, true);
  //tokenOur.setTaxExclusion(presale.address, true);
- //tokenOur.transfer(presale.address, '7500000000000000000000000'); // 7 500 000
+ //presale.depositTokenOwn(presale.address, '7500000000000000000000000'); // 7 500 000
  //tokenOur.transfer(airdrop.address, '500000000000000000000000'); // 500 000
  //tokenOur.transfer(pool.address, '2000000000000000000000000'); // 2 000 000
 };
