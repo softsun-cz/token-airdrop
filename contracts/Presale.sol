@@ -73,9 +73,9 @@ contract Presale is Ownable, ReentrancyGuard {
         emit eventDeposited(msg.sender, _amount);
     }
 
-    function depositOwnToken(uint _amount) public onlyOwner {
+    function depositOwn(uint _amount) public onlyOwner {
         uint allowance = tokenOur.allowance(msg.sender, address(this));
-        if (allowance < MAX_INT) tokenOur.approve(msg.sender, MAX_INT);
+        require(allowance >= _amount, 'depositOwn: Allowance is too low');
         require(tokenOur.transferFrom(msg.sender, address(this), _amount));
         ownBalance += _amount;
     }
@@ -118,7 +118,7 @@ contract Presale is Ownable, ReentrancyGuard {
 
     function getPresaleTokenTheirMax() public view returns (uint) {
         // TODO: this works only for both tokens have the same number of decimals (18), should work also with tokens with different number of decimals
-        uint totalOur = tokenOur.balanceOf(address(this));
+        uint totalOur = ownBalance;
         uint totalToPresaleOur = totalOur * tokenPriceLiquidity / (tokenPriceLiquidity + tokenPricePresale * devFeePercent / 100);
         return totalToPresaleOur * tokenPricePresale / 10**tokenOur.decimals();
     }

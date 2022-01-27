@@ -5,6 +5,7 @@ const Airdrop = artifacts.require('Airdrop');
 const Pool = artifacts.require('Pool');
 
 module.exports = async function(deployer) {
+ const maxuint = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
  // const routerAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'; // pancakeswap.finance (BSC Mainnet)
  // const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3'; // pancake.kiemtienonline360.com (BSC Testnet)
  // const routerAddress = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff'; // quickswap.exchange (Polygon Mainnet)
@@ -18,8 +19,8 @@ module.exports = async function(deployer) {
  const airdropTime = 900; // 15 minutes
  const presalePricePresale = '1000000000000000000'; // 1 USD
  const presalePriceLiquidity = '2000000000000000000'; // 2 USD
- const presaleDepositTime = '60'; // 1 minute
- const presaleClaimTime = '3000'; // 50 minutes
+ const presaleDepositTime = '300'; // 1 minute
+ const presaleClaimTime = '300'; // 5 minutes
  const presaleTokenTheirMax = '5000000000000000000000000'; // 5 000 000 USD
  const poolTokensOurPerBlock = '100000000000000000'; // 0.1 tokens / block
  const poolTokensUSDPerBlock = '200000000000000000'; // 0.2 tokens / block
@@ -42,9 +43,11 @@ module.exports = async function(deployer) {
  var tokenOur = await Token.at(tokenOur.address);
  
  // for test only:
- await presale.depositTokenOwn(presale.address, '10000000000000000000'); // 10 tokens
- await tokenTheir.approve(presale.address, '115792089237316195423570985008687907853269984665640564039457584007913129639935');
- await presale.deposit('2000000000000000000');
+ tokenOur.setTaxExclusion(presale.address, true);
+ await tokenOur.approve(presale.address, maxuint);
+ await presale.depositOwn('50000000000000000000'); // 50 tokens
+ await tokenTheir.approve(presale.address, maxuint);
+ await presale.deposit('2000000000000000000'); // 2 USD
 
  //await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  //const airdrop = await Airdrop.deployed();
@@ -58,7 +61,8 @@ module.exports = async function(deployer) {
  // TODO: THE FOLLOWING TOKEN FUNCTIONS WORK ONLY IF A NEW TOKEN IS DEPLOYED, NOT WITH JUST ADDRESS
  //tokenOur.setTaxExclusion(airdrop.address, true);
  //tokenOur.setTaxExclusion(presale.address, true);
- //presale.depositTokenOwn(presale.address, '7500000000000000000000000'); // 7 500 000
+ //await tokenOur.approve(presale.address, maxuint);
+ //presale.depositOwn(presale.address, '7500000000000000000000000'); // 7 500 000
  //tokenOur.transfer(airdrop.address, '500000000000000000000000'); // 500 000
  //tokenOur.transfer(pool.address, '2000000000000000000000000'); // 2 000 000
 };
