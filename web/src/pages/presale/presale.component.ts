@@ -25,11 +25,11 @@ export class PresaleComponent implements OnInit, OnDestroy  {
   ngOnInit() {
     this.initialized = true;
     this.web3ModalSevice.presaleDevAddress();
-    this.web3ModalSevice.presaleTotalClaimable();
     this.web3ModalSevice.presaleDevFeePercent();
     this.subscription = interval(Config.main.updateInterval * 1000)
     .pipe(takeWhile(() => this.initialized))
     .subscribe(() => {
+      console.log("load: " + Date.now());
       this.web3ModalSevice.loadPresaleData();
     });
   }

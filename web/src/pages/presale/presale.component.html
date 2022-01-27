@@ -114,7 +114,7 @@
       </th><td>
           <span *ngIf="claimablePercent() == -1"><app-loader></app-loader></span>
           <div *ngIf="claimablePercent() > -1" class="center">
-            {{presale().totalClaimed | numberLocale}} {{this.presale().tokenOur.symbol}} / {{presale().totalClaimable | numberLocale}} {{this.presale().tokenOur.symbol}}
+            {{presale().totalClaimable | numberLocale}} {{this.presale().tokenOur.symbol}} / {{presale().totalClaimed | numberLocale}} {{this.presale().tokenOur.symbol}}
           <app-progress [percent]="claimablePercent()"></app-progress>
         </div>
       </td> 
