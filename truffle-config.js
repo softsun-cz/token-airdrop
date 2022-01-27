@@ -74,33 +74,33 @@ module.exports = {
       skipDryRun: true
     },
     fantomTestnet: {
-        provider: () => new HDWalletProvider(mnemonic, `https://rpc.testnet.fantom.network/`),
-        network_id: 4002,
-        confirmations: 1,
-        timeoutBlocks: 200,
-        skipDryRun: true
-      },
+      provider: () => new HDWalletProvider(mnemonic, `https://rpc.testnet.fantom.network/`),
+      network_id: 4002,
+      confirmations: 1,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
     fantomMainnet: {
-        provider: () => new HDWalletProvider(mnemonic, `https://rpc.ftm.tools/`),
-        network_id: 250,
-        confirmations: 10,
-        timeoutBlocks: 200,
-        skipDryRun: true
-      },
+      provider: () => new HDWalletProvider(mnemonic, `https://rpc.ftm.tools/`),
+      network_id: 250,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
     hecoTestnet: {
-        provider: () => new HDWalletProvider(mnemonic, `https://http-testnet.hecochain.com/`),
-        network_id: 256,
-        confirmations: 1,
-        timeoutBlocks: 200,
-        skipDryRun: true
-      },
+      provider: () => new HDWalletProvider(mnemonic, `https://http-testnet.hecochain.com/`),
+      network_id: 256,
+      confirmations: 1,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
     hecoMainnet: {
-        provider: () => new HDWalletProvider(mnemonic, `https://http-mainnet.hecochain.com/`),
-        network_id: 128,
-        confirmations: 10,
-        timeoutBlocks: 200,
-        skipDryRun: true
-      },
+      provider: () => new HDWalletProvider(mnemonic, `https://http-mainnet.hecochain.com/`),
+      network_id: 128,
+      confirmations: 10,
+      timeoutBlocks: 200,
+      skipDryRun: true
+    },
     development: {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8545,            // Standard BSC port (default: none)
