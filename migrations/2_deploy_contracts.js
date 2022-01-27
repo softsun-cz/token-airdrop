@@ -33,8 +33,8 @@ module.exports = async function(deployer) {
  const tokenOurDevFee = 3;
 
  // TOKEN:
- await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, burnAddress);
- var tokenOur = await Token.deployed();
+ //await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, burnAddress);
+ //var tokenOur = await Token.deployed();
  
  // LIQUIDITY MANAGER:
  //await deployer.deploy(LiquidityManager);
@@ -44,11 +44,11 @@ module.exports = async function(deployer) {
  // PRESALE:
  await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, burnAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
  const presale = await Presale.deployed();
- await tokenOur.setTaxExclusion(presale.address, true);
  await tokenOur.approve(presale.address, maxuint);
+ await tokenOur.setTaxExclusion(presale.address, true);
 
  // PRESALE - TEST:
- await presale.depositOwn('50000000000000000000'); // 50 tokens
+ await presale.depositOwn('10000000000000000000'); // 10 tokens
  await tokenTheir.approve(presale.address, maxuint);
  await presale.deposit('2000000000000000000'); // 2 USD
  

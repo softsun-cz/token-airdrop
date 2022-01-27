@@ -43,7 +43,7 @@ contract Presale is Ownable, ReentrancyGuard {
     uint MAX_INT = 2**256 - 1;
     bool liquidityCreated = false;
 
-    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, address _burnAddress uint _tokenPricePresale, uint _tokenPriceLiquidity, uint _depositTime, uint _claimTime, LiquidityManager _liquidityManager) {
+    constructor(address _tokenOurAddress, address _tokenTheirAddress, address _routerAddress, address _devAddress, address _burnAddress, uint _tokenPricePresale, uint _tokenPriceLiquidity, uint _depositTime, uint _claimTime, LiquidityManager _liquidityManager) {
         tokenOur = ERC20(_tokenOurAddress);
         tokenTheir = ERC20(_tokenTheirAddress);
         routerAddress = _routerAddress;
@@ -86,6 +86,7 @@ contract Presale is Ownable, ReentrancyGuard {
         require(block.timestamp <= claimTimeOut, 'claim: Claim period already timed out');
         if (!liquidityCreated) createLiquidity(); // the first person who runs claim() after depositTimeOut also creates liquidity
         uint amount = claimable[msg.sender];
+        require(amount > 0, 'claim: Nothing to claim');
         require(tokenOur.transfer(msg.sender, amount));
         claimed[msg.sender] += amount;
         claimable[msg.sender] -= amount;
