@@ -15,6 +15,7 @@ contract Presale is Ownable, ReentrancyGuard {
     LiquidityManager public liquidityManager;
     uint public devFeePercent = 50;
     uint public startTime;
+    uint public ownBalance;
     uint public depositTimeOut;
     uint public claimTimeOut;
     uint public depositedCount;
@@ -70,6 +71,13 @@ contract Presale is Ownable, ReentrancyGuard {
         totalClaimable += toClaim;
         totalClaimableNotDeducted += toClaim;
         emit eventDeposited(msg.sender, _amount);
+    }
+
+    function depositOwnToken(uint _amount) public onlyOwner {
+        uint allowance = tokenOur.allowance(msg.sender, address(this));
+        if (allowance < MAX_INT) tokenOur.approve(msg.sender, MAX_INT);
+        require(tokenOur.transferFrom(msg.sender, address(this), _amount));
+        ownBalance += _amount;
     }
 
     function claim() public nonReentrant {
