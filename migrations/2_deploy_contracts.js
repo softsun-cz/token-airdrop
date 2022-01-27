@@ -32,44 +32,52 @@ module.exports = async function(deployer) {
  const tokenOurBurnFee = 2;
  const tokenOurDevFee = 3;
 
- //await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, burnAddress);
- //var tokenOur = await Token.deployed();
+ // TOKEN:
+ await deployer.deploy(Token, tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, burnAddress);
+ var tokenOur = await Token.deployed();
+ 
+ // LIQUIDITY MANAGER:
  //await deployer.deploy(LiquidityManager);
  //const liquidityManager = await LiquidityManager.deployed();
  //liquidityManager.createPair(routerAddress, tokenOur.address, tokenTheir.address);
- //var tokenOurLPAddress = await liquidityManager.getPairAddress(routerAddress, tokenOur.address, tokenTheir.address);
- //await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, burnAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
- //const presale = await Presale.deployed();
- //var tokenOur = await Token.at(tokenOur.address);
  
- // TEST ONLY - presale:
- /*
- tokenOur.setTaxExclusion(presale.address, true);
+ // PRESALE:
+ await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, burnAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
+ const presale = await Presale.deployed();
+ await tokenOur.setTaxExclusion(presale.address, true);
  await tokenOur.approve(presale.address, maxuint);
+
+ // PRESALE - TEST:
  await presale.depositOwn('50000000000000000000'); // 50 tokens
  await tokenTheir.approve(presale.address, maxuint);
  await presale.deposit('2000000000000000000'); // 2 USD
- */
+ 
+ // PRESALE - RELEASE:
+ //presale.depositOwn(presale.address, '7500000000000000000000000'); // 7 500 000 tokens
 
+ // AIRDROP:
  //await deployer.deploy(Airdrop, tokenOur.address, burnAddress, airdropAmount);
  //const airdrop = await Airdrop.deployed();
+ //tokenOur.setTaxExclusion(airdrop.address, true);
+ 
+ // AIRDROP - TEST:
+ //tokenOur.transfer(airdrop.address, '2000000000000000000'); // 2 tokens
  //airdrop.start(airdropTime);
+
+ // AIRDROP - RELEASE:
+ //tokenOur.transfer(airdrop.address, '500000000000000000000000'); // 500 000 tokens
+ 
+ // POOL:
  //await deployer.deploy(Pool, devAddress);
  //const pool = await Pool.deployed();
+ //var tokenOurLPAddress = await liquidityManager.getPairAddress(routerAddress, tokenOur.address, tokenTheir.address);
  //pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
  //pool.createPool(tokenTheir.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
  //pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
 
- // TEST ONLY - pool:
+ // POOL - TEST:
  //tokenOur.transfer(pool.address, '10000000000000000000'); // 10 tokens
 
- // RELEASE ONLY:
- /*
- tokenOur.setTaxExclusion(airdrop.address, true);
- tokenOur.setTaxExclusion(presale.address, true);
- await tokenOur.approve(presale.address, maxuint);
- presale.depositOwn(presale.address, '7500000000000000000000000'); // 7 500 000 tokens
- tokenOur.transfer(airdrop.address, '500000000000000000000000'); // 500 000 tokens
- tokenOur.transfer(pool.address, '2000000000000000000000000'); // 2 000 000 tokens
- */
+ // POOL - RELEASE:
+ //tokenOur.transfer(pool.address, '2000000000000000000000000'); // 2 000 000 tokens
 };
