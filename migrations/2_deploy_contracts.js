@@ -54,14 +54,14 @@ module.exports = async function(deployer) {
  //await deployer.deploy(Airdrop, tokenOur.address, burnAddress, airdropAmount);
  //const airdrop = await Airdrop.deployed();
  //airdrop.start(airdropTime);
- await deployer.deploy(Pool, devAddress);
- const pool = await Pool.deployed();
- pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
- pool.createPool(tokenTheir.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
- pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
+ //await deployer.deploy(Pool, devAddress);
+ //const pool = await Pool.deployed();
+ //pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
+ //pool.createPool(tokenTheir.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
+ //pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
 
  // TEST ONLY - pool:
- tokenOur.transfer(pool.address, '10000000000000000000'); // 10 tokens
+ //tokenOur.transfer(pool.address, '10000000000000000000'); // 10 tokens
 
  // RELEASE ONLY:
  /*
