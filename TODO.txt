@@ -3,8 +3,8 @@ TODO:
 - Web - presale - nektery hodnoty se neaktualizuji (napr. Total claimable), musi se dat manualne refresh
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - getTokenTheirMax - funguje ted pro tokeny se stejnym poctem desetinnych mist (napr. 18), mel by fungovat i pro ty, co maji ruzny pocet desetinnych mist
-- Pool contract - misto require v depositu, ze farma zacla, to dat jinam (dovolit deposit pred startem, ale neemitovat nic)
-- Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat
+- Pool contract - do updatePool byl pridan na zacatek "if (!started) return" - otestovat
+- Pool contract - pridat nekam check, ze je v contractu dostatek tokenu, kdyz neni, proste dal neemitovat (vyzkouset nejdrive, co to dela i bez toho)
 - Pool contract - zkontrolovat, jestli je vsechna matematika spravne (kvuli zmene ze safemath) - celkove otestovat, pripadne tam dat zpet SafeMath - https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/math/SafeMath.sol
 - Pool contract - celkove porovnat s https://github.com/RichPigToken/richpig-contracts/blob/master/contracts/MasterChef.sol
 

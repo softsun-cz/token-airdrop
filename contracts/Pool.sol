@@ -36,7 +36,7 @@ contract Pool is Ownable, ReentrancyGuard {
         setDevFeeAddress(_devFeeAddress);
     }
 
-    // View function to see pending tokens on frontend.
+    // View function to see pending tokens on frontend
     function pendingTokens(uint _poolID, address _userAddress) external view returns (uint) {
         PoolInfo storage pool = pools[_poolID];
         UserInfo storage user = users[_poolID][_userAddress];
@@ -53,8 +53,9 @@ contract Pool is Ownable, ReentrancyGuard {
         for (uint poolID = 0; poolID < pools.length; ++poolID) updatePool(poolID);
     }
 
-    // Update reward variables of the given pool to be up-to-date.
+    // Update reward variables of the given pool to be up-to-date
     function updatePool(uint _poolID) public {
+        if (!started) return;
         PoolInfo storage pool = pools[_poolID];
         if (block.number <= pool.lastRewardBlock) return;
         uint supply = pool.tokenEarn.balanceOf(address(this));
@@ -67,9 +68,9 @@ contract Pool is Ownable, ReentrancyGuard {
         pool.lastRewardBlock = block.number;
     }
 
-    // Deposit tokens to Pool for token allocation.
+    // Deposit tokens to Pool for token allocation
     function deposit(uint _poolID, uint _amount) public nonReentrant {
-        require(started, 'deposit: Staking not started yet.');
+        // require(started, 'deposit: Staking not started yet.');
         PoolInfo storage pool = pools[_poolID];
         UserInfo storage user = users[_poolID][msg.sender];
         updatePool(_poolID);
@@ -89,7 +90,7 @@ contract Pool is Ownable, ReentrancyGuard {
         emit eventDeposit(msg.sender, _poolID, _amount);
     }
 
-    // Withdraw tokens from Pool.
+    // Withdraw tokens from Pool
     function withdraw(uint _poolID, uint _amount) public nonReentrant {
         PoolInfo storage pool = pools[_poolID];
         UserInfo storage user = users[_poolID][msg.sender];
@@ -105,7 +106,7 @@ contract Pool is Ownable, ReentrancyGuard {
         emit eventWithdraw(msg.sender, _poolID, _amount);
     }
 
-    // Withdraw without caring about rewards. EMERGENCY ONLY.
+    // Withdraw without caring about rewards. EMERGENCY ONLY
     function emergencyWithdraw(uint _poolID) public nonReentrant {
         PoolInfo storage pool = pools[_poolID];
         UserInfo storage user = users[_poolID][msg.sender];
@@ -116,7 +117,7 @@ contract Pool is Ownable, ReentrancyGuard {
         emit eventEmergencyWithdraw(msg.sender, _poolID, amount);
     }
 
-    // Safe token transfer function, just in case if rounding error causes pool to not have enough tokens.
+    // Safe token transfer function, just in case if rounding error causes pool to not have enough tokens
     function safeTokenTransfer(address _tokenAddress, address _to, uint _amount) internal {
         IERC20 token = IERC20(_tokenAddress);
         uint tokenBal = token.balanceOf(address(this));

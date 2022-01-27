@@ -42,15 +42,15 @@ module.exports = async function(deployer) {
  //liquidityManager.createPair(routerAddress, tokenOur.address, tokenTheir.address);
  
  // PRESALE:
- await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, burnAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
- const presale = await Presale.deployed();
- await tokenOur.approve(presale.address, maxuint);
- await tokenOur.setTaxExclusion(presale.address, true);
+ //await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, burnAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
+ //const presale = await Presale.deployed();
+ //await tokenOur.approve(presale.address, maxuint);
+ //await tokenOur.setTaxExclusion(presale.address, true);
 
  // PRESALE - TEST:
- await presale.depositOwn('20000000000000000000'); // 20 tokens
- await tokenTheir.approve(presale.address, maxuint);
- await presale.deposit('10000000000000000000'); // 10 USD
+ //await presale.depositOwn('20000000000000000000'); // 20 tokens
+ //await tokenTheir.approve(presale.address, maxuint);
+ //await presale.deposit('10000000000000000000'); // 10 USD
  
  // PRESALE - RELEASE:
  //presale.depositOwn('7500000000000000000000000'); // 7 500 000 tokens
@@ -68,15 +68,15 @@ module.exports = async function(deployer) {
  //tokenOur.transfer(airdrop.address, '500000000000000000000000'); // 500 000 tokens
  
  // POOL:
- //await deployer.deploy(Pool, devAddress);
- //const pool = await Pool.deployed();
- //var tokenOurLPAddress = await liquidityManager.getPairAddress(routerAddress, tokenOur.address, tokenTheir.address);
- //pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
- //pool.createPool(tokenTheir.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
- //pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
+ await deployer.deploy(Pool, devAddress);
+ const pool = await Pool.deployed();
+ var tokenOurLPAddress = await liquidityManager.getPairAddress(routerAddress, tokenOur.address, tokenTheir.address);
+ pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
+ pool.createPool(tokenTheir.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
+ pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
 
  // POOL - TEST:
- //tokenOur.transfer(pool.address, '10000000000000000000'); // 10 tokens
+ tokenOur.transfer(pool.address, '10000000000000000000'); // 10 tokens
 
  // POOL - RELEASE:
  //tokenOur.transfer(pool.address, '2000000000000000000000000'); // 2 000 000 tokens
