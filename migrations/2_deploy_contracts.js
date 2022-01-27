@@ -5,12 +5,12 @@ const Airdrop = artifacts.require('Airdrop');
 const Pool = artifacts.require('Pool');
 
 module.exports = async function(deployer) {
- const maxuint = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
- const burnAddress = '0x000000000000000000000000000000000000dEaD';
  // const routerAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E'; // pancakeswap.finance (BSC Mainnet)
  // const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3'; // pancake.kiemtienonline360.com (BSC Testnet)
  // const routerAddress = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff'; // quickswap.exchange (Polygon Mainnet)
  const routerAddress = '0x8954AfA98594b838bda56FE4C12a09D7739D179b'; // quickswap.exchange (Polygon Testnet)
+ const maxuint = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
+ const burnAddress = '0x000000000000000000000000000000000000dEaD';
  var liquidityManager = await LiquidityManager.at('0x2AC2b397562441c5dc0c7Df1926bcEBb0f40489a');
  var tokenOur = await Token.at('0x9b6452d8EE8B79605F3F73d04F5f43D7A9Df59A3');
  var tokenTheir = await Token.at('0xF42a4429F107bD120C5E42E069FDad0AC625F615');
