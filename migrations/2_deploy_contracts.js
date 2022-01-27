@@ -21,7 +21,7 @@ module.exports = async function(deployer) {
  const presalePriceLiquidity = '2000000000000000000'; // 2 USD
  const presaleDepositTime = '300'; // 5 minutes
  const presaleClaimTime = '300'; // 5 minutes
-  const poolTokensOurPerBlock = '100000000000000000'; // 0.1 tokens / block
+ const poolTokensOurPerBlock = '100000000000000000'; // 0.1 tokens / block
  const poolTokensUSDPerBlock = '200000000000000000'; // 0.2 tokens / block
  const poolTokensOurLPPerBlock = '300000000000000000'; // 0.3 tokens / block
  const tokenOurName = 'Test token';
@@ -37,31 +37,38 @@ module.exports = async function(deployer) {
  //const liquidityManager = await LiquidityManager.deployed();
  //liquidityManager.createPair(routerAddress, tokenOur.address, tokenTheir.address);
  //var tokenOurLPAddress = await liquidityManager.getPairAddress(routerAddress, tokenOur.address, tokenTheir.address);
- await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
- const presale = await Presale.deployed();
- var tokenOur = await Token.at(tokenOur.address);
+ //await deployer.deploy(Presale, tokenOur.address, tokenTheir.address, routerAddress, devAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
+ //const presale = await Presale.deployed();
+ //var tokenOur = await Token.at(tokenOur.address);
  
- // for test only:
+ // TEST ONLY - presale:
+ /*
  tokenOur.setTaxExclusion(presale.address, true);
  await tokenOur.approve(presale.address, maxuint);
  await presale.depositOwn('50000000000000000000'); // 50 tokens
  await tokenTheir.approve(presale.address, maxuint);
  await presale.deposit('2000000000000000000'); // 2 USD
+ */
 
  //await deployer.deploy(Airdrop, tokenOur.address, airdropAmount);
  //const airdrop = await Airdrop.deployed();
  //airdrop.start(airdropTime);
- //await deployer.deploy(Pool, devAddress);
- //const pool = await Pool.deployed();
- //pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
- //pool.createPool(tokenTheir.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
- //pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
+ await deployer.deploy(Pool, devAddress);
+ const pool = await Pool.deployed();
+ pool.createPool(tokenOur.address, tokenOur.address, poolTokensOurPerBlock, 0); // Our -> Our
+ pool.createPool(tokenTheir.address, tokenOur.address, poolTokensUSDPerBlock, 400); // BUSD -> Our
+ pool.createPool(tokenOurLPAddress, tokenOur.address, poolTokensOurLPPerBlock, 0); // Our-BUSD -> Our
 
- // TODO: THE FOLLOWING TOKEN FUNCTIONS WORK ONLY IF A NEW TOKEN IS DEPLOYED, NOT WITH JUST ADDRESS
- //tokenOur.setTaxExclusion(airdrop.address, true);
- //tokenOur.setTaxExclusion(presale.address, true);
- //await tokenOur.approve(presale.address, maxuint);
- //presale.depositOwn(presale.address, '7500000000000000000000000'); // 7 500 000
- //tokenOur.transfer(airdrop.address, '500000000000000000000000'); // 500 000
- //tokenOur.transfer(pool.address, '2000000000000000000000000'); // 2 000 000
+ // TEST ONLY - pool:
+ tokenOur.transfer(pool.address, '10000000000000000000'); // 10 tokens
+
+ // RELEASE ONLY:
+ /*
+ tokenOur.setTaxExclusion(airdrop.address, true);
+ tokenOur.setTaxExclusion(presale.address, true);
+ await tokenOur.approve(presale.address, maxuint);
+ presale.depositOwn(presale.address, '7500000000000000000000000'); // 7 500 000 tokens
+ tokenOur.transfer(airdrop.address, '500000000000000000000000'); // 500 000 tokens
+ tokenOur.transfer(pool.address, '2000000000000000000000000'); // 2 000 000 tokens
+ */
 };
