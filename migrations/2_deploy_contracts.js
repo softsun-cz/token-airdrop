@@ -53,7 +53,7 @@ module.exports = async function(deployer) {
  await presale.deposit('2000000000000000000'); // 2 USD
  
  // PRESALE - RELEASE:
- //presale.depositOwn(presale.address, '7500000000000000000000000'); // 7 500 000 tokens
+ //presale.depositOwn('7500000000000000000000000'); // 7 500 000 tokens
 
  // AIRDROP:
  //await deployer.deploy(Airdrop, tokenOur.address, burnAddress, airdropAmount);
