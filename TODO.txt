@@ -1,5 +1,5 @@
 TODO:
-- Web - presale - Claimable / claimed je obracene 
+- Web - presale - Claimable / claimed je obracene
 - Web - presale - nektery hodnoty se neaktualizuji (napr. Total claimable), musi se dat manualne refresh
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
 - Presale contract - z nejakeho duvodu zustaly TEST i XUSD tokeny v tomto contractu - zjistit proc - vyzkouseno i s novym tokenem, kde jeste nebyla vytvorena likvidita
