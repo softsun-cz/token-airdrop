@@ -67,10 +67,10 @@ do
  fi
 done
 
-echo 'Run web build script? (Y/N, default: N):'
-read BUILD
-if [ "$BUILD" = 'Y' ] || [ "$BUILD" = 'y'  ]; then
- cd web
- ./build.sh $WEBPATH
- cd ..
-fi
+#echo 'Run web build script? (Y/N, default: N):'
+#read BUILD
+#if [ "$BUILD" = 'Y' ] || [ "$BUILD" = 'y'  ]; then
+# cd web
+# ./build.sh $WEBPATH
+# cd ..
+#fi
