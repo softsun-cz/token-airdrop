@@ -9,8 +9,24 @@
     <tr>
       <td>Deposit fee:</td><td>{{pool.feePercent() | numberLocale}} %</td>
     </tr>
-
-    
+    <tr>
+      <td>Pending tokens:</td><td>
+        <div *ngIf="!walletSigned()">Wallet not connected</div>
+        <div *ngIf="walletSigned() && getPendingTokens() >= 0">{{getPendingTokens() | numberLocale}}</div>
+      </td>
+    </tr>
+    <tr>
+      <td>Deposit:</td><td>
+        <div *ngIf="!walletSigned()">Wallet not connected</div>
+        <div *ngIf="walletSigned()">{{amount()| numberLocale}}</div>
+      </td>
+    </tr>
+    <tr>
+      <td>RewardDebt:</td><td>
+        <div *ngIf="!walletSigned()">Wallet not connected</div>
+        <div *ngIf="walletSigned()">{{rewardDebt()| numberLocale}}</div>
+      </td>
+    </tr>    
     <tr>
       <td colspan="2" class="actions">
         <div *ngIf="!walletSigned()">Wallet not connected</div>
@@ -40,6 +56,25 @@
           </div>
           <div *ngIf="depositError != null" class="resultError">
             {{depositError}}
+          </div>
+
+          
+          <div class="calc"  *ngIf="isTokenDepositApproved()">
+            <span class="inputWrap">
+              <input onlyNumbers [allowDecimals]="true" #withdrawInput value="" /> 
+            </span>
+            <span class="buttonWrap">
+              <button (click)="withdraw(withdrawInput.value)">
+                <span *ngIf="!withdrawLoading">Withdraw</span>
+                <app-loader *ngIf="withdrawLoading" class="center"></app-loader>
+              </button>
+            </span>
+          </div>
+          <div *ngIf="withdrawTransactionHash" class="result">
+            Transaction ID: <a href="{{withdrawTransactionHash | transactionLink}}" target="_blank">{{withdrawTransactionHash}}</a>
+          </div>
+          <div *ngIf="withdrawError != null" class="resultError">
+            {{withdrawError}}
           </div>
 
         </div> 

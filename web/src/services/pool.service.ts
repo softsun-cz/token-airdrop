@@ -17,6 +17,9 @@ export class PoolService {
     "function tokensPerBlock () view returns (uint)",
     "function startBlock () view returns (uint)",
     "function deposit (uint256, uint256)",
+    "function withdraw  (uint256, uint256)",
+    "function pendingTokens (uint256, address) view returns (uint)",
+    "function users (uint256, address) view returns (tuple(uint256 amount,uint256 rewardDebt) addressPoolData)",
     "function pools(uint256) view returns (tuple(address tokenDeposit,address tokenEarn,uint256 tokensEarnPerBlock,uint256 lastRewardBlock,uint256 accTokenPerShare,uint256 fee) pool)"
   ];
   private state : PoolServiceState = {
@@ -47,16 +50,25 @@ export class PoolService {
       const that = this;
       const idx = i;
       this.notLoggedContract.pools(idx).then((pool: PoolData) => {
-        that.state.pools[idx] = new PoolState(pool);
+        that.state.pools[idx] = new PoolState(pool, idx, that);
       });
     }
   }
   
-  deposit(poolId: number, amount: number): Promise<ethers.Transaction> {
-    const b = BigInt(amount * (10 ** this.state.pools[poolId].tokenDeposit.decimals));
-    const bn = BigNumber.from(b);
-    console.log("deposit("+ poolId + "," + bn.toString() + ")");
-    return this.getSignedContract().deposit(poolId, bn);
+  deposit(poolId: number, amount: BigNumber): Promise<ethers.Transaction> {
+    return this.getSignedContract().deposit(poolId, amount);
+  }
+
+  withdraw(poolId: number, amount: BigNumber): Promise<ethers.Transaction> {
+    return this.getSignedContract().withdraw(poolId, amount);
+  }
+
+  pendingTokens(poolId: number, address: string): Promise<BigNumber>{
+    return this.getSignedContract().pendingTokens(poolId, address);
+  }
+
+  users(poolId: number, address: string): Promise<AddressPoolData>{
+    return this.getSignedContract().users(poolId, address);
   }
 }
 
@@ -66,17 +78,59 @@ interface PoolServiceState {
 }
 
 export class PoolState {
+  public poolId: number;
   public data: PoolData
   public tokenDeposit : StateToken;
   public tokenEarn : StateToken;
-  constructor(poolData: PoolData) {
+  private service: PoolService;
+  constructor(poolData: PoolData, poolId: number,service: PoolService) {
     this.data = poolData;
+    this.poolId = poolId;
+    this.service = service;
     this.tokenDeposit = new StateToken("/assets/token.png", poolData.tokenDeposit);
     this.tokenEarn = new StateToken("/assets/token.png", poolData.tokenEarn);
   }
   public feePercent() : number{
     return this.data.fee.toNumber() / 100;
   }
+
+  deposit(amount: number): Promise<ethers.Transaction> {
+    const b = BigInt(amount * (10 ** this.tokenDeposit.decimals));
+    return this.service.deposit(this.poolId, BigNumber.from(b));
+  }
+
+  withdraw(amount: number): Promise<ethers.Transaction> {
+    const b = BigInt(amount * (10 ** this.tokenDeposit.decimals));
+    return this.service.withdraw(this.poolId, BigNumber.from(b));
+  }
+
+  async pendingTokens() : Promise<number>{
+    return new Promise(async (resolve) => {
+      if(AppState.walletSigned() && AppState.selectedAddress != null){
+        //console.log(this.poolId + "," + AppState.selectedAddress);
+        const ret: BigNumber = await this.service.pendingTokens(this.poolId, AppState.selectedAddress);
+        resolve(this.tokenDeposit.reduceDecimals(ret));
+      }
+      resolve(-1);
+    });
+   }
+
+   async addressPoolData() : Promise<AddressPoolData | null>{
+    return new Promise(async (resolve) => {
+      if(AppState.walletSigned() && AppState.selectedAddress != null){
+        //console.log(this.poolId + "," + AppState.selectedAddress);
+        const ret = await this.service.users(this.poolId, AppState.selectedAddress);
+        resolve(ret);
+      }
+      resolve(null);
+    });
+   }
+   
+}
+
+export interface AddressPoolData{
+  amount: BigNumber, //   uint256
+  rewardDebt : BigNumber, //   uint256
 }
 
 interface PoolData {

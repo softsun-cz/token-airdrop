@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ethers } from 'ethers';
 import { AppState } from 'src/appState';
-import { PoolService, PoolState } from 'src/services/pool.service';
+import { AddressPoolData, PoolService, PoolState } from 'src/services/pool.service';
 import { Web3ModalService } from 'src/services/web3-modal.service';
 
 @Component({
@@ -12,9 +12,10 @@ import { Web3ModalService } from 'src/services/web3-modal.service';
 export class PoolElementComponent implements OnInit {
   @Input() pool!: PoolState;
   @Input() contractAddress!: string;
-  @Input() poolId!: number;
 
   private isApproved: boolean | null = null;
+  private pendingTokens: number = -1;
+  private addressPoolData: AddressPoolData | number = -1;
   approveTransactionHash: string= "";
   approveWaiting: boolean = false;
 
@@ -26,6 +27,45 @@ export class PoolElementComponent implements OnInit {
 
   walletSigned(): boolean{
     return AppState.walletSigned();
+  }
+
+  getPendingTokens() : number {
+    if(this.pendingTokens == -1)
+    {
+      this.pendingTokens = -2;
+      this.pool.pendingTokens().then(val => {
+        this.pendingTokens = val;
+      });
+    }
+    return this.pendingTokens;
+  }
+
+  getAddressPoolData() : AddressPoolData | null{
+    if(this.isApproved != true)
+      return null;
+    if(this.addressPoolData == -1){
+      this.addressPoolData  = -2;
+      const that = this;
+      this.pool.addressPoolData().then(value => {
+        if(value != null)
+          that.addressPoolData = value;
+      })
+    }
+    if(this.addressPoolData < 0)
+      return null;
+    return this.addressPoolData as AddressPoolData; 
+  }
+
+  amount(): number{
+    if(this.getAddressPoolData() == null)
+      return 0;
+    return this.pool.tokenDeposit.reduceDecimals(this.getAddressPoolData()?.amount as ethers.BigNumber);
+  }
+
+  rewardDebt(): number{
+    if(this.getAddressPoolData() == null)
+      return 0;
+    return this.pool.tokenDeposit.reduceDecimals(this.getAddressPoolData()?.rewardDebt as ethers.BigNumber);
   }
 
   isTokenDepositApproved() : boolean | null{
@@ -68,7 +108,7 @@ export class PoolElementComponent implements OnInit {
     this.depositLoading = true;
     this.depositTransactionHash = undefined;
     this.depositError = null;
-    this.poolService.deposit(this.poolId, amount).then(tr => {
+    this.pool.deposit(amount).then(tr => {
       this.depositLoading = false;
       this.depositTransactionHash = tr.hash;
     }, (reject) => {
@@ -79,6 +119,28 @@ export class PoolElementComponent implements OnInit {
       else
         this.depositError = reject;
       this.depositLoading = false;
+    })
+  }
+
+  withdrawTransactionHash: string | undefined;
+  withdrawError: string | null = null;
+  withdrawLoading: boolean = false;
+  withdraw(amountString: string){
+    const amount = Number(amountString);
+    this.withdrawLoading = true;
+    this.withdrawTransactionHash = undefined;
+    this.withdrawError = null;
+    this.pool.withdraw(amount).then(tr => {
+      this.withdrawLoading = false;
+      this.withdrawTransactionHash = tr.hash;
+    }, (reject) => {
+      if(reject.data != null && reject.data.message != null)
+        this.withdrawError = reject.data.message;
+      else if(reject.message != null)
+        this.withdrawError = reject.message;
+      else
+        this.withdrawError = reject;
+      this.withdrawLoading = false;
     })
   }
 }

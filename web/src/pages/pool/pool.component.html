@@ -9,5 +9,5 @@
   </tr>
 </table>
 <ng-container *ngFor="let p of state().pools; index as poolId;" >
-  <app-pool-element *ngIf=p [pool]=p [poolId]=poolId [contractAddress]=poolAddress()></app-pool-element>
+  <app-pool-element *ngIf=p [pool]=p [contractAddress]=poolAddress()></app-pool-element>
 </ng-container>
