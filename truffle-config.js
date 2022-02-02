@@ -21,10 +21,10 @@ module.exports = {
       skipDryRun: true
     },
     polygonMainnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.network`),
+      //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.network`),
       //provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet.chainstacklabs.com`),
       //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.maticvigil.com`),
-      //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.quiknode.pro`),
+      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.quiknode.pro`),
       //provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet-full-rpc.bwarelabs.com`),
       network_id: 137,
       confirmations: 10,
@@ -53,7 +53,7 @@ module.exports = {
       skipDryRun: true
     },
     avaxMainnet: {
-      provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed2.binance.org`),
+      provider: () => new HDWalletProvider(mnemonic, `https://api.avax.network/ext/bc/C/rpc`),
       network_id: 43114,
       confirmations: 10,
       timeoutBlocks: 200,
