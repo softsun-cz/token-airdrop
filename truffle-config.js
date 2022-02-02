@@ -21,10 +21,11 @@ module.exports = {
       skipDryRun: true
     },
     polygonMainnet: {
+      provider: () => new HDWalletProvider(mnemonic, `https://polygon-rpc.com`),
       //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.network`),
       //provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet.chainstacklabs.com`),
       //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.maticvigil.com`),
-      provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.quiknode.pro`),
+      //provider: () => new HDWalletProvider(mnemonic, `https://rpc-mainnet.matic.quiknode.pro
       //provider: () => new HDWalletProvider(mnemonic, `https://matic-mainnet-full-rpc.bwarelabs.com`),
       network_id: 137,
       confirmations: 10,
