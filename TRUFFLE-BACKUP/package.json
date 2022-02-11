@@ -1,0 +1,19 @@
+{
+  "name": "token-airdrop",
+  "version": "1.0.0",
+  "license": "MIT",
+  "devDependencies": {
+    "@chainlink/contracts": "*",
+    "@openzeppelin/contracts": "*",
+    "@openzeppelin/contracts-upgradeable": "*",
+    "@openzeppelin/test-helpers": "*",
+    "@openzeppelin/truffle-upgrades": "*",
+    "@truffle/hdwallet-provider": "*",
+    "truffle-contract-size": "*",
+    "truffle-plugin-verify": "*",
+    "web3": "*"
+  },
+  "dependencies": {
+    "@truffle/hdwallet-provider": "*"
+  }
+}

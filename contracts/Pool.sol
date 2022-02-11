@@ -6,8 +6,10 @@ import '@openzeppelin/contracts/access/Ownable.sol';
 import '@openzeppelin/contracts/security/ReentrancyGuard.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol';
+import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 
 contract Pool is Ownable, ReentrancyGuard {
+    using SafeMath for uint;
     using SafeERC20 for IERC20;
     mapping(uint => mapping(address => UserInfo)) public users; // Info of each user that stakes tokens.
     PoolInfo[] public pools; // Info of each user that stakes tokens.
@@ -19,94 +21,88 @@ contract Pool is Ownable, ReentrancyGuard {
     event eventSetDevFeeAddress(address indexed user, address indexed devFeeAddress);
 
     struct UserInfo {
-        uint amount; // How many tokens the user has provided.
-        uint rewardDebt; // Reward debt. See explanation below.
+        uint amount;
+        uint rewardDebt;
     }
 
     struct PoolInfo {
         IERC20 tokenDeposit;
         IERC20 tokenEarn;
         uint tokensEarnPerBlock;
-        uint lastRewardBlock; // Last block number that Tokens distribution occurs.
-        uint accTokenPerShare; // Accumulated tokens per share, times 10**12. See below.
-        uint fee;
+        uint lastRewardBlock;
+        uint accTokenPerShare;
+        uint feeDeposit;
     }
 
     constructor(address _devFeeAddress) {
         setDevFeeAddress(_devFeeAddress);
     }
 
-    // View function to see pending tokens on frontend
     function pendingTokens(uint _poolID, address _userAddress) external view returns (uint) {
         PoolInfo storage pool = pools[_poolID];
         UserInfo storage user = users[_poolID][_userAddress];
         uint accTokenPerShare = pool.accTokenPerShare;
         uint supply = pool.tokenDeposit.balanceOf(address(this));
         if (block.number > pool.lastRewardBlock && supply != 0) {
-            uint multiplier =  block.number - pool.lastRewardBlock;
-            accTokenPerShare += (multiplier * pool.tokensEarnPerBlock) * 10**12 / supply;
+            uint multiplier = block.number.sub(pool.lastRewardBlock);
+            accTokenPerShare = accTokenPerShare.add(multiplier.mul(pool.tokensEarnPerBlock).mul(1e12).div(supply));
         }
-        return user.amount * accTokenPerShare / 10**12 - user.rewardDebt;
+        return user.amount.mul(accTokenPerShare).div(1e12).sub(user.rewardDebt);
     }
 
     function updateAllPools() public {
-        for (uint poolID = 0; poolID < pools.length; ++poolID) updatePool(poolID);
+        for (uint poolID = 0; poolID < pools.length; poolID++) updatePool(poolID);
     }
 
-    // Update reward variables of the given pool to be up-to-date
     function updatePool(uint _poolID) public {
-        if (!started) return;
         PoolInfo storage pool = pools[_poolID];
         if (block.number <= pool.lastRewardBlock) return;
-        uint supply = pool.tokenEarn.balanceOf(address(this));
-        if (supply == 0) {
+        uint supply = pool.tokenDeposit.balanceOf(address(this));
+        if (supply == 0 || !started) {
             pool.lastRewardBlock = block.number;
             return;
         }
-        uint multiplier = block.number - pools[_poolID].lastRewardBlock;
-        pool.accTokenPerShare += (multiplier * pool.tokensEarnPerBlock) * 10**12 / supply;
+        uint multiplier = block.number.sub(pools[_poolID].lastRewardBlock);
+        pool.accTokenPerShare = pool.accTokenPerShare.add(multiplier.mul(1e12).div(supply));
         pool.lastRewardBlock = block.number;
     }
 
-    // Deposit tokens to Pool for token allocation
     function deposit(uint _poolID, uint _amount) public nonReentrant {
         // require(started, 'deposit: Staking not started yet.');
         PoolInfo storage pool = pools[_poolID];
         UserInfo storage user = users[_poolID][msg.sender];
         updatePool(_poolID);
         if (user.amount > 0) {
-            uint pending = user.amount * pool.accTokenPerShare / 10**12 - user.rewardDebt;
+            uint pending = user.amount.mul(pool.accTokenPerShare).div(1e12).sub(user.rewardDebt);
             if (pending > 0) safeTokenTransfer(address(pool.tokenEarn), msg.sender, pending);
         }
         if (_amount > 0) {
-            pool.tokenDeposit.safeTransferFrom(address(msg.sender), address(this), _amount);
-            if (pool.fee > 0) {
-                uint depositFee = _amount * pool.fee / 10000;
+            pool.tokenDeposit.safeTransferFrom(msg.sender, address(this), _amount);
+            if (pool.feeDeposit > 0) {
+                uint depositFee = _amount.mul(pool.feeDeposit).div(10000);
                 pool.tokenDeposit.safeTransfer(devFeeAddress, depositFee);
-                user.amount += _amount - depositFee;
-            } else user.amount += _amount;
+                user.amount = user.amount.add(_amount).sub(depositFee);
+            } else user.amount = user.amount.add(_amount);
         }
-        user.rewardDebt = user.amount * pool.accTokenPerShare / 10**12;
+        user.rewardDebt = user.amount.mul(pool.accTokenPerShare).div(1e12);
         emit eventDeposit(msg.sender, _poolID, _amount);
     }
 
-    // Withdraw tokens from Pool
     function withdraw(uint _poolID, uint _amount) public nonReentrant {
         PoolInfo storage pool = pools[_poolID];
         UserInfo storage user = users[_poolID][msg.sender];
         require(user.amount >= _amount, 'withdraw: Amount is too big');
         updatePool(_poolID);
-        uint pending = user.amount * pool.accTokenPerShare / 10**12 - user.rewardDebt;
+        uint pending = user.amount.mul(pool.accTokenPerShare).div(1e12).sub(user.rewardDebt);
         if (pending > 0) safeTokenTransfer(address(pool.tokenEarn), msg.sender, pending);
         if (_amount > 0) {
-            user.amount = user.amount - _amount;
+            user.amount = user.amount.sub(_amount);
             pool.tokenDeposit.safeTransfer(address(msg.sender), _amount);
         }
-        user.rewardDebt = user.amount * pool.accTokenPerShare / 10**12;
+        user.rewardDebt = user.amount.mul(pool.accTokenPerShare).div(1e12);
         emit eventWithdraw(msg.sender, _poolID, _amount);
     }
 
-    // Withdraw without caring about rewards. EMERGENCY ONLY
     function emergencyWithdraw(uint _poolID) public nonReentrant {
         PoolInfo storage pool = pools[_poolID];
         UserInfo storage user = users[_poolID][msg.sender];
@@ -117,26 +113,17 @@ contract Pool is Ownable, ReentrancyGuard {
         emit eventEmergencyWithdraw(msg.sender, _poolID, amount);
     }
 
-    // Safe token transfer function, just in case if rounding error causes pool to not have enough tokens
-    function safeTokenTransfer(address _tokenAddress, address _to, uint _amount) internal {
+    function safeTokenTransfer(address _tokenAddress, address _toAddress, uint _amount) internal {
         IERC20 token = IERC20(_tokenAddress);
         uint tokenBal = token.balanceOf(address(this));
         bool transferSuccess = false;
-        if (_amount > tokenBal) transferSuccess = token.transfer(_to, tokenBal);
-        else transferSuccess = token.transfer(_to, _amount);
+        if (_amount > tokenBal) transferSuccess = token.transfer(_toAddress, tokenBal);
+        else transferSuccess = token.transfer(_toAddress, _amount);
         require(transferSuccess, 'safeTokenTransfer: transfer failed');
     }
 
-    function createPool(address _tokenDepositAddress, address _tokenEarnAddress, uint _tokensEarnPerBlock, uint16 _fee) public onlyOwner {
-        PoolInfo memory pool = PoolInfo(
-            IERC20(_tokenDepositAddress),
-            IERC20(_tokenEarnAddress),
-            _tokensEarnPerBlock,
-            0,
-            0,
-            _fee
-        );
-        pools.push(pool);
+    function createPool(address _tokenDepositAddress, address _tokenEarnAddress, uint _tokensEarnPerBlock, uint16 _feeDeposit) public onlyOwner {
+        pools.push(PoolInfo(IERC20(_tokenDepositAddress), IERC20(_tokenEarnAddress), _tokensEarnPerBlock, block.number, 0, _feeDeposit));
     }
 
     function start() public onlyOwner {
