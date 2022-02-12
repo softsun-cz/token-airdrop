@@ -1,7 +1,7 @@
 #!/bin/bash
 
 LOG=deploy.log
-WEB=/data/www/test.piginu.com/
+WEB=/data/www/airdrop.piginu.com/
 DEPLOY_SCRIPT=scripts/deploy.js
 NETWORKS=`node deploy-networks.js`
 echo ''
