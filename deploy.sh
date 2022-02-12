@@ -32,27 +32,30 @@ npx hardhat run --network $NETWORK $DEPLOY_SCRIPT 2>&1 | tee $LOG
 ./verify.sh $NETWORK
 rm -f ./verify.sh
 
-# sw=false
-# for i in "${!ARRAY[@]}"
-# do
-#  if [ $sw = false ]; then
-#   NAME=${ARRAY[$i]}
-#   ADDR=${ARRAY[$i+1]}
-#   echo 'Change address of '$NAME' contract in web config (Y/N, default: N):'
-#   read CHANGE
-#   if [ "$CHANGE" = 'Y' ] || [ "$CHANGE" = 'y'  ]; then
-#    sed -i '/address'$NAME'/c\        address'$NAME': '\'$ADDR\'',' ./web/src/config.ts
-#   fi
-#   sw=true
-#  else
-#   sw=false
-#  fi
-# done
 
-# echo 'Run web build script? (Y/N, default: N):'
-# read BUILD
-# if [ "$BUILD" = 'Y' ] || [ "$BUILD" = 'y'  ]; then
-#  cd web
-#  ./build.sh
-#  cd ..
-# fi
+CONTRACTS=`node deploy-contracts.js`
+ARRAY=($CONTRACTS)
+sw=false
+for i in "${!ARRAY[@]}"
+ do
+  if [ $sw = false ]; then
+   NAME=${ARRAY[$i]}
+   ADDR=${ARRAY[$i+1]}
+   echo 'Change address of '$NAME' contract in web config (Y/N, default: N):'
+   read CHANGE
+   if [ "$CHANGE" = 'Y' ] || [ "$CHANGE" = 'y'  ]; then
+    sed -i '/address'$NAME'/c\        address'$NAME': '\'$ADDR\'',' ./web/src/config.ts
+   fi
+   sw=true
+  else
+   sw=false
+  fi
+ done
+
+echo 'Run web build script? (Y/N, default: N):'
+read BUILD
+if [ "$BUILD" = 'Y' ] || [ "$BUILD" = 'y'  ]; then
+ cd web
+ ./build.sh
+ cd ..
+fi
