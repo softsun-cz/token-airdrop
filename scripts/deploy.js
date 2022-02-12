@@ -1,5 +1,3 @@
-//const hre = require('hardhat');
-const { debug } = require('console');
 const fetch = require('node-fetch');
 
 var netInfo;
