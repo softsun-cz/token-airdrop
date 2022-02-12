@@ -19,7 +19,8 @@ async function main() {
  var tokenOurLPAddress = '0xA4A52Ef4f83bfb5fC9661d6B558e144CAC0f1242';
  const burnAddress = '0x000000000000000000000000000000000000dEaD';
  const devAddress = '0x650E5c6071f31065d7d5Bf6CaD5173819cA72c41';
- const airdropAmount = '1000000000000000000'; // 1
+ const airdropAmount = '1000000000000000000'; // 1 token
+ const airdropMinBaseCoinBalance = '1000000000000000000' // 0.1 BNB / MATIC / etc...
  const airdropTime = 900; // 15 minutes
  const presalePricePresale = '1000000000000000000'; // 1 USD
  const presalePriceLiquidity = '2000000000000000000'; // 2 USD
@@ -44,7 +45,7 @@ async function main() {
  var tokenOur = await deploy('Token', tokenOurName, tokenOurSymbol, tokenOurSupply, tokenOurDecimals, tokenOurDevFee, tokenOurBurnFee, burnAddress);
  var liquidityManager = await deploy('LiquidityManager');
  var presale = await deploy('Presale', tokenOur.address, tokenTheir.address, routerAddress, devAddress, burnAddress, presalePricePresale, presalePriceLiquidity, presaleDepositTime, presaleClaimTime, liquidityManager.address);
- var airdrop = await deploy('Airdrop', tokenOur.address, burnAddress, airdropAmount);
+ var airdrop = await deploy('Airdrop', tokenOur.address, burnAddress, airdropAmount, airdropMinBaseCoinBalance);
  var pool = await deploy('Pool', devAddress);
 
  /*
