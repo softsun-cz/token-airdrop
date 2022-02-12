@@ -11,17 +11,14 @@ yarn install
 ```
 
 # Used dependencies
-- Truffle v5.4.26 (core: 5.4.26)
-- Solidity - ^0.8.11 (solc-js)
-- Node v16.13.1
-- NPM 8.3.0
-- Web3.js v1.5.3
-- Yarn 1.22.17
+- Hardhat
+- Solidity
+- Node v16.x (do not use 17.x!)
+- NPM
+- Yarn
 
 # Web page
 You can also build web page manualy without deploying new smart contracts using:
-1. Edit ./web/build.sh and set a different web root where you'd like to deploy your web page if needed
-2. Build and deploy web page: 
 ```console
 cd ./web
 ./build.sh
