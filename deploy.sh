@@ -1,6 +1,7 @@
 #!/bin/bash
 
 LOG=deploy.log
+WEB=/data/www/test.piginu.com/
 DEPLOY_SCRIPT=scripts/deploy.js
 NETWORKS=`node deploy-networks.js`
 echo ''
@@ -52,10 +53,10 @@ for i in "${!ARRAY[@]}"
   fi
  done
 
-echo 'Run web build script? (Y/N, default: N):'
-read BUILD
-if [ "$BUILD" = 'Y' ] || [ "$BUILD" = 'y'  ]; then
- cd web
- ./build.sh
- cd ..
-fi
+#echo 'Run web build script? (Y/N, default: N):'
+#read BUILD
+#if [ "$BUILD" = 'Y' ] || [ "$BUILD" = 'y'  ]; then
+# cd web
+# ./build.sh "$WEB"
+# cd ..
+#fi
