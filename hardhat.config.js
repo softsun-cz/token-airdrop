@@ -10,6 +10,7 @@ const api_key_avax = fs.readFileSync('.apikey_avax').toString().trim();
 const api_key_optimism = fs.readFileSync('.apikey_optimism').toString().trim();
 const api_key_fantom = fs.readFileSync('.apikey_ftmscan').toString().trim();
 const api_key_hecoinfo = fs.readFileSync('.apikey_hecoinfo').toString().trim();
+const api_key_cronos = fs.readFileSync('.apikey_cronos').toString().trim();
 
 module.exports = {
  solidity: {
@@ -118,6 +119,8 @@ module.exports = {
    ftmTestnet: api_key_fantom,
    heco: api_key_hecoinfo,
    hecoTestnet: api_key_hecoinfo,
+   //cronos: api_key_cronos,
+   //cronosTestnet: api_key_cronos,
   }
  }
 };
