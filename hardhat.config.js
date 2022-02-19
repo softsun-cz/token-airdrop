@@ -90,6 +90,16 @@ module.exports = {
    chainId: 128,
    accounts: {mnemonic: mnemonic}
   },
+  cronosTestnet: {
+   url: 'https://cronos-testnet-3.crypto.org:8545',
+   chainId: 338,
+   accounts: {mnemonic: mnemonic}
+  },
+  cronosMainnet: {
+   url: 'https://evm-cronos.org',
+   chainId: 25,
+   accounts: {mnemonic: mnemonic}
+  },
   localhost: {
    url: '127.0.0.1:8545',
   },
