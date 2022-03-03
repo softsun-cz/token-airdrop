@@ -2,6 +2,7 @@ TODO:
 - Web - Airdrop - pridan minBaseCoinBalance, coz je cislo, kolik musi byt minimalne v penezence hlavni meny (BNB, MATIC apod.) ... je to z toho duvodu, aby neairdropovaly fake penezenky
 - Web - dodelat Pool stranku a otestovat (podobne, jako u rich piga a omezena emise - ta by se mela zobrazit taky)
 - Pridat API key https://cronoscan.com/
+- Odstranit nejak warningy kvuli IUniswapV2...Mock (tyhle contracty jsou tam kvuli testum)
 - Presale contract - getTokenTheirMax - funguje ted pro tokeny se stejnym poctem desetinnych mist (napr. 18), mel by fungovat i pro ty, co maji ruzny pocet desetinnych mist
 
 Napady:
