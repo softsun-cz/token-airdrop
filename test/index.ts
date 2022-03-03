@@ -10,7 +10,7 @@ import {
   Stablecoin,
   UniswapV2RouterMock,
   UniswapV2FactoryMock,
-} from "../typechain";
+} from "../typechain-types";
 import { BigNumber } from "ethers";
 
 describe("Token tests", function () {
