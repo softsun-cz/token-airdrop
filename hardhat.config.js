@@ -1,7 +1,7 @@
-require("@nomiclabs/hardhat-waffle");
-require("@nomiclabs/hardhat-ethers");
-require("@nomiclabs/hardhat-etherscan");
-require("hardhat-gas-reporter");
+require('@nomiclabs/hardhat-waffle');
+require('@nomiclabs/hardhat-ethers');
+require('@nomiclabs/hardhat-etherscan');
+require('hardhat-gas-reporter');
 
 const fs = require('fs');
 const mnemonic = fs.readFileSync('.secret').toString().trim();
