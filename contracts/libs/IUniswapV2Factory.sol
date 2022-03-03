@@ -22,6 +22,8 @@ interface IUniswapV2Factory {
 
 contract UniswapV2FactoryMock is IUniswapV2Factory {
   address private _lpTokenAddress;
+  address private _tokenA;
+  address private _tokenB;
 
   constructor(address lpTokenAddress) {
     _lpTokenAddress = lpTokenAddress;
@@ -32,6 +34,7 @@ contract UniswapV2FactoryMock is IUniswapV2Factory {
     view
     returns (address pair)
   {
+    tokenA = tokenB;
     return _lpTokenAddress;
   }
 
@@ -39,6 +42,8 @@ contract UniswapV2FactoryMock is IUniswapV2Factory {
     external
     returns (address pair)
   {
+    _tokenA = tokenA;
+    _tokenB = tokenB;
     return _lpTokenAddress;
   }
 }
