@@ -1,13 +1,8 @@
-//import * as dotenv from 'dotenv';
-
 import { HardhatUserConfig, task } from 'hardhat/config';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
-import 'hardhat-gas-reporter';
 import 'solidity-coverage';
-
-//dotenv.config();
 
 const fs = require('fs');
 const mnemonic = fs.readFileSync('.secret').toString().trim();
@@ -35,9 +30,6 @@ const config: HardhatUserConfig = {
     }
   },
   networks: {
-    hardhat: {
-      allowUnlimitedContractSize: true,
-    },
     polygonTestnet: {
       //url: 'https://rpc-mumbai.matic.today',
       url: 'https://matic-mumbai.chainstacklabs.com',
@@ -116,10 +108,6 @@ const config: HardhatUserConfig = {
       chainId: 25,
       accounts: { mnemonic: mnemonic },
     },
-  },
-  gasReporter: {
-    enabled: process.env.REPORT_GAS !== undefined,
-    currency: 'USD',
   },
   etherscan: {
     apiKey: {

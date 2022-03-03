@@ -17,7 +17,6 @@
     "ethereum-waffle": "*",
     "ethers": "*",
     "hardhat": "*",
-    "hardhat-gas-reporter": "*",
     "typescript": "*",
     "ts-node": "*",
     "solidity-coverage": "*",
