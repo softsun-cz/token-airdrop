@@ -3,7 +3,6 @@
 /.idea/
 /secrets.json
 /build/
-/test/
 /bin/
 .env
 coverage
