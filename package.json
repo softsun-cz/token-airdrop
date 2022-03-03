@@ -20,7 +20,6 @@
     "hardhat-gas-reporter": "*",
     "typescript": "*",
     "ts-node": "*",
-    "dotenv": "*",
     "solidity-coverage": "*",
     "typechain": "*"
   }
