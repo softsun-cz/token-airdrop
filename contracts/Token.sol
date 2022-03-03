@@ -2,25 +2,17 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import '@openzeppelin/contracts/access/Ownable.sol';
+import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 contract Token is ERC20, Ownable {
-  uint256 public burnFee;
-  uint256 public devFee;
+  uint public burnFee;
+  uint public devFee;
   address public devAddress;
   address public burnAddress;
   mapping(address => bool) public excludedFromTax;
 
-  constructor(
-    string memory _name,
-    string memory _symbol,
-    uint256 _supply,
-    uint256 _decimals,
-    uint256 _devFee,
-    uint256 _burnFee,
-    address _burnAddress
-  ) ERC20(_name, _symbol) {
+  constructor(string memory _name, string memory _symbol, uint _supply, uint _decimals, uint _devFee, uint _burnFee, address _burnAddress) ERC20(_name, _symbol) {
     _mint(msg.sender, _supply * 10**_decimals);
     burnFee = _burnFee;
     devFee = _devFee;
@@ -29,19 +21,11 @@ contract Token is ERC20, Ownable {
     excludedFromTax[msg.sender] = true;
   }
 
-  function transfer(address recipient, uint256 amount)
-    public
-    override
-    returns (bool)
-  {
-    if (
-      excludedFromTax[msg.sender] ||
-      excludedFromTax[recipient] ||
-      recipient == burnAddress
-    ) _transfer(_msgSender(), recipient, amount);
+  function transfer(address recipient, uint amount) public override returns (bool) {
+    if (excludedFromTax[msg.sender] || excludedFromTax[recipient] || recipient == burnAddress) _transfer(_msgSender(), recipient, amount);
     else {
-      uint256 burnAmount = (amount * burnFee) / 100;
-      uint256 devAmount = (amount * devFee) / 100;
+      uint burnAmount = (amount * burnFee) / 100;
+      uint devAmount = (amount * devFee) / 100;
       _transfer(_msgSender(), burnAddress, burnAmount);
       _transfer(_msgSender(), devAddress, devAmount);
       _transfer(_msgSender(), recipient, amount - burnAmount - devAmount);

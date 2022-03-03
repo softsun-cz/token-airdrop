@@ -9,6 +9,12 @@
 yarn install
 ./deploy.sh
 ```
+# Unit tests
+You can run unit tests using:
+```console
+npx hardhat clean
+npx hardhat test
+```
 
 # Used dependencies
 - Hardhat
