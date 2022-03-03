@@ -2,7 +2,6 @@ import { HardhatUserConfig, task } from 'hardhat/config';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
-import 'solidity-coverage';
 
 const fs = require('fs');
 const mnemonic = fs.readFileSync('.secret').toString().trim();

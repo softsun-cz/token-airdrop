@@ -13,6 +13,7 @@ yarn install
 You can run unit tests using:
 ```console
 npx hardhat clean
+npx hardhat compile
 npx hardhat test
 ```
 

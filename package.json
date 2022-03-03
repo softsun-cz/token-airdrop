@@ -19,7 +19,6 @@
     "hardhat": "*",
     "typescript": "*",
     "ts-node": "*",
-    "solidity-coverage": "*",
     "typechain": "*"
   }
 }
