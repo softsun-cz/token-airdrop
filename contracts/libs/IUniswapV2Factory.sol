@@ -25,5 +25,6 @@ contract UniswapV2FactoryMock is IUniswapV2Factory {
   function createPair(address tokenA, address tokenB) external returns (address) {
     _tokenA = tokenA;
     _tokenB = tokenB;
+    return _lpTokenAddress;
   }
 }
