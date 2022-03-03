@@ -23,9 +23,6 @@ module.exports = {
   }
  },
  networks: {
-  hardhat: {
-   allowUnlimitedContractSize: true,
-  },
   polygonTestnet: {
    //url: 'https://rpc-mumbai.matic.today',
    url: 'https://matic-mumbai.chainstacklabs.com',
