@@ -23,6 +23,9 @@ module.exports = {
   }
  },
  networks: {
+  hardhat: {
+   allowUnlimitedContractSize: true,
+  },
   polygonTestnet: {
    //url: 'https://rpc-mumbai.matic.today',
    url: 'https://matic-mumbai.chainstacklabs.com',
@@ -104,6 +107,10 @@ module.exports = {
   localhost: {
    url: '127.0.0.1:8545',
   },
+ },
+ gasReporter: {
+  enabled: process.env.REPORT_GAS !== undefined,
+  currency: 'USD',
  },
  etherscan: {
   apiKey: {
