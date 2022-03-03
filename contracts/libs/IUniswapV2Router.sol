@@ -8,17 +8,49 @@ interface IUniswapV2Router {
 }
 
 contract UniswapV2RouterMock is IUniswapV2Router {
-  address factoryAddress;
+  address private _factoryAddress;
+  address private _tokenA;
+  address private _tokenB;
+  uint256 private _amountADesired;
+  uint256 private _amountBDesired;
+  uint256 private _amountAMin;
+  uint256 private _amountBMin;
+  address private _to;
+  uint256 private _deadline;
 
-  constructor(address _factoryAddress) {
-    factoryAddress = _factoryAddress;
+  constructor(address factoryAddress) {
+    _factoryAddress = factoryAddress;
   }
 
   function factory() external view returns (address) {
-    return factoryAddress;
+    return _factoryAddress;
   }
 
-  function addLiquidity(address tokenA, address tokenB, uint amountADesired, uint amountBDesired, uint amountAMin, uint amountBMin, address to, uint deadline) external returns (uint amountA, uint amountB, uint liquidity) {
+  function addLiquidity(
+    address tokenA,
+    address tokenB,
+    uint256 amountADesired,
+    uint256 amountBDesired,
+    uint256 amountAMin,
+    uint256 amountBMin,
+    address to,
+    uint256 deadline
+  )
+    external
+    returns (
+      uint256 amountA,
+      uint256 amountB,
+      uint256 liquidity
+    )
+  {
+    _tokenA = tokenA;
+    _tokenB = tokenB;
+    _amountADesired = amountADesired;
+    _amountBDesired = amountBDesired;
+    _amountAMin = amountAMin;
+    _amountBMin = amountBMin;
+    _to = to;
+    _deadline = deadline;
     return (1, 1, 1);
   }
 }
