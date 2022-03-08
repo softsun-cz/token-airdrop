@@ -7,3 +7,18 @@ TODO:
 Napady:
 - Airdrop a Pool contract - nechat manualni start - smi se spustit az po vytvoreni likvidity (pokud nekdo neda claim v presale, tak se nevytvori likvidita a v tu chvili kdyz nekdo vezme airdrop coiny a vlozi je do likvidity, tak je to problem)
 - Airdrop Telegram bot (mozna)
+
+Adresy tokenu:
+XUSD - Matic testnet: 0xF42a4429F107bD120C5E42E069FDad0AC625F615
+DAI - Matic mainnet: 0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063
+Matic testnet - smenarna: https://quickswap.exchange/#/swap?inputCurrency=0xF42a4429F107bD120C5E42E069FDad0AC625F615&outputCurrency=
+Matic mainnet - smenarna: https://quickswap.exchange/#/swap?inputCurrency=0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063&outputCurrency=
+Koupit likviditu XUSD / TEST: https://quickswap.exchange/#/add/0xF42a4429F107bD120C5E42E069FDad0AC625F615/0x9b6452d8EE8B79605F3F73d04F5f43D7A9Df59A3
+Koupit DAI za MATIC: https://quickswap.exchange/#/swap?outputCurrency=0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063
+
+XUSD - Cronos testnet:
+DAI - Cronos mainnet: 0xF2001B145b43032AAF5Ee2884e456CCd805F677D
+Cronos testnet - smenarna: https://app.cronaswap.org/swap?inputCurrency=ADRESA&outputCurrency=ADRESA2
+Cronos mainnet - smenarna: https://app.cronaswap.org/swap?inputCurrency=0xF2001B145b43032AAF5Ee2884e456CCd805F677D&outputCurrency=
+Koupit likviditu XUSD / TEST: https://app.cronaswap.org/add/ADRESA/ADRESA2
+Koupit DAI za CRO: https://app.cronaswap.org/swap?outputCurrency=0xF2001B145b43032AAF5Ee2884e456CCd805F677D
