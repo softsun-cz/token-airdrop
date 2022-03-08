@@ -1,184 +1,46 @@
 :host{
-    $yellow: #f1c40f;
-    $lime: #76c900;
-    $navy: #0a4069;
-    $cyan: #57caf4;
-    $red: #ec008c;
-    $white: #fefefe;
-    $gray: #444;
-    $lightGray: lighten($gray, 30);
-
     $transitionDuration: .3s;
     $transition: all $transitionDuration ease-in-out;
-
-
-    .chart
-    {
-        font-size: 1em;
-
-        perspective: 1000px;
-        perspective-origin: 50% 50%;
-        backface-visibility: visible;
-        margin: -40px 7% 0;
-    }
-
-    $faceColor: rgba($white, .3);
-    $growColor: rgba($red, .6);
-
-    .bar
-    {
-        font-size: 1em;
-
+    .chart{
+        border: 2px solid #C3DAF2;
+        background: #F2F8FC;
         position: relative;
-
-        height: 10em;
-
-        transition: $transition;
-        transform: rotateX(60deg) rotateY(0deg);
-
-        transform-style: preserve-3d;
-
-        .face
+        padding: 5px;
+        border-radius: 2em;
+        @for $i from 0 to 101
         {
-            font-size: 2em;
+            .bar-#{$i}
+            {
+                .growing-bar
+                {
+                    width: percentage($i * 0.01);
+                }
+            }
+        }
 
-            position: relative;
-
+        .growing-bar
+        {
+            transition: $transition;
+            background: linear-gradient(to left,#33ce47, #4195ec);
             width: 100%;
             height: 2em;
-
-            background-color: $faceColor;
-
-            &.side-a,
-            &.side-b
-            {
-                width: 2em;
-            }
+            border-radius: 2em;
         }
-        .side-a
-        {
-            transform: rotateX(90deg) rotateY(-90deg) translateX(2em) translateY(1em) translateZ(1em);
-        }
-        .side-b
-        {
-            transform: rotateX(90deg) rotateY(-90deg) translateX(4em) translateY(1em) translateZ(-1em);
+        .text{
             position: absolute;
+            left:0;
             right: 0;
+            text-align: center;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #fff;
+            font-weight: bold;
+            text-shadow:
+            -1px -1px 0 #000,  
+             1px -1px 0 #000,
+             -1px 1px 0 #000,
+              1px 1px 0 #000,
+              0 0 5px #000;
         }
-        .side-0
-        {
-            transform: rotateX(90deg) rotateY(0) translateX(0) translateY(1em) translateZ(-1em);
-        }
-        .side-1
-        {
-            transform: rotateX(90deg) rotateY(0) translateX(0) translateY(1em) translateZ(3em);
-        }
-        .top
-        {
-            transform: rotateX(0deg) rotateY(0) translateX(0em) translateY(4em) translateZ(2em);
-        }
-        .floor
-        {
-            box-shadow: 0 .1em 0.6em rgba(0,0,0,.3), .6em -0.5em 3em rgba(0,0,0,.3), 1em -1em 8em $white;
-        }
-    }
-
-    .growing-bar
-    {
-        transition: $transition;
-        background-color: $growColor;
-        width: 100%;
-        height: 2em;
-    }
-
-
-    @for $i from 0 to 101
-    {
-        .bar-#{$i}
-        {
-            .growing-bar
-            {
-                width: percentage($i * 0.01);
-            }
-        }
-    }
-
-    /*
-    END // CHART'S RULES
-    *
-    *
-    */
-
-    .chart.grid
-    {
-        display: flex;
-        flex-direction: row;
-        .exercise 
-        {
-
-            flex: 0 0 100%;
-            display: flex;
-            .bar
-            {
-                flex: 1;
-                margin: 0 .5em;
-                &:nth-child(2)
-                {
-                    z-index: 8;
-                    flex: 1 0 40%;
-                }
-                &:first-child
-                {
-                    z-index: 10;
-                    margin-left: 0;
-                }
-                &:last-child
-                {
-                    margin-right: 0;
-                }
-            }
-        }
-    }
-
-    .actions
-    {
-        display: flex;
-
-        justify-content: center;
-
-        margin-bottom: 0;
-        padding-bottom: 2em;
-        border-bottom: 1px dotted rgba($gray, .4);
-    }
-    label
-    {
-        box-sizing: border-box;
-        padding: 1em;
-        margin: 0 .2em;
-
-        cursor: pointer;
-        transition: all .15s ease-in-out;
-
-        color: $navy;
-        border: 1px solid rgba($white, .6);
-        border-radius: 0;
-
-        flex: 1;
-        &:first-child
-        {
-            margin-left: 0;
-
-            border-radius: .2em 0 0 .2em;
-        }
-        &:last-child
-        {
-            margin-right: 0;
-
-            border-radius: 0 .2em .2em 0;
-        }
-    }
-    .growing-bar{
-        box-shadow: -0.5em -0.5em 2em rgba(236, 0, 140, 0.8);
-        background-color: rgba(236, 0, 140, 0.6);
     }
 }

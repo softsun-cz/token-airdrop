@@ -1,4 +1,6 @@
 :host{
+    text-align: center;
+    display: block;
     table{
         &.half{
             width: 50%;
@@ -31,7 +33,7 @@
                         font-size: 25px;
                         font-weight: bold;
                         padding: 0 10px;
-                        color: #1095C1;
+                        color: #fff;
                     }
                     .buttonWrap{
                         button{margin: 0 0 0 5px;}
@@ -46,6 +48,8 @@
                             align-items: center;
                             text-align: right;
                             height: 58px;
+                            max-width: 100%;
+                            box-sizing: border-box;
                         }
                         span{
                             position: absolute;
@@ -60,6 +64,7 @@
                             background: #1095C1;
                             color: #fff;
                             font-weight: bold;
+                            font-size: 0.6em;
                         }
                     }
                     ~ .result{
@@ -68,16 +73,16 @@
                 }
             }
             &.check{
-                input{width: calc(100% - 105px); float: left; margin-right: 5px; }
+                input{width: calc(100% - 200px); float: left; margin-right: 5px; }
                 button{
-                    width: 100px;
+                    box-sizing: border-box;
+                    width: 150px;
                     app-loader{
                         font-size: 0.08em;
                     }
                 }
                 input, button{
                     margin-bottom: 5px;
-                    height: 3.2em;
                     @media only screen and (max-width: 670px) {
                         width: 100%;
                         float: none;
@@ -85,23 +90,6 @@
                 }
             }
         }
-    }
-    input{
-        background: #fff;
-    }
-    .result, .resultError{
-        border-radius: 10px;
-        padding: 5px;
-        text-align: center;
-        background-color: #7BEE93;
-        font-weight: bold;
-    }
-    .result{
-        color: #fff;
-        a{color: #fff;}
-    }
-    .resultError{
-        background: #FF7979;
     }
     countdown ::ng-deep .item{
         background-color: #1095C1;

@@ -13,10 +13,18 @@ export class AppComponent {
 
   title = 'airdrop';
   actualYear: string = "";
+  activeMenu: boolean = false;
   
   constructor(private router: Router, private web3ModalService: Web3ModalService, private titleService: Title){
     this.actualYear = new Date().getFullYear().toString();
     this.titleService.setTitle(this.projectName());
+  }
+
+  public routeName(){
+    let name = this.router.url.replace("/", "-");
+    if(name == "-")
+      name = "-home";
+    return "page" + name;
   }
 
   public projectName(): string{
@@ -72,4 +80,7 @@ export class AppComponent {
     return AppState.badChainId();
   }
 
+  toogleMenu(){
+    this.activeMenu = !this.activeMenu;
+  }
 }

@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ProgressComponent implements OnInit {
 
   @Input() percent = 0;
+  @Input() text: string = "";
   constructor() { }
 
   ngOnInit() {

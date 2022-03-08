@@ -1,28 +1,18 @@
-<table>
-  <tr><td colspan="2"><h1>Pool</h1></td></tr>
-  <tr>
-    <th>
-      Pool contract address: 
-    </th><td>
-      <span><a href="{{poolAddress() | addressLink}}" target="_blank">{{poolAddress()}}</a></span>
-    </td> 
-  </tr>
-  <tr>
-    <th>
-          Token: 
-    </th><td>
-          <span *ngIf="!getToken().isReady()" ><app-loader></app-loader></span>
-          <span *ngIf="getToken().isReady()">
-            {{token()}} <app-add-token-to-wallet [token]=getToken()></app-add-token-to-wallet>
-          </span>
-    </td> 
-  </tr>
-  <tr>
-    <th>
-        Token address: 
-    </th><td>
-        <span *ngIf="getToken().address == ''"><app-loader></app-loader></span>
-        <span *ngIf="getToken().address != ''"><a href="{{getToken().address | addressLink}}" target="_blank">{{getToken().address}}</a></span>
-    </td> 
-  </tr>
-</table>
+
+<h1>Pool</h1>
+<div class="bluebox">
+  <table>
+    <tr>
+      <th>
+        Pool contract address: 
+      </th><td>
+        <span><a href="{{poolAddress() | addressLink}}" target="_blank">{{poolAddress()}}</a></span>
+      </td> 
+    </tr>
+  </table>
+</div>
+<div class="pools">
+  <ng-container *ngFor="let p of state().pools; index as poolId;" >
+    <app-pool-element *ngIf=p [pool]=p [contractAddress]=poolAddress()></app-pool-element>
+  </ng-container>
+</div>

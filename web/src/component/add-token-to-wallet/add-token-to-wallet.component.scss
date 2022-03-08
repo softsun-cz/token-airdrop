@@ -1,20 +1,25 @@
 :host{
+    display: inline-block;
     button{
-        position: relative;
-        display: inline-block;
-        width: 55px;
-        margin: -5px 0 -5px 10px;
-        padding: 1px 21px 3px 5px;
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+        background: transparent;
+        cursor: pointer;
+        border: 2px solid #fff;
+        border-radius: 10px;
+        padding: 2px 10px;
         &::after{
             content: "+";
-            display: inline-block;
-            position: absolute;
-            right: 5px;
-            top: 3px;
             font-weight: bold;
+            padding-left: 7px;
+            color: #fff;
+            position: relative;
+            top: -2px;
         }
         img{
-            max-width: 100%;
+            width: 25px;
+            height: 25px;
         }
     }
 }

@@ -1,33 +1,33 @@
 <div class="data" *ngIf="pool.tokenDeposit.isReady()">
   <table>
     <tr>
-      <td>Deposit:</td><td><a href="{{pool.tokenDeposit.address | addressLink}}" target="_blank">{{pool.tokenDeposit.name}}</a></td>
+      <th>Deposit:</th><td><a href="{{pool.tokenDeposit.address | addressLink}}" target="_blank">{{pool.tokenDeposit.name}}</a></td>
     </tr>
     <tr>
-      <td>Earn:</td><td><a href="{{pool.tokenEarn.address | addressLink}}" target="_blank">{{pool.tokenEarn.name}}</a></td>
+      <th>Earn:</th><td><a href="{{pool.tokenEarn.address | addressLink}}" target="_blank">{{pool.tokenEarn.name}}</a></td>
     </tr>
     <tr>
-      <td>Deposit fee:</td><td>{{pool.feePercent() | numberLocale}} %</td>
-    </tr>
+      <th>Deposit fee:</th><td><div class="green">{{pool.feePercent() | numberLocale}} %</div></td>
+    </tr> 
     <tr>
-      <td>Pending tokens:</td><td>
+      <th>Pending tokens:</th><td>
         <div *ngIf="!walletSigned()">Wallet not connected</div>
-        <div *ngIf="walletSigned() && getPendingTokens() >= 0">{{getPendingTokens() | numberLocale}}</div>
+        <div class="green" *ngIf="walletSigned() && getPendingTokens() >= 0">{{getPendingTokens() | numberLocale}}</div>
       </td>
     </tr>
     <tr>
-      <td>Deposit:</td><td>
+      <th>Deposit:</th><td>
         <div *ngIf="!walletSigned()">Wallet not connected</div>
-        <div *ngIf="walletSigned()">{{amount()| numberLocale}}</div>
+        <div class="green" *ngIf="walletSigned()">{{amount()| numberLocale}}</div>
       </td>
     </tr>
-    <tr>
-      <td>RewardDebt:</td><td>
+    <tr class="noborder">
+      <th>RewardDebt:</th><td>
         <div *ngIf="!walletSigned()">Wallet not connected</div>
-        <div *ngIf="walletSigned()">{{rewardDebt()| numberLocale}}</div>
+        <div class="green" *ngIf="walletSigned()">{{rewardDebt()| numberLocale}}</div>
       </td>
     </tr>    
-    <tr>
+    <tr class="noborder">
       <td colspan="2" class="actions">
         <div *ngIf="!walletSigned()">Wallet not connected</div>
         <div *ngIf="walletSigned() && isTokenDepositApproved() != null">
