@@ -160,11 +160,6 @@ export class StateToken {
 }
 
 export interface IPresale {
-    balanceTokenTheir: number;
-    liquidityTokenTheir: number;
-    balanceTokenOur: number;
-    liquidityTokenOur: number;
-    totalClaimableNotDeducted: number;
     tokenOur : StateToken,
     tokenTheir: StateToken,
     depositedCount: number,
@@ -175,6 +170,7 @@ export interface IPresale {
     startTime: number,
     depositTimeOut: number,
     claimTimeOut: number,
+    remainingTokens: number,
     totalClaimable: number,
     devFeePercent: number;
     devAddress: string,
@@ -239,8 +235,8 @@ export class AppState {
     }
 
     public static presale : IPresale = {
-        tokenOur: new StateToken("/assets/token.png"),
-        tokenTheir: new StateToken("/assets/XUSD.png"),
+        tokenOur : new StateToken("/assets/token.png"), 
+        tokenTheir: new StateToken("/assets/XUSD.png"), 
         depositedCount: -1,
         claimedCount: -1,
         tokenPrice: -1,
@@ -249,16 +245,12 @@ export class AppState {
         startTime: -1,
         depositTimeOut: -1,
         claimTimeOut: -1,
+        remainingTokens: -1,
         devFeePercent: -1,
         totalClaimable: -1,
         devAddress: "",
         tokenPriceLiquidity: -1,
-        tokenTheirMax: -1,
-        balanceTokenOur: -1,
-        liquidityTokenOur: -1,
-        totalClaimableNotDeducted: -1,
-        liquidityTokenTheir: -1,
-        balanceTokenTheir: -1
+        tokenTheirMax: -1
     }
 }
 

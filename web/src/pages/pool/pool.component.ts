@@ -18,11 +18,7 @@ export class PoolComponent implements OnInit {
   }
 
   getToken() : StateToken{
-    return this.poolService.getState().token;
-  }
-
-  state(){
-    return this.poolService.getState();
+    return this.poolService.token;
   }
 
   token(): string{

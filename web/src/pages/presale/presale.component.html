@@ -114,7 +114,7 @@
       </th><td>
           <span *ngIf="claimablePercent() == -1"><app-loader></app-loader></span>
           <div *ngIf="claimablePercent() > -1" class="center">
-            {{presale().totalClaimable | numberLocale}} {{this.presale().tokenOur.symbol}} / {{presale().totalClaimed | numberLocale}} {{this.presale().tokenOur.symbol}}
+            {{presale().totalClaimed | numberLocale}} {{this.presale().tokenOur.symbol}} / {{presale().totalClaimable | numberLocale}} {{this.presale().tokenOur.symbol}}
           <app-progress [percent]="claimablePercent()"></app-progress>
         </div>
       </td> 
@@ -127,49 +127,6 @@
         <span *ngIf="presale().totalClaimed != -1 && this.presale().tokenOur.symbol != ''">{{presale().totalClaimed | numberLocale}} {{this.presale().tokenOur.symbol}}</span>
     </td> 
   </tr>
-  <tr>
-    <th>
-      Total claimable before first claim: 
-    </th><td>
-        <span *ngIf="presale().totalClaimableNotDeducted == -1 || this.presale().tokenOur.symbol ==''"><app-loader></app-loader></span>
-        <span *ngIf="presale().totalClaimableNotDeducted != -1 && this.presale().tokenOur.symbol != ''">{{presale().totalClaimableNotDeducted | numberLocale}} {{this.presale().tokenOur.symbol}}</span>
-    </td> 
-  </tr>
-  <tr>
-    <th>
-      Our tokens to liquidity: 
-    </th><td>
-        <span *ngIf="presale().liquidityTokenOur == -1 || this.presale().tokenOur.symbol ==''"><app-loader></app-loader></span>
-        <span *ngIf="presale().liquidityTokenOur != -1 && this.presale().tokenOur.symbol != ''">{{presale().liquidityTokenOur | numberLocale}} {{this.presale().tokenOur.symbol}}</span>
-    </td> 
-  </tr>
-  <tr>
-    <th>
-      Their tokens to liquidity: 
-    </th><td>
-        <span *ngIf="presale().liquidityTokenTheir == -1 || this.presale().tokenTheir.symbol ==''"><app-loader></app-loader></span>
-        <span *ngIf="presale().liquidityTokenTheir != -1 && this.presale().tokenTheir.symbol != ''">{{presale().liquidityTokenTheir | numberLocale}} {{this.presale().tokenTheir.symbol}}</span>
-    </td> 
-  </tr>
-
-  <tr>
-    <th>
-      Our tokens in this contract: 
-    </th><td>
-        <span *ngIf="presale().balanceTokenOur == -1 || this.presale().tokenOur.symbol ==''"><app-loader></app-loader></span>
-        <span *ngIf="presale().balanceTokenOur != -1 && this.presale().tokenOur.symbol != ''">{{presale().balanceTokenOur | numberLocale}} {{this.presale().tokenOur.symbol}}</span>
-    </td> 
-  </tr>
-  <tr>
-    <th>
-      Their tokens in this contract: 
-    </th><td>
-        <span *ngIf="presale().balanceTokenTheir == -1 || this.presale().tokenTheir.symbol ==''"><app-loader></app-loader></span>
-        <span *ngIf="presale().balanceTokenTheir != -1 && this.presale().tokenTheir.symbol != ''">{{presale().balanceTokenTheir | numberLocale}} {{this.presale().tokenTheir.symbol}}</span>
-    </td> 
-  </tr>
-
-
   <tr>
     <th>
       Start time: 
@@ -201,6 +158,14 @@
           <span *ngIf="timestampToTimeout(this.presale().claimTimeOut) > 0"><countdown [config]="timeOutConfig(this.presale().claimTimeOut)"></countdown> | </span>
           {{presale().claimTimeOut * 1000 | dateTimeLocale}}
         </span>
+    </td> 
+  </tr>
+  <tr>
+    <th>
+      Remaining tokens: 
+    </th><td>
+        <span *ngIf="presale().remainingTokens == -1 || this.presale().tokenOur.symbol ==''"><app-loader></app-loader></span>
+        <span *ngIf="presale().remainingTokens != -1 && this.presale().tokenOur.symbol != ''">{{presale().remainingTokens | numberLocale}} {{this.presale().tokenOur.symbol}}</span>
     </td> 
   </tr>
   <tr>

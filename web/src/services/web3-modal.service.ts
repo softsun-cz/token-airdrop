@@ -48,11 +48,11 @@ export class Web3ModalService {
     });
 
     this.presaleNotLoggedContract = new ethers.Contract(Config.main.addressPresale, Config.main.presaleContractInterface, this.notLoggedProvider);
-    this.loadPresaleData();
+    this.initializePresale();
     this.tryConnect();
   }
 
-  public loadPresaleData(){
+  private initializePresale(){
     this.presaleNotLoggedContract.tokenTheir().then((value: BigNumber) => {
       AppState.presale.tokenTheir.address = value.toHexString();
       const contract = new ethers.Contract( AppState.presale.tokenTheir.address, Config.main.tokenContractInterface, this.notLoggedProvider);
@@ -67,7 +67,7 @@ export class Web3ModalService {
         await decimalsPromise;
         AppState.presale.tokenPriceLiquidity = AppState.reduceTheirDecimals(value); 
       });
-      this.presaleNotLoggedContract.getPresaleTokenTheirMax().then(async (value: BigNumber) => { 
+      this.presaleNotLoggedContract.tokenTheirMax().then(async (value: BigNumber) => { 
         await decimalsPromise;
         AppState.presale.tokenTheirMax = AppState.reduceTheirDecimals(value); 
       });
@@ -75,14 +75,6 @@ export class Web3ModalService {
         await decimalsPromise;
         AppState.presale.totalDeposited = AppState.reduceTheirDecimals(value); 
       });
-      this.presaleNotLoggedContract.getLiquidityTokenTheir().then(async (value: BigNumber) => {
-        await decimalsPromise;
-        AppState.presale.liquidityTokenTheir = AppState.reduceTheirDecimals(value); 
-      });
-      this.presaleNotLoggedContract.getBalanceTokenTheir().then(async (value: BigNumber) => {
-        await decimalsPromise;
-         AppState.presale.balanceTokenTheir = AppState.reduceTheirDecimals(value); 
-        });
     });
     this.presaleNotLoggedContract.tokenOur().then((value: BigNumber) => {
       AppState.presale.tokenOur.address = value.toHexString();
@@ -90,21 +82,13 @@ export class Web3ModalService {
       contract.name().then((value: string) => { AppState.presale.tokenOur.name = value; });
       contract.symbol().then((value: string) => { AppState.presale.tokenOur.symbol = value; });      
       const decimalsPromise = contract.decimals().then((value: BigNumber) => { AppState.presale.tokenOur.decimals = value.toNumber(); });
+      this.presaleNotLoggedContract.getRemainingTokens().then(async (value: BigNumber) => { 
+        await decimalsPromise;
+        AppState.presale.remainingTokens =  AppState.reduceOurDecimals(value); 
+      });
       this.presaleNotLoggedContract.totalClaimed().then(async (value: BigNumber) => { 
         await decimalsPromise;
         AppState.presale.totalClaimed = AppState.reduceOurDecimals(value); 
-      });
-      this.presaleNotLoggedContract.totalClaimableNotDeducted().then(async (value: BigNumber) => { 
-        await decimalsPromise;
-        AppState.presale.totalClaimableNotDeducted = AppState.reduceOurDecimals(value); 
-      });
-      this.presaleNotLoggedContract.getLiquidityTokenOur().then(async (value: BigNumber) => { 
-        await decimalsPromise;
-        AppState.presale.liquidityTokenOur = AppState.reduceOurDecimals(value); 
-      });
-      this.presaleNotLoggedContract.getBalanceTokenOur().then(async (value: BigNumber) => {
-        await decimalsPromise;
-        AppState.presale.balanceTokenOur = AppState.reduceOurDecimals(value); 
       });
     });
     this.presaleNotLoggedContract.claimedCount().then((value: BigNumber) => { AppState.presale.claimedCount = Number(value.toString()); });
@@ -112,7 +96,6 @@ export class Web3ModalService {
     this.presaleNotLoggedContract.startTime().then((value: BigNumber) => { AppState.presale.startTime = Number(value.toString()); });
     this.presaleNotLoggedContract.claimTimeOut().then((value: BigNumber) => { AppState.presale.claimTimeOut = Number(value.toString()); });
     this.presaleNotLoggedContract.depositTimeOut().then((value: BigNumber) => { AppState.presale.depositTimeOut = Number(value.toString()); });
-    this.presaleNotLoggedContract.totalClaimable().then((ret: BigNumber) => { this.reduceNumberDecimals(ret).then(value =>{ AppState.presale.totalClaimable = value; })});
   }
   
   private async reduceNumberDecimals(number: BigNumber) : Promise<number>{
@@ -300,6 +283,14 @@ export class Web3ModalService {
    presaleDevFeePercent(){
     this.presaleNotLoggedContract.devFeePercent().then((ret: BigNumber) => {
       AppState.presale.devFeePercent = ret.toNumber();
+    });
+  }
+
+  presaleTotalClaimable(){
+    this.presaleNotLoggedContract.totalClaimable().then((ret: BigNumber) => {
+      this.reduceNumberDecimals(ret).then(value =>{
+        AppState.presale.totalClaimable = value;
+      })
     });
   }
 
